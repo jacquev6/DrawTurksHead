@@ -1,5 +1,1 @@
-obj
-lib
-bin
-dep
-inc
+*.pyc
