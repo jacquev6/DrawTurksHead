@@ -76,8 +76,8 @@ double TurksHead::getAltitude( double theta ) const {
     int alt = 1;
     for( int i = 1; i <= 2 * m_leads * m_bights + 1; ++i ) {
         if( i % m_leads ) {
-            double angle = i * std::acos( -1 ) / m_bights;
-            double previous_angle = previous_i * std::acos( -1 ) / m_bights;
+            double angle = i * M_PI / m_bights;
+            double previous_angle = previous_i * M_PI / m_bights;
             int previous_alt = -alt;
 
             if( previous_angle <= theta && angle > theta ) {
