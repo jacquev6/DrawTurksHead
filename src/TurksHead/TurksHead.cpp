@@ -15,49 +15,55 @@ namespace TurksHead {
 TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRadius, double lineWidth ) :
     m_leads( leads ),
     m_bights( bights ),
+    m_paths( boost::math::gcd( m_bights, m_leads ) ),
     m_radius( ( innerRadius + outerRadius ) / 2 ),
     m_deltaRadius( ( outerRadius - innerRadius - lineWidth ) / 2 ),
     m_lineWidth( lineWidth )
 {
 }
 
+const double TurksHead::s_stepTheta = M_PI / 100;
+
 void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
     m_ctx = context;
     m_ctx->set_line_width( m_lineWidth );
 
-    draw( false );
-    draw( true );
+    drawPaths( false );
+    drawPaths( true );
 }
 
-void TurksHead::draw( bool onlyPositiveZ ) const {
-    double maxTheta = maximumAngle();
-    double stepTheta = stepAngle();
-
-    for( double theta1 = 0; theta1 <= maxTheta; theta1 += stepTheta ) {
-        double r1, z1; boost::tie( r1, z1 ) = coordinates( theta1 );
-        if( !onlyPositiveZ || z1 > 0 ) {
-            double theta0 = theta1 - stepTheta;
-            double r0, z0; boost::tie( r0, z0 ) = coordinates( theta0 );
-            double theta2 = theta1 + stepTheta;
-            double r2, z2; boost::tie( r2, z2 ) = coordinates( theta2 );
-
-            setSourceHsv( theta1 / maxTheta * 360, 0.5, 0.5 + z1 / 2 );
-
-            m_ctx->move_to( r0 * std::cos( theta0 ), r0 * std::sin( theta0 ) );
-            m_ctx->line_to( r1 * std::cos( theta1 ), r1 * std::sin( theta1 ) );
-            m_ctx->line_to( r2 * std::cos( theta2 ), r2 * std::sin( theta2 ) );
-
-            m_ctx->stroke();
-        }
+void TurksHead::drawPaths( bool onlyPositiveZ ) const {
+    for( int path = 0; path < m_paths; ++path ) {
+        drawPath( path, onlyPositiveZ );
     }
 }
 
-double TurksHead::maximumAngle() const {
-    return m_leads * 2 * std::acos( -1 );
+void TurksHead::drawPath( int path, bool onlyPositiveZ ) const {
+    double thetaPath = path * 2 * M_PI / m_paths;
+    double maxTheta = 2 * M_PI * m_leads / m_paths - 0.1; /// @todo Remove this " - 0.1" once we're sure the formula is good
+
+    for( double theta1 = 0; theta1 <= maxTheta; theta1 += s_stepTheta ) {
+        drawSegment( thetaPath, theta1, onlyPositiveZ );
+    }
 }
 
-double TurksHead::stepAngle() const {
-    return std::acos( -1 ) / 500;
+void TurksHead::drawSegment( double thetaPath, double theta1, bool onlyPositiveZ ) const {
+    double r1, z1; boost::tie( r1, z1 ) = coordinates( theta1 );
+    if( !onlyPositiveZ || z1 > 0 ) {
+        double theta0 = theta1 - s_stepTheta;
+        double r0, z0; boost::tie( r0, z0 ) = coordinates( theta0 );
+        double theta2 = theta1 + s_stepTheta;
+        double r2, z2; boost::tie( r2, z2 ) = coordinates( theta2 );
+
+        //setSourceHsv( theta1 / maxTheta * 360, 0.5, 0.5 + z1 / 2 );
+        setSourceHsv( 0, 0.5, 0.5 + z1 / 2 );
+
+        m_ctx->move_to( r0 * std::cos( thetaPath + theta0 ), r0 * std::sin( thetaPath + theta0 ) );
+        m_ctx->line_to( r1 * std::cos( thetaPath + theta1 ), r1 * std::sin( thetaPath + theta1 ) );
+        m_ctx->line_to( r2 * std::cos( thetaPath + theta2 ), r2 * std::sin( thetaPath + theta2 ) );
+
+        m_ctx->stroke();
+    }
 }
 
 boost::tuple< double, double > TurksHead::coordinates( double theta ) const {

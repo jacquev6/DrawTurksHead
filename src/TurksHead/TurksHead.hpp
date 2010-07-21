@@ -17,17 +17,19 @@ public:
     void draw( Cairo::RefPtr< Cairo::Context > ) const;
 
 private:
-    void draw( bool onlyPositiveZ ) const;
+    void drawPaths( bool onlyPositiveZ ) const;
+    void drawPath( int path, bool onlyPositiveZ ) const;
+    void drawSegment( double thetaPath, double theta1, bool onlyPositiveZ ) const;
+
     void setSourceHsv( double h, double s, double v ) const;
 
 private:
     boost::tuple< double, double > coordinates( double theta ) const;
-    double maximumAngle() const;
-    double stepAngle() const;
 
 private:
     int m_leads;
     int m_bights;
+    int m_paths;
 private:
     double m_radius;
     double m_deltaRadius;
@@ -36,6 +38,9 @@ private:
 
 private:
     mutable Cairo::RefPtr< Cairo::Context > m_ctx;
+
+private:
+    static const double s_stepTheta;
 };
 
 } // Namespace
