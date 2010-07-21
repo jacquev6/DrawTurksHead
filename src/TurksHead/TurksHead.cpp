@@ -12,23 +12,6 @@
 
 namespace TurksHead {
 
-void TurksHead::setSourceHsv( double h, double s, double v ) const {
-    int hi = h / 60;
-    double f = h / 60 - hi;
-    hi %= 60;
-    double p = v * ( 1 - s );
-    double q = v * ( 1 - f * s );
-    double t = v * ( 1 - ( 1 - f ) * s );
-    switch( hi ) {
-        case 0: return m_ctx->set_source_rgb( v, t, p );
-        case 1: return m_ctx->set_source_rgb( q, v, p );
-        case 2: return m_ctx->set_source_rgb( p, v, t );
-        case 3: return m_ctx->set_source_rgb( p, q, v );
-        case 4: return m_ctx->set_source_rgb( t, p, v );
-        case 5: return m_ctx->set_source_rgb( v, p, q );
-    }
-}
-
 TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRadius, double lineWidth ) :
     m_leads( leads ),
     m_bights( bights ),
@@ -36,6 +19,14 @@ TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRad
     m_deltaRadius( ( outerRadius - innerRadius - lineWidth ) / 2 ),
     m_lineWidth( lineWidth )
 {
+}
+
+void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
+    m_ctx = context;
+    m_ctx->set_line_width( m_lineWidth );
+
+    draw( false );
+    draw( true );
 }
 
 void TurksHead::draw( bool onlyPositiveZ ) const {
@@ -61,12 +52,12 @@ void TurksHead::draw( bool onlyPositiveZ ) const {
     }
 }
 
-void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
-    m_ctx = context;
-    m_ctx->set_line_width( m_lineWidth );
+double TurksHead::maximumAngle() const {
+    return m_leads * 2 * std::acos( -1 );
+}
 
-    draw( false );
-    draw( true );
+double TurksHead::stepAngle() const {
+    return std::acos( -1 ) / 500;
 }
 
 boost::tuple< double, double > TurksHead::coordinates( double theta ) const {
@@ -95,12 +86,21 @@ boost::tuple< double, double > TurksHead::coordinates( double theta ) const {
     return boost::make_tuple( r, z );
 }
 
-double TurksHead::maximumAngle() const {
-    return m_leads * 2 * std::acos( -1 );
-}
-
-double TurksHead::stepAngle() const {
-    return std::acos( -1 ) / 500;
+void TurksHead::setSourceHsv( double h, double s, double v ) const {
+    int hi = h / 60;
+    double f = h / 60 - hi;
+    hi %= 60;
+    double p = v * ( 1 - s );
+    double q = v * ( 1 - f * s );
+    double t = v * ( 1 - ( 1 - f ) * s );
+    switch( hi ) {
+        case 0: return m_ctx->set_source_rgb( v, t, p );
+        case 1: return m_ctx->set_source_rgb( q, v, p );
+        case 2: return m_ctx->set_source_rgb( p, v, t );
+        case 3: return m_ctx->set_source_rgb( p, q, v );
+        case 4: return m_ctx->set_source_rgb( t, p, v );
+        case 5: return m_ctx->set_source_rgb( v, p, q );
+    }
 }
 
 } // Namespace
