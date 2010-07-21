@@ -29,13 +29,11 @@ void TurksHead::setSourceHsv( double h, double s, double v ) const {
     }
 }
 
-TurksHead::TurksHead( int m_width, int m_height, int leads, int bights, double deltaRadius, double lineWidth ) :
-    m_width( m_width ),
-    m_height( m_height ),
+TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRadius, double lineWidth ) :
     m_leads( leads ),
     m_bights( bights ),
-    m_margin( 10 ),
-    m_deltaRadius( deltaRadius ),
+    m_radius( ( innerRadius + outerRadius ) / 2 ),
+    m_deltaRadius( ( outerRadius - innerRadius - lineWidth ) / 2 ),
     m_lineWidth( lineWidth )
 {
 }
@@ -65,32 +63,14 @@ void TurksHead::draw( bool onlyPositiveZ ) const {
 
 void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
     m_ctx = context;
-
-    paintBackground();
-
-
-    context->translate( m_width / 2, m_height / 2 );
-
-    double scale = std::min( ( m_width - m_margin * 2 ) / m_width, ( m_height - m_margin * 2 ) / m_height );
-    context->scale( scale, scale );
-
-    int scaleRef = std::min( m_height, m_width );
-    scale = scaleRef / 2 / ( 1. + m_deltaRadius + m_lineWidth / 2 );
-    context->scale( scale, -scale );
-
-    context->set_line_width( m_lineWidth );
+    m_ctx->set_line_width( m_lineWidth );
 
     draw( false );
     draw( true );
 }
 
-void TurksHead::paintBackground() const {
-    setSourceHsv( 60, 0.25, 1 );
-    m_ctx->paint();
-}
-
 boost::tuple< double, double > TurksHead::coordinates( double theta ) const {
-    double r = 1. + m_deltaRadius * cos( m_bights * theta / m_leads );
+    double r = m_radius + m_deltaRadius * cos( m_bights * theta / m_leads );
     double z = 1.;
 
     {

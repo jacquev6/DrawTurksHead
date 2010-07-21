@@ -11,13 +11,12 @@ namespace TurksHead {
 
 class TurksHead {
 public:
-    TurksHead( int width, int height, int leads, int bights, double deltaRadius, double lineWidth );
+    TurksHead( int leads, int bights, double innerRadius, double outerRadius, double lineWidth );
 
 public:
     void draw( Cairo::RefPtr< Cairo::Context > ) const;
 
 private:
-    void paintBackground() const;
     void draw( bool onlyPositiveZ ) const;
     void setSourceHsv( double h, double s, double v ) const;
 
@@ -26,17 +25,13 @@ private:
     double maximumAngle() const;
     double stepAngle() const;
 
-
-private:
-    double m_width;
-    double m_height;
 private:
     int m_leads;
     int m_bights;
 private:
-    double m_margin;
-private:
+    double m_radius;
     double m_deltaRadius;
+private:
     double m_lineWidth;
 
 private:
