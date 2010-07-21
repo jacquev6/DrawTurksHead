@@ -12,20 +12,20 @@
 
 namespace TurksHead {
 
-void set_source_hsv( Cairo::RefPtr< Cairo::Context > context, float h, float s, float v ) {
+void TurksHead::setSourceHsv( double h, double s, double v ) const {
     int hi = h / 60;
-    float f = h / 60. - hi;
+    double f = h / 60 - hi;
     hi %= 60;
-    float p = v * ( 1 - s );
-    float q = v * ( 1 - f * s );
-    float t = v * ( 1 - ( 1 - f ) * s );
+    double p = v * ( 1 - s );
+    double q = v * ( 1 - f * s );
+    double t = v * ( 1 - ( 1 - f ) * s );
     switch( hi ) {
-        case 0: return context->set_source_rgb( v, t, p );
-        case 1: return context->set_source_rgb( q, v, p );
-        case 2: return context->set_source_rgb( p, v, t );
-        case 3: return context->set_source_rgb( p, q, v );
-        case 4: return context->set_source_rgb( t, p, v );
-        case 5: return context->set_source_rgb( v, p, q );
+        case 0: return m_ctx->set_source_rgb( v, t, p );
+        case 1: return m_ctx->set_source_rgb( q, v, p );
+        case 2: return m_ctx->set_source_rgb( p, v, t );
+        case 3: return m_ctx->set_source_rgb( p, q, v );
+        case 4: return m_ctx->set_source_rgb( t, p, v );
+        case 5: return m_ctx->set_source_rgb( v, p, q );
     }
 }
 
@@ -38,10 +38,9 @@ TurksHead::TurksHead( int m_width, int m_height, int leads, int bights, double d
     m_deltaRadius( deltaRadius ),
     m_lineWidth( lineWidth )
 {
-    if( boost::math::gcd( m_leads, m_bights ) != 1 ) throw 0;
 }
 
-void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context, bool onlyPositiveZ ) const {
+void TurksHead::draw( bool onlyPositiveZ ) const {
     double maxTheta = maximumAngle();
     double stepTheta = stepAngle();
 
@@ -53,20 +52,22 @@ void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context, bool onlyPositive
             double theta2 = theta1 + stepTheta;
             double r2, z2; boost::tie( r2, z2 ) = coordinates( theta2 );
 
-            set_source_hsv( context, theta1 / maxTheta * 360, 0.5, 0.5 + z1 / 2 );
+            setSourceHsv( theta1 / maxTheta * 360, 0.5, 0.5 + z1 / 2 );
 
-            context->move_to( r0 * std::cos( theta0 ), r0 * std::sin( theta0 ) );
-            context->line_to( r1 * std::cos( theta1 ), r1 * std::sin( theta1 ) );
-            context->line_to( r2 * std::cos( theta2 ), r2 * std::sin( theta2 ) );
+            m_ctx->move_to( r0 * std::cos( theta0 ), r0 * std::sin( theta0 ) );
+            m_ctx->line_to( r1 * std::cos( theta1 ), r1 * std::sin( theta1 ) );
+            m_ctx->line_to( r2 * std::cos( theta2 ), r2 * std::sin( theta2 ) );
 
-            context->stroke();
+            m_ctx->stroke();
         }
     }
 }
 
 void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
-    set_source_hsv( context, 60, 0.25, 1 );
-    context->paint();
+    m_ctx = context;
+
+    paintBackground();
+
 
     context->translate( m_width / 2, m_height / 2 );
 
@@ -79,8 +80,13 @@ void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
 
     context->set_line_width( m_lineWidth );
 
-    draw( context, false );
-    draw( context, true );
+    draw( false );
+    draw( true );
+}
+
+void TurksHead::paintBackground() const {
+    setSourceHsv( 60, 0.25, 1 );
+    m_ctx->paint();
 }
 
 boost::tuple< double, double > TurksHead::coordinates( double theta ) const {
