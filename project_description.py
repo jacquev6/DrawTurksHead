@@ -9,18 +9,10 @@ DynamicLibrary(
     externalLibraries = [ "cairomm-1.0" ]
 )
 
-DynamicLibrary(
-    name = "thdui",
-    sources = AllCppIn( "src/thdui" ),
-    publicHeaders = AllHppIn( "src/thdui" ),
-    stripFromHeaders = "src/",
-    localLibraries = [ "turkshead" ],
-    externalLibraries = [ "gtkmm-2.4" ]
-)
-
+### @todo Delete this executable as soon as a Python script can drive the turkshead library
 Executable(
-    name = "turks_head_designer",
-    sources = [ "src/turks_head_designer.cpp" ],
-    localLibraries = [ "thdui", "turkshead" ],
+    name = "draw_turks_head",
+    sources = [ "src/draw_turks_head.cpp" ],
+    localLibraries = [ "turkshead" ],
     externalLibraries = [ "boost_program_options" ]
 )
