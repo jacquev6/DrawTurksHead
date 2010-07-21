@@ -14,18 +14,6 @@ public:
     TurksHead( int width, int height, int leads, int bights, double deltaRadius, double lineWidth );
 
 public:
-    void incrementLeads();
-    void decrementLeads();
-    void incrementBights();
-    void decrementBights();
-    void setHeight( double );
-    void setWidth( double );
-    void incrementDeltaRadius();
-    void decrementDeltaRadius();
-    void incrementLineWidth();
-    void decrementLineWidth();
-
-public:
     void draw( Cairo::RefPtr< Cairo::Context > ) const;
 
 private:
