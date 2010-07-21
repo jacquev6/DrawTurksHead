@@ -52,6 +52,8 @@ int main( int argc, char* argv[]) {
     context->arc( 0, 0, innerRadius, 0, 2 * M_PI );
     context->stroke();
 
+    context->rotate( 0.000000001 ); /// @todo Understand why removing this rotate gives a strange sharp line for --leads=2 --bights=3
+
     const TurksHead::TurksHead head(
         vm[ "leads" ].as< int >(),
         vm[ "bights" ].as< int >(),
