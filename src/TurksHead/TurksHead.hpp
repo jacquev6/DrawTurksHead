@@ -19,17 +19,21 @@ public:
 private:
     void drawPaths( bool onlyPositiveZ ) const;
     void drawPath( int path, bool onlyPositiveZ ) const;
-    void drawSegment( double thetaPath, double theta1, bool onlyPositiveZ ) const;
+    void drawSegment( double theta, bool onlyPositiveZ ) const;
+
+    boost::tuple< double, double > getCoordinates( double theta ) const;
+    double getRadius( double theta ) const;
+    static boost::tuple< double, double > convertRadialToCartesianCoordinates( double radius, double theta );
+
+    double getAltitude( double theta ) const;
 
     void setSourceHsv( double h, double s, double v ) const;
-
-private:
-    boost::tuple< double, double > coordinates( double theta ) const;
 
 private:
     int m_leads;
     int m_bights;
     int m_paths;
+    double m_maxThetaOnPath;
 private:
     double m_radius;
     double m_deltaRadius;
