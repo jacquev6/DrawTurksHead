@@ -7,7 +7,7 @@
 namespace po = boost::program_options;
 
 // DrawTurksHead
-#include <turkshead/TurksHead.hpp>
+#include <TurksHead/TurksHead.hpp>
 
 int main( int argc, char* argv[]) {
     po::options_description desc("Allowed options");
@@ -33,7 +33,7 @@ int main( int argc, char* argv[]) {
     Cairo::RefPtr< Cairo::ImageSurface > image = Cairo::ImageSurface::create( Cairo::FORMAT_RGB24, vm[ "width" ].as< int >(), vm[ "height" ].as< int >() );
     Cairo::RefPtr< Cairo::Context > context = Cairo::Context::create( image );
 
-    TurksHead head(
+    TurksHead::TurksHead head(
         vm[ "width" ].as< int >(),
         vm[ "height" ].as< int >(),
         vm[ "leads" ].as< int >(),

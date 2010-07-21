@@ -10,6 +10,8 @@
 #include <boost/utility.hpp>
 #include <boost/lambda/lambda.hpp>
 
+namespace TurksHead {
+
 void set_source_hsv( Cairo::RefPtr< Cairo::Context > context, float h, float s, float v ) {
     int hi = h / 60;
     float f = h / 60. - hi;
@@ -170,3 +172,5 @@ void TurksHead::incrementLineWidth() {
 void TurksHead::decrementLineWidth() {
     m_lineWidth -= 0.01;
 }
+
+} // Namespace

@@ -1,11 +1,13 @@
-#ifndef TurksHead_hpp
-#define TurksHead_hpp
+#ifndef TurksHead_TurksHead_hpp
+#define TurksHead_TurksHead_hpp
 
 // Boost
 #include <boost/tuple/tuple.hpp>
 
 // Cairo
 #include <cairomm/cairomm.h>
+
+namespace TurksHead {
 
 class TurksHead {
 public:
@@ -45,5 +47,6 @@ private:
     double m_lineWidth;
 };
 
+} // Namespace
 
 #endif // Include guard

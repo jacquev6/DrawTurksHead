@@ -2,8 +2,8 @@ from ViDE.Project.Description import *
 
 DynamicLibrary(
     name = "turkshead",
-    sources = AllCppIn( "src/turkshead" ),
-    publicHeaders = AllHppIn( "src/turkshead" ),
+    sources = AllCppIn( "src/TurksHead" ),
+    publicHeaders = AllHppIn( "src/TurksHead" ),
     stripFromHeaders = "src/",
     localLibraries = [],
     externalLibraries = [ "cairomm-1.0" ]
