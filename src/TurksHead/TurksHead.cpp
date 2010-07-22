@@ -3,12 +3,16 @@
 
 // Standard library
 #include <map>
-#include <iostream>
+#include <iostream> /// @todo Remove
 
 // Boost
 #include <boost/math/common_factor.hpp>
 #include <boost/utility.hpp>
 #include <boost/lambda/lambda.hpp>
+#include <boost/foreach.hpp>
+#include <boost/utility.hpp>
+
+#define foreach BOOST_FOREACH
 
 namespace TurksHead {
 
@@ -21,6 +25,7 @@ TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRad
     m_deltaRadius( ( outerRadius - innerRadius - lineWidth ) / 2 ),
     m_lineWidth( lineWidth )
 {
+    computeKnownAltitudes();
 }
 
 const double TurksHead::s_stepTheta = M_PI / 500;
@@ -70,26 +75,22 @@ void TurksHead::drawSegment( double theta, bool onlyPositiveZ ) const {
 }
 
 double TurksHead::getAltitude( double theta ) const {
-    double z = 1.;
+    std::map< double, int >::const_iterator nextIt = m_knownAltitudes.lower_bound( theta );
+    assert( nextIt != m_knownAltitudes.begin() );
+    assert( nextIt != m_knownAltitudes.end() );
+    std::map< double, int >::const_iterator prevIt = boost::prior( nextIt );
+    return prevIt->second + ( nextIt->second - prevIt->second ) * ( theta - prevIt->first ) / ( nextIt->first - prevIt->first );
+}
 
-    int previous_i = -1;
-    int alt = 1;
-    for( int i = 1; i <= 2 * m_leads * m_bights + 1; ++i ) {
+void TurksHead::computeKnownAltitudes() {
+    int alt = -1;
+    for( int i = -1; i <= 2 * m_leads * m_bights + 1; ++i ) {
         if( i % m_leads ) {
             double angle = i * M_PI / m_bights;
-            double previous_angle = previous_i * M_PI / m_bights;
-            int previous_alt = -alt;
-
-            if( previous_angle <= theta && angle > theta ) {
-                z = previous_alt + ( alt - previous_alt ) * ( theta - previous_angle ) / ( angle - previous_angle );
-                break;
-            }
-            previous_i = i;
+            m_knownAltitudes[ angle ] = alt;
             alt *= -1;
         }
     }
-
-    return z;
 }
 
 boost::tuple< double, double > TurksHead::getCoordinates( double theta ) const {
