@@ -4,10 +4,18 @@
 // DrawTurksHead
 #include <TurksHead/TurksHead.hpp>
 
+namespace {
+
+    void drawTurksHead( const TurksHead::TurksHead& th, Cairo::RefPtr< Cairo::Context > ctx ) {
+        th.draw( ctx );
+    }
+
+}
+
 BOOST_PYTHON_MODULE( _turkshead ) {
     using namespace boost::python;
     /// @todo Look at http://www.boost.org/doc/libs/1_43_0/libs/parameter/doc/html/python.html, to add named parameters to the constructor
     class_< TurksHead::TurksHead >( "TurksHead", init< int, int, double, double, double >() )
-        .def( "draw", &TurksHead::TurksHead::draw )
+        .def( "draw", &drawTurksHead )
     ;
 }

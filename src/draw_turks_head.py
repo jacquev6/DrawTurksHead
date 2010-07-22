@@ -7,6 +7,9 @@ print dir( turkshead )
 
 t = turkshead.TurksHead( 2, 3, 100, 400, 25 )
 
+print dir( t )
+print t.draw
+
 img = cairo.ImageSurface( cairo.FORMAT_RGB24, 800, 600 )
 ctx = cairo.Context( img )
 
