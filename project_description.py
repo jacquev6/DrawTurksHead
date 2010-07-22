@@ -13,7 +13,7 @@ CppPythonModule(
     name = "turkshead._turkshead",
     sources = AllCppIn( "src/PythonModule" ),
     localLibraries = [ "turkshead" ],
-    externalLibraries = [ "boost_python", "python2.7" ]
+    externalLibraries = [ "boost_python", "python2.7", "cairomm-1.0" ]
 )
 
 PythonPackage(
@@ -28,5 +28,5 @@ Executable(
     name = "draw_turks_head",
     sources = [ "src/draw_turks_head.cpp" ],
     localLibraries = [ "turkshead" ],
-    externalLibraries = [ "boost_program_options" ]
+    externalLibraries = [ "boost_program_options", "cairomm-1.0" ]
 )
