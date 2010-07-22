@@ -22,11 +22,3 @@ PythonPackage(
     stripFromModules = lambda s: s.replace( "src/PythonModule", "turkshead" ),
     cppPythonModules = [ "turkshead._turkshead" ]
 )
-
-### @todo Delete this executable as soon as a Python script can drive the turkshead library
-Executable(
-    name = "draw_turks_head",
-    sources = [ "src/draw_turks_head.cpp" ],
-    localLibraries = [ "turkshead" ],
-    externalLibraries = [ "boost_program_options", "cairomm-1.0" ]
-)
