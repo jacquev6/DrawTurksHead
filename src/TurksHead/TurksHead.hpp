@@ -22,7 +22,7 @@ public:
 private:
     void drawPaths( bool onlyPositiveZ ) const;
     void drawPath( int path, bool onlyPositiveZ ) const;
-    void drawSegment( double theta, bool onlyPositiveZ ) const;
+    void drawSegment( double theta ) const;
 
     boost::tuple< double, double > getCoordinates( double theta ) const;
     double getRadius( double theta ) const;

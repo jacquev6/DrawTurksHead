@@ -50,28 +50,26 @@ void TurksHead::drawPaths( bool onlyPositiveZ ) const {
 }
 
 void TurksHead::drawPath( int path, bool onlyPositiveZ ) const {
-    for( double theta1 = 0; theta1 <= m_maxThetaOnPath; theta1 += s_stepTheta ) {
-        drawSegment( theta1, onlyPositiveZ );
+    for( double theta = 0; theta <= m_maxThetaOnPath; theta += s_stepTheta ) {
+        double z = getAltitude( theta );
+        if( !onlyPositiveZ || z > 0 ) {
+            setSourceHsv( theta / m_maxThetaOnPath * 360, 0.5, 0.5 + z / 2 );
+            drawSegment( theta );
+            m_ctx->stroke();
+        }
     }
 }
 
-void TurksHead::drawSegment( double theta, bool onlyPositiveZ ) const {
-    double z = getAltitude( theta );
-    if( !onlyPositiveZ || z > 0 ) {
-        double theta_m = theta - s_stepTheta;
-        double theta_p = theta + s_stepTheta;
-        double x0, y0; boost::tie( x0, y0 ) = getCoordinates( theta_m );
-        double x1, y1; boost::tie( x1, y1 ) = getCoordinates( theta );
-        double x2, y2; boost::tie( x2, y2 ) = getCoordinates( theta_p );
+void TurksHead::drawSegment( double theta ) const {
+    double theta_m = theta - s_stepTheta;
+    double theta_p = theta + s_stepTheta;
+    double x0, y0; boost::tie( x0, y0 ) = getCoordinates( theta_m );
+    double x1, y1; boost::tie( x1, y1 ) = getCoordinates( theta );
+    double x2, y2; boost::tie( x2, y2 ) = getCoordinates( theta_p );
 
-        setSourceHsv( theta / m_maxThetaOnPath * 360, 0.5, 0.5 + z / 2 );
-
-        m_ctx->move_to( x0, y0 );
-        m_ctx->line_to( x1, y1 );
-        m_ctx->line_to( x2, y2 );
-
-        m_ctx->stroke();
-    }
+    m_ctx->move_to( x0, y0 );
+    m_ctx->line_to( x1, y1 );
+    m_ctx->line_to( x2, y2 );
 }
 
 double TurksHead::getAltitude( double theta ) const {
