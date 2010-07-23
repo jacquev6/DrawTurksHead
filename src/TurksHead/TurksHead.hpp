@@ -37,6 +37,8 @@ private:
     void redraw( int thetaLow, int thetaHight ) const;
     void clip( int theta ) const;
 
+    void pathSegment( int minTheta, int maxTheta ) const;
+
     void moveTo( const boost::tuple< double, double >& ) const;
     void lineTo( const boost::tuple< double, double >& ) const;
 

@@ -65,12 +65,7 @@ void TurksHead::drawPath( int path ) const {
 }
 
 void TurksHead::drawSegment( int theta ) const {
-    moveTo( getOuterCoordinates( theta - 1 ) );
-    lineTo( getOuterCoordinates( theta ) );
-    lineTo( getOuterCoordinates( theta + 1 ) );
-    lineTo( getInnerCoordinates( theta + 1 ) );
-    lineTo( getInnerCoordinates( theta ) );
-    lineTo( getInnerCoordinates( theta - 1) );
+    pathSegment( theta - 1, theta + 1 );
     double z = getAltitude( theta );
     setSourceHsv( theta * 360. / m_maxThetaOnPath, 0.5, 0.5 + z / 2 );
     m_ctx->fill();
@@ -96,14 +91,7 @@ void TurksHead::redraw( int thetaLow, int thetaHight ) const {
     m_ctx->restore();
 }
 
-void TurksHead::clip( int thetaLow ) const {
-    std::map< int, int >::const_iterator it = m_knownAltitudes.find( thetaLow );
-    assert( it != m_knownAltitudes.begin() );
-    assert( it != m_knownAltitudes.end() );
-    assert( boost::next( it ) != m_knownAltitudes.end() );
-
-    int minTheta = boost::prior( it )->first;
-    int maxTheta = boost::next( it )->first;
+void TurksHead::pathSegment( int minTheta, int maxTheta ) const {
     moveTo( getOuterCoordinates( minTheta ) );
     for( int theta = minTheta + 1; theta <= maxTheta; ++theta ) {
         lineTo( getOuterCoordinates( theta ) );
@@ -111,6 +99,16 @@ void TurksHead::clip( int thetaLow ) const {
     for( int theta = maxTheta; theta >= minTheta; --theta ) {
         lineTo( getInnerCoordinates( theta ) );
     }
+    m_ctx->close_path();
+}
+
+void TurksHead::clip( int thetaLow ) const {
+    std::map< int, int >::const_iterator it = m_knownAltitudes.find( thetaLow );
+    assert( it != m_knownAltitudes.begin() );
+    assert( it != m_knownAltitudes.end() );
+    assert( boost::next( it ) != m_knownAltitudes.end() );
+
+    pathSegment( boost::prior( it )->first, boost::next( it )->first );
     m_ctx->clip();
 }
 
