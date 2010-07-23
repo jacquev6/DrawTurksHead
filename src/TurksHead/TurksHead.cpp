@@ -2,6 +2,7 @@
 #include "TurksHead.hpp"
 
 // Standard library
+#include <cmath>
 #include <map>
 #include <iostream> /// @todo Remove
 #include <cassert>
@@ -35,49 +36,38 @@ void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
     m_ctx = context;
     m_ctx->save();
 
-    drawPaths( false );
-    drawPaths( true );
+    drawPaths();
 
     m_ctx->restore();
 }
 
-void TurksHead::drawPaths( bool onlyPositiveZ ) const {
+void TurksHead::drawPaths() const {
     for( int path = 0; path < m_paths; ++path ) {
-        drawPath( path, onlyPositiveZ );
+        drawPath( path );
         m_ctx->rotate( 2 * M_PI / m_paths );
     }
 }
 
-void TurksHead::drawPath( int path, bool onlyPositiveZ ) const {
+void TurksHead::drawPath( int path ) const {
     for( int theta = 0; theta <= m_maxThetaOnPath; ++theta ) {
         double z = getAltitude( theta );
-        if( !onlyPositiveZ || z > 0 ) {
-            setSourceHsv( theta * 360. / m_maxThetaOnPath, 0.5, 0.5 + z / 2 );
-            drawSegment( theta );
-            m_ctx->fill();
-        }
+
+        setSourceHsv( theta * 360. / m_maxThetaOnPath, 0.5, 0.5 + z / 2 );
+        drawSegment( theta );
+        m_ctx->stroke();
     }
 }
 
 void TurksHead::drawSegment( int theta ) const {
-    double x0, y0; boost::tie( x0, y0 ) = getCoordinates( theta - 1 );
-    double x1, y1; boost::tie( x1, y1 ) = getCoordinates( theta + 1 );
+    double x0, y0; boost::tie( x0, y0 ) = getOuterCoordinates( theta );
+    double x1, y1; boost::tie( x1, y1 ) = getInnerCoordinates( theta  );
 
-    double dx = x1 - x0;
-    double dy = y1 - y0;
-    double n = std::sqrt( dx * dx + dy * dy );
-
-    double nx = -m_lineWidth * dy / n / 2;
-    double ny = m_lineWidth * dx / n / 2;
-
-    m_ctx->move_to( x0 + nx, y0 + ny );
-    m_ctx->line_to( x1 + nx, y1 + ny );
-    m_ctx->line_to( x1 - nx, y1 - ny );
-    m_ctx->line_to( x0 - nx, y0 - ny );
-    m_ctx->close_path();
+    m_ctx->move_to( x0, y0 );
+    m_ctx->line_to( x1, y1 );
 }
 
 double TurksHead::getAltitude( int theta ) const {
+    //std::cout << "getAltitude " << theta << std::endl;
     std::map< int, int >::const_iterator nextIt = m_knownAltitudes.lower_bound( theta );
     assert( nextIt != m_knownAltitudes.begin() );
     assert( nextIt != m_knownAltitudes.end() );
@@ -90,10 +80,42 @@ void TurksHead::computeKnownAltitudes() {
     for( int i = -1; i <= 2 * m_leads * m_bights + 1; ++i ) {
         if( i % m_leads ) {
             double angle = i * s_stepsTheta;
+            std::cout << angle << " ";
             m_knownAltitudes[ angle ] = alt;
             alt *= -1;
         }
     }
+    std::cout << std::endl;
+}
+
+boost::tuple< double, double > TurksHead::getOuterCoordinates( int theta ) const {
+    double x0, y0; boost::tie( x0, y0 ) = getCoordinates( theta - 1 );
+    double x1, y1; boost::tie( x1, y1 ) = getCoordinates( theta );
+    double x2, y2; boost::tie( x2, y2 ) = getCoordinates( theta + 1 );
+
+    double dx = x1 - x0;
+    double dy = y1 - y0;
+    double n = std::sqrt( dx * dx + dy * dy );
+
+    double nx = -m_lineWidth * dy / n / 2;
+    double ny = m_lineWidth * dx / n / 2;
+
+    return boost::make_tuple( x1 + nx, y1 + ny );
+}
+
+boost::tuple< double, double > TurksHead::getInnerCoordinates( int theta ) const {
+    double x0, y0; boost::tie( x0, y0 ) = getCoordinates( theta - 1 );
+    double x1, y1; boost::tie( x1, y1 ) = getCoordinates( theta );
+    double x2, y2; boost::tie( x2, y2 ) = getCoordinates( theta + 1 );
+
+    double dx = x1 - x0;
+    double dy = y1 - y0;
+    double n = std::sqrt( dx * dx + dy * dy );
+
+    double nx = -m_lineWidth * dy / n / 2;
+    double ny = m_lineWidth * dx / n / 2;
+
+    return boost::make_tuple( x1 - nx, y1 - ny );
 }
 
 boost::tuple< double, double > TurksHead::getCoordinates( int theta ) const {
@@ -112,8 +134,6 @@ boost::tuple< double, double > TurksHead::convertRadialToCartesianCoordinates( d
 }
 
 double TurksHead::angleFromTheta( int theta ) const {
-    // Theta evolves in [ 0, 2 * m_leads * m_bights * s_stepsTheta / m_paths ]
-    // Angle evolves in [ 0, 2 * M_PI * m_leads / m_paths ]
     return M_PI * theta / m_bights / s_stepsTheta;
 }
 

@@ -20,11 +20,13 @@ public:
     void draw( Cairo::RefPtr< Cairo::Context > ) const;
 
 private:
-    void drawPaths( bool onlyPositiveZ ) const;
-    void drawPath( int path, bool onlyPositiveZ ) const;
+    void drawPaths() const;
+    void drawPath( int path ) const;
     void drawSegment( int theta ) const;
 
     boost::tuple< double, double > getCoordinates( int theta ) const;
+    boost::tuple< double, double > getInnerCoordinates( int theta ) const;
+    boost::tuple< double, double > getOuterCoordinates( int theta ) const;
     double getRadius( int theta ) const;
     boost::tuple< double, double > convertRadialToCartesianCoordinates( double radius, int theta ) const;
 
