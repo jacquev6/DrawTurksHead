@@ -22,16 +22,18 @@ public:
 private:
     void drawPaths( bool onlyPositiveZ ) const;
     void drawPath( int path, bool onlyPositiveZ ) const;
-    void drawSegment( double theta ) const;
+    void drawSegment( int theta ) const;
 
-    boost::tuple< double, double > getCoordinates( double theta ) const;
-    double getRadius( double theta ) const;
-    static boost::tuple< double, double > convertRadialToCartesianCoordinates( double radius, double theta );
+    boost::tuple< double, double > getCoordinates( int theta ) const;
+    double getRadius( int theta ) const;
+    boost::tuple< double, double > convertRadialToCartesianCoordinates( double radius, int theta ) const;
 
-    double getAltitude( double theta ) const;
+    double getAltitude( int theta ) const;
     void computeKnownAltitudes();
 
     void setSourceHsv( double h, double s, double v ) const;
+
+    double angleFromTheta( int theta ) const;
 
 private:
     int m_leads;
@@ -39,7 +41,7 @@ private:
 private:
     int m_paths;
     double m_maxThetaOnPath;
-    std::map< double, int > m_knownAltitudes;
+    std::map< int, int > m_knownAltitudes;
 private:
     double m_radius;
     double m_deltaRadius;
@@ -50,7 +52,7 @@ private:
     mutable Cairo::RefPtr< Cairo::Context > m_ctx;
 
 private:
-    static const double s_stepTheta;
+    static const int s_stepsTheta;
 };
 
 } // Namespace

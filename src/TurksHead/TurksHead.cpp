@@ -21,7 +21,7 @@ TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRad
     m_leads( leads ),
     m_bights( bights ),
     m_paths( boost::math::gcd( m_bights, m_leads ) ),
-    m_maxThetaOnPath( 2 * M_PI * m_leads / m_paths ),
+    m_maxThetaOnPath( 2 * m_leads * m_bights * s_stepsTheta / m_paths ),
     m_radius( ( innerRadius + outerRadius ) / 2 ),
     m_deltaRadius( ( outerRadius - innerRadius - lineWidth ) / 2 ),
     m_lineWidth( lineWidth )
@@ -29,7 +29,7 @@ TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRad
     computeKnownAltitudes();
 }
 
-const double TurksHead::s_stepTheta = M_PI / 50;
+const int TurksHead::s_stepsTheta = 20;
 
 void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
     m_ctx = context;
@@ -49,19 +49,19 @@ void TurksHead::drawPaths( bool onlyPositiveZ ) const {
 }
 
 void TurksHead::drawPath( int path, bool onlyPositiveZ ) const {
-    for( double theta = 0; theta <= m_maxThetaOnPath; theta += s_stepTheta ) {
+    for( int theta = 0; theta <= m_maxThetaOnPath; ++theta ) {
         double z = getAltitude( theta );
         if( !onlyPositiveZ || z > 0 ) {
-            setSourceHsv( theta / m_maxThetaOnPath * 360, 0.5, 0.5 + z / 2 );
+            setSourceHsv( theta * 360. / m_maxThetaOnPath, 0.5, 0.5 + z / 2 );
             drawSegment( theta );
-            m_ctx->stroke();
+            m_ctx->fill();
         }
     }
 }
 
-void TurksHead::drawSegment( double theta ) const {
-    double x0, y0; boost::tie( x0, y0 ) = getCoordinates( theta - s_stepTheta );
-    double x1, y1; boost::tie( x1, y1 ) = getCoordinates( theta + s_stepTheta );
+void TurksHead::drawSegment( int theta ) const {
+    double x0, y0; boost::tie( x0, y0 ) = getCoordinates( theta - 1 );
+    double x1, y1; boost::tie( x1, y1 ) = getCoordinates( theta + 1 );
 
     double dx = x1 - x0;
     double dy = y1 - y0;
@@ -77,38 +77,44 @@ void TurksHead::drawSegment( double theta ) const {
     m_ctx->close_path();
 }
 
-double TurksHead::getAltitude( double theta ) const {
-    std::map< double, int >::const_iterator nextIt = m_knownAltitudes.lower_bound( theta );
+double TurksHead::getAltitude( int theta ) const {
+    std::map< int, int >::const_iterator nextIt = m_knownAltitudes.lower_bound( theta );
     assert( nextIt != m_knownAltitudes.begin() );
     assert( nextIt != m_knownAltitudes.end() );
-    std::map< double, int >::const_iterator prevIt = boost::prior( nextIt );
-    return prevIt->second + ( nextIt->second - prevIt->second ) * ( theta - prevIt->first ) / ( nextIt->first - prevIt->first );
+    std::map< int, int >::const_iterator prevIt = boost::prior( nextIt );
+    return prevIt->second + ( nextIt->second - prevIt->second ) * ( theta - prevIt->first ) / float( nextIt->first - prevIt->first );
 }
 
 void TurksHead::computeKnownAltitudes() {
     int alt = -1;
     for( int i = -1; i <= 2 * m_leads * m_bights + 1; ++i ) {
         if( i % m_leads ) {
-            double angle = i * M_PI / m_bights;
+            double angle = i * s_stepsTheta;
             m_knownAltitudes[ angle ] = alt;
             alt *= -1;
         }
     }
 }
 
-boost::tuple< double, double > TurksHead::getCoordinates( double theta ) const {
+boost::tuple< double, double > TurksHead::getCoordinates( int theta ) const {
     return convertRadialToCartesianCoordinates( getRadius( theta ), theta );
 }
 
-double TurksHead::getRadius( double theta ) const {
-    return m_radius + m_deltaRadius * cos( m_bights * theta / m_leads );
+double TurksHead::getRadius( int theta ) const {
+    return m_radius + m_deltaRadius * cos( m_bights * angleFromTheta( theta ) / m_leads );
 }
 
-boost::tuple< double, double > TurksHead::convertRadialToCartesianCoordinates( double radius, double theta ) {
+boost::tuple< double, double > TurksHead::convertRadialToCartesianCoordinates( double radius, int theta ) const {
     return boost::make_tuple(
-        radius * std::cos( theta ),
-        radius * std::sin( theta )
+        radius * std::cos( angleFromTheta( theta ) ),
+        radius * std::sin( angleFromTheta( theta ) )
     );
+}
+
+double TurksHead::angleFromTheta( int theta ) const {
+    // Theta evolves in [ 0, 2 * m_leads * m_bights * s_stepsTheta / m_paths ]
+    // Angle evolves in [ 0, 2 * M_PI * m_leads / m_paths ]
+    return M_PI * theta / m_bights / s_stepsTheta;
 }
 
 void TurksHead::setSourceHsv( double h, double s, double v ) const {
