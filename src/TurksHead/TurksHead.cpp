@@ -23,13 +23,11 @@ TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRad
 {
 }
 
-const double TurksHead::s_stepTheta = M_PI / 500;
+const double TurksHead::s_stepTheta = M_PI / 50;
 
 void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
     m_ctx = context;
     m_ctx->save();
-    m_ctx->set_line_width( m_lineWidth );
-    m_ctx->set_line_cap( Cairo::LINE_CAP_BUTT );
 
     drawPaths( false );
     drawPaths( true );
@@ -45,28 +43,32 @@ void TurksHead::drawPaths( bool onlyPositiveZ ) const {
 }
 
 void TurksHead::drawPath( int path, bool onlyPositiveZ ) const {
-    for( double theta1 = 0; theta1 <= m_maxThetaOnPath; theta1 += s_stepTheta ) {
-        drawSegment( theta1, onlyPositiveZ );
+    for( double theta = 0; theta <= m_maxThetaOnPath; theta += s_stepTheta ) {
+        double z = getAltitude( theta );
+        if( !onlyPositiveZ || z > 0 ) {
+            setSourceHsv( theta / m_maxThetaOnPath * 360, 0.5, 0.5 + z / 2 );
+            drawSegment( theta );
+            m_ctx->fill();
+        }
     }
 }
 
-void TurksHead::drawSegment( double theta, bool onlyPositiveZ ) const {
-    double z = getAltitude( theta );
-    if( !onlyPositiveZ || z > 0 ) {
-        double theta_m = theta - s_stepTheta;
-        double theta_p = theta + s_stepTheta;
-        double x0, y0; boost::tie( x0, y0 ) = getCoordinates( theta_m );
-        double x1, y1; boost::tie( x1, y1 ) = getCoordinates( theta );
-        double x2, y2; boost::tie( x2, y2 ) = getCoordinates( theta_p );
+void TurksHead::drawSegment( double theta ) const {
+    double x0, y0; boost::tie( x0, y0 ) = getCoordinates( theta - s_stepTheta );
+    double x1, y1; boost::tie( x1, y1 ) = getCoordinates( theta + s_stepTheta );
 
-        setSourceHsv( theta / m_maxThetaOnPath * 360, 0.5, 0.5 + z / 2 );
+    double dx = x1 - x0;
+    double dy = y1 - y0;
+    double n = std::sqrt( dx * dx + dy * dy );
 
-        m_ctx->move_to( x0, y0 );
-        m_ctx->line_to( x1, y1 );
-        m_ctx->line_to( x2, y2 );
+    double nx = -m_lineWidth * dy / n / 2;
+    double ny = m_lineWidth * dx / n / 2;
 
-        m_ctx->stroke();
-    }
+    m_ctx->move_to( x0 + nx, y0 + ny );
+    m_ctx->line_to( x1 + nx, y1 + ny );
+    m_ctx->line_to( x1 - nx, y1 - ny );
+    m_ctx->line_to( x0 - nx, y0 - ny );
+    m_ctx->close_path();
 }
 
 double TurksHead::getAltitude( double theta ) const {
