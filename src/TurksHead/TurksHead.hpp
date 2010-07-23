@@ -27,6 +27,7 @@ private:
     boost::tuple< double, double > getCoordinates( int theta ) const;
     boost::tuple< double, double > getInnerCoordinates( int theta ) const;
     boost::tuple< double, double > getOuterCoordinates( int theta ) const;
+    boost::tuple< double, double > getNormal( int theta ) const;
     double getRadius( int theta ) const;
     boost::tuple< double, double > convertRadialToCartesianCoordinates( double radius, int theta ) const;
 

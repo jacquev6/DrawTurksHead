@@ -142,24 +142,20 @@ void TurksHead::computeKnownAltitudes() {
 }
 
 boost::tuple< double, double > TurksHead::getOuterCoordinates( int theta ) const {
-    double x0, y0; boost::tie( x0, y0 ) = getCoordinates( theta - 1 );
-    double x1, y1; boost::tie( x1, y1 ) = getCoordinates( theta );
-    double x2, y2; boost::tie( x2, y2 ) = getCoordinates( theta + 1 );
-
-    double dx = x1 - x0;
-    double dy = y1 - y0;
-    double n = std::sqrt( dx * dx + dy * dy );
-
-    double nx = -m_lineWidth * dy / n / 2;
-    double ny = m_lineWidth * dx / n / 2;
-
-    return boost::make_tuple( x1 + nx, y1 + ny );
+    double x, y; boost::tie( x, y ) = getCoordinates( theta );
+    double nx, ny; boost::tie( nx, ny ) = getNormal( theta );
+    return boost::make_tuple( x + nx, y + ny );
 }
 
 boost::tuple< double, double > TurksHead::getInnerCoordinates( int theta ) const {
+    double x, y; boost::tie( x, y ) = getCoordinates( theta );
+    double nx, ny; boost::tie( nx, ny ) = getNormal( theta );
+    return boost::make_tuple( x - nx, y - ny );
+}
+
+boost::tuple< double, double > TurksHead::getNormal( int theta ) const {
     double x0, y0; boost::tie( x0, y0 ) = getCoordinates( theta - 1 );
-    double x1, y1; boost::tie( x1, y1 ) = getCoordinates( theta );
-    double x2, y2; boost::tie( x2, y2 ) = getCoordinates( theta + 1 );
+    double x1, y1; boost::tie( x1, y1 ) = getCoordinates( theta + 1 );
 
     double dx = x1 - x0;
     double dy = y1 - y0;
@@ -168,7 +164,7 @@ boost::tuple< double, double > TurksHead::getInnerCoordinates( int theta ) const
     double nx = -m_lineWidth * dy / n / 2;
     double ny = m_lineWidth * dx / n / 2;
 
-    return boost::make_tuple( x1 - nx, y1 - ny );
+    return boost::make_tuple( nx, ny );
 }
 
 boost::tuple< double, double > TurksHead::getCoordinates( int theta ) const {
