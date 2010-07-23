@@ -1,6 +1,9 @@
 #ifndef TurksHead_TurksHead_hpp
 #define TurksHead_TurksHead_hpp
 
+// Standard library
+#include <map>
+
 // Boost
 #include <boost/tuple/tuple.hpp>
 
@@ -26,14 +29,17 @@ private:
     static boost::tuple< double, double > convertRadialToCartesianCoordinates( double radius, double theta );
 
     double getAltitude( double theta ) const;
+    void computeKnownAltitudes();
 
     void setSourceHsv( double h, double s, double v ) const;
 
 private:
     int m_leads;
     int m_bights;
+private:
     int m_paths;
     double m_maxThetaOnPath;
+    std::map< double, int > m_knownAltitudes;
 private:
     double m_radius;
     double m_deltaRadius;
