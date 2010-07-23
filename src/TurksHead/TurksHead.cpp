@@ -66,8 +66,7 @@ void TurksHead::drawPath( int path ) const {
 
 void TurksHead::drawSegment( int theta ) const {
     pathSegment( theta - 1, theta + 1 );
-    double z = getAltitude( theta );
-    setSourceHsv( theta * 360. / m_maxThetaOnPath, 0.5, 0.5 + z / 2 );
+    setSourceHsv( theta * 360. / m_maxThetaOnPath, 0.5, 0.5 + getAltitude( theta ) / 2 );
     m_ctx->fill();
 }
 
