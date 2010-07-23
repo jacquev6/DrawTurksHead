@@ -32,6 +32,13 @@ private:
 
     double getAltitude( int theta ) const;
     void computeKnownAltitudes();
+    void computeCrossingThetas();
+
+    void redraw( int thetaLow, int thetaHight ) const;
+    void clip( int theta ) const;
+
+    void moveTo( const boost::tuple< double, double >& ) const;
+    void lineTo( const boost::tuple< double, double >& ) const;
 
     void setSourceHsv( double h, double s, double v ) const;
 
@@ -44,6 +51,7 @@ private:
     int m_paths;
     double m_maxThetaOnPath;
     std::map< int, int > m_knownAltitudes;
+    std::map< int, int > m_crossingThetas;
 private:
     double m_radius;
     double m_deltaRadius;

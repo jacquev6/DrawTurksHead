@@ -4,7 +4,6 @@
 // Standard library
 #include <cmath>
 #include <map>
-#include <iostream> /// @todo Remove
 #include <cassert>
 
 // Boost
@@ -27,14 +26,16 @@ TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRad
     m_deltaRadius( ( outerRadius - innerRadius - lineWidth ) / 2 ),
     m_lineWidth( lineWidth )
 {
+    computeCrossingThetas();
     computeKnownAltitudes();
 }
 
-const int TurksHead::s_stepsTheta = 20;
+const int TurksHead::s_stepsTheta = 100;
 
 void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
     m_ctx = context;
     m_ctx->save();
+    m_ctx->set_antialias( Cairo::ANTIALIAS_NONE );
 
     drawPaths();
 
@@ -50,24 +51,70 @@ void TurksHead::drawPaths() const {
 
 void TurksHead::drawPath( int path ) const {
     for( int theta = 0; theta <= m_maxThetaOnPath; ++theta ) {
-        double z = getAltitude( theta );
-
-        setSourceHsv( theta * 360. / m_maxThetaOnPath, 0.5, 0.5 + z / 2 );
         drawSegment( theta );
-        m_ctx->stroke();
+    }
+    typedef std::pair< int, int > Pii;
+    foreach( Pii p, m_crossingThetas ) {
+        assert( m_knownAltitudes.find( p.first ) != m_knownAltitudes.end() );
+        if( m_knownAltitudes.find( p.first )->second == -1 ) {
+            redraw( p.first, p.second );
+        } else {
+            redraw( p.second, p.first );
+        }
     }
 }
 
 void TurksHead::drawSegment( int theta ) const {
-    double x0, y0; boost::tie( x0, y0 ) = getOuterCoordinates( theta );
-    double x1, y1; boost::tie( x1, y1 ) = getInnerCoordinates( theta  );
+    moveTo( getOuterCoordinates( theta - 1 ) );
+    lineTo( getOuterCoordinates( theta ) );
+    lineTo( getOuterCoordinates( theta + 1 ) );
+    lineTo( getInnerCoordinates( theta + 1 ) );
+    lineTo( getInnerCoordinates( theta ) );
+    lineTo( getInnerCoordinates( theta - 1) );
+    double z = getAltitude( theta );
+    setSourceHsv( theta * 360. / m_maxThetaOnPath, 0.5, 0.5 + z / 2 );
+    m_ctx->fill();
+}
 
-    m_ctx->move_to( x0, y0 );
-    m_ctx->line_to( x1, y1 );
+void TurksHead::redraw( int thetaLow, int thetaHight ) const {
+    m_ctx->save();
+    clip( thetaLow );
+
+    std::map< int, int >::const_iterator it = m_knownAltitudes.find( thetaHight );
+    assert( it != m_knownAltitudes.begin() );
+    assert( it != m_knownAltitudes.end() );
+    assert( boost::next( it ) != m_knownAltitudes.end() );
+
+    int minTheta = boost::prior( it )->first + 1;
+    int maxTheta = boost::next( it )->first - 1;
+    for( int theta = minTheta; theta <= maxTheta; ++theta ) {
+        // Draw several times the same thing, to fight the antialiasing
+        //drawSegment( theta );
+        //drawSegment( theta );
+        drawSegment( theta );
+    }
+    m_ctx->restore();
+}
+
+void TurksHead::clip( int thetaLow ) const {
+    std::map< int, int >::const_iterator it = m_knownAltitudes.find( thetaLow );
+    assert( it != m_knownAltitudes.begin() );
+    assert( it != m_knownAltitudes.end() );
+    assert( boost::next( it ) != m_knownAltitudes.end() );
+
+    int minTheta = boost::prior( it )->first;
+    int maxTheta = boost::next( it )->first;
+    moveTo( getOuterCoordinates( minTheta ) );
+    for( int theta = minTheta + 1; theta <= maxTheta; ++theta ) {
+        lineTo( getOuterCoordinates( theta ) );
+    }
+    for( int theta = maxTheta; theta >= minTheta; --theta ) {
+        lineTo( getInnerCoordinates( theta ) );
+    }
+    m_ctx->clip();
 }
 
 double TurksHead::getAltitude( int theta ) const {
-    //std::cout << "getAltitude " << theta << std::endl;
     std::map< int, int >::const_iterator nextIt = m_knownAltitudes.lower_bound( theta );
     assert( nextIt != m_knownAltitudes.begin() );
     assert( nextIt != m_knownAltitudes.end() );
@@ -75,17 +122,26 @@ double TurksHead::getAltitude( int theta ) const {
     return prevIt->second + ( nextIt->second - prevIt->second ) * ( theta - prevIt->first ) / float( nextIt->first - prevIt->first );
 }
 
-void TurksHead::computeKnownAltitudes() {
-    int alt = -1;
-    for( int i = -1; i <= 2 * m_leads * m_bights + 1; ++i ) {
-        if( i % m_leads ) {
-            double angle = i * s_stepsTheta;
-            std::cout << angle << " ";
-            m_knownAltitudes[ angle ] = alt;
-            alt *= -1;
+void TurksHead::computeCrossingThetas() {
+    for( int a = 1; a < m_leads; ++a ) {
+        for( int b = std::ceil( float( a ) * m_bights / m_leads ); b <= ( 2 - float( a ) / m_leads ) * m_bights; ++b ) {
+            int theta1 = ( m_leads * b - a * m_bights ) * s_stepsTheta;
+            int theta2 = ( m_leads * b + a * m_bights ) * s_stepsTheta;
+            m_crossingThetas[ theta1 ] = theta2;
+            m_crossingThetas[ theta2 ] = theta1;
         }
     }
-    std::cout << std::endl;
+}
+
+void TurksHead::computeKnownAltitudes() {
+    m_knownAltitudes[ -s_stepsTheta ] = -1;
+    int alt = 1;
+    typedef std::pair< int, int > Pii;
+    foreach( Pii p, m_crossingThetas ) {
+        m_knownAltitudes[ p.first ] = alt;
+        alt *= -1;
+    }
+    m_knownAltitudes[ ( 2 * m_leads * m_bights + 1 ) * s_stepsTheta ] = alt;
 }
 
 boost::tuple< double, double > TurksHead::getOuterCoordinates( int theta ) const {
@@ -135,6 +191,14 @@ boost::tuple< double, double > TurksHead::convertRadialToCartesianCoordinates( d
 
 double TurksHead::angleFromTheta( int theta ) const {
     return M_PI * theta / m_bights / s_stepsTheta;
+}
+
+void TurksHead::moveTo( const boost::tuple< double, double >& p ) const {
+    m_ctx->move_to( p.get< 0 >(), p.get< 1 >() );
+}
+
+void TurksHead::lineTo( const boost::tuple< double, double >& p ) const {
+    m_ctx->line_to( p.get< 0 >(), p.get< 1 >() );
 }
 
 void TurksHead::setSourceHsv( double h, double s, double v ) const {
