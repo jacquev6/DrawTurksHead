@@ -47,6 +47,9 @@ private:
 
     double angleFromTheta( int theta ) const;
 
+    int getPreviousCheckPoint( std::map< int, int >::const_iterator ) const;
+    int getNextCheckPoint( std::map< int, int >::const_iterator ) const;
+
 private:
     int m_leads;
     int m_bights;

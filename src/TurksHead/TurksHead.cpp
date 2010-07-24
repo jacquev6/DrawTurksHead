@@ -79,15 +79,35 @@ void TurksHead::redraw( int thetaLow, int thetaHight ) const {
     assert( it != m_knownAltitudes.end() );
     assert( boost::next( it ) != m_knownAltitudes.end() );
 
-    int minTheta = boost::prior( it )->first + 1;
-    int maxTheta = boost::next( it )->first - 1;
+    int minTheta = getPreviousCheckPoint( it );
+    int maxTheta = getNextCheckPoint( it );
     for( int theta = minTheta; theta <= maxTheta; ++theta ) {
         // Draw several times the same thing, to fight the antialiasing
         //drawSegment( theta );
-        //drawSegment( theta );
+        drawSegment( theta );
         drawSegment( theta );
     }
     m_ctx->restore();
+}
+
+int TurksHead::getPreviousCheckPoint( std::map< int, int >::const_iterator it ) const {
+    if( m_leads < 3 ) {
+        return ( boost::prior( it )->first + it->first ) / 2;
+    } else if( m_bights < 3 ) {
+        return ( boost::prior( it )->first + it->first ) / 2; /// @todo Rework...
+    } else {
+        return boost::prior( it )->first + 1;
+    }
+}
+
+int TurksHead::getNextCheckPoint( std::map< int, int >::const_iterator it ) const {
+    if( m_leads < 3 ) {
+        return ( boost::next( it )->first + it->first ) / 2;
+    } else if( m_bights < 3 ) {
+        return ( boost::next( it )->first + it->first ) / 2; /// @todo Rework...
+    } else {
+        return boost::next( it )->first - 1;
+    }
 }
 
 void TurksHead::pathSegment( int minTheta, int maxTheta ) const {
@@ -107,7 +127,7 @@ void TurksHead::clip( int thetaLow ) const {
     assert( it != m_knownAltitudes.end() );
     assert( boost::next( it ) != m_knownAltitudes.end() );
 
-    pathSegment( boost::prior( it )->first, boost::next( it )->first );
+    pathSegment( getPreviousCheckPoint( it ), getNextCheckPoint( it ) );
     m_ctx->clip();
 }
 
