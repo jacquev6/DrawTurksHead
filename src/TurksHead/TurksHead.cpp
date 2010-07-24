@@ -131,14 +131,19 @@ void TurksHead::computeCrossingThetas() {
 }
 
 void TurksHead::computeKnownAltitudes() {
-    m_knownAltitudes[ -s_stepsTheta ] = -1;
-    int alt = 1;
-    typedef std::pair< int, int > Pii;
-    foreach( Pii p, m_crossingThetas ) {
-        m_knownAltitudes[ p.first ] = alt;
-        alt *= -1;
+    if( m_crossingThetas.empty() ) {
+        m_knownAltitudes[ -s_stepsTheta ] = 1;
+        m_knownAltitudes[ ( 2 * m_leads * m_bights + 1 ) * s_stepsTheta ] = 1;
+    } else {
+        m_knownAltitudes[ -s_stepsTheta ] = 1;
+        int alt = -1;
+        typedef std::pair< int, int > Pii;
+        foreach( Pii p, m_crossingThetas ) {
+            m_knownAltitudes[ p.first ] = alt;
+            alt *= -1;
+        }
+        m_knownAltitudes[ ( 2 * m_leads * m_bights + 1 ) * s_stepsTheta ] = alt;
     }
-    m_knownAltitudes[ ( 2 * m_leads * m_bights + 1 ) * s_stepsTheta ] = alt;
 }
 
 boost::tuple< double, double > TurksHead::getOuterCoordinates( int theta ) const {
