@@ -19,14 +19,14 @@ struct D : \
     boost::operators< D, T > \
 { \
     explicit D( T t_ ) : t( t_ ) {}\
-    T index() { return t; } \
+    T index() const { return t; } \
 \
     /*bool operator=( D );*/ \
     bool operator=( T ); \
 \
     void operator++() { ++t; }\
     void operator--() { --t; }\
-    D operator-(); \
+    D operator-() const; \
 \
     D operator+=( D d ) { t += d.t; return *this; } \
     D operator+=( T d ) { t += d;   return *this; } \
