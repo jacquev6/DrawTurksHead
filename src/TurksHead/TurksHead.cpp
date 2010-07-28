@@ -124,11 +124,10 @@ void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
     m_ctx->set_antialias( Cairo::ANTIALIAS_NONE );
 
     drawPaths();
-    //drawPath( 0 );
+    redrawIntersections();
 
-    /*// Debug drawings to be removed
-
-    m_ctx->set_source_rgb( 0, 0, 0 );
+    // Debug drawings to be removed
+    m_ctx->set_source_rgb( 1, 0, 0 );
     m_ctx->set_line_width( 6 );
     m_ctx->set_line_cap( Cairo::LINE_CAP_ROUND );
     foreach( Intersection intersection, m_intersections ) {
@@ -137,13 +136,12 @@ void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
     }
     m_ctx->stroke();
 
-    m_ctx->set_source_rgb( 1, 0, 0 );
-    m_ctx->set_font_size( 25 );
+    /*m_ctx->set_font_size( 15 );
     for( int k = 0; k != d; ++k ) {
         typedef std::pair< int, int > Pii;
         foreach( Pii p, m_knownAltitudes[ k ] ) {
             moveTo( getCoordinates( k, p.first ) );
-            m_ctx->rel_move_to( 0, 20 * k );
+            m_ctx->rel_move_to( 0, 12 * k );
             m_ctx->show_text(
                 boost::lexical_cast< std::string >( k ) + ": "
                 + boost::lexical_cast< std::string >( p.first / m_thetaSteps ) + ": "
@@ -163,18 +161,13 @@ void TurksHead::drawPaths() const {
 }
 
 void TurksHead::drawPath( int k ) const {
-    for( int theta = 0; theta <= m_maxThetaOnPath; ++theta ) {
+    drawSegments( k, 0, m_maxThetaOnPath );
+}
+
+void TurksHead::drawSegments( int k, int minTheta, int maxTheta ) const {
+    for( int theta = minTheta; theta <= maxTheta; ++theta ) {
         drawSegment( k, theta );
     }
-    /*typedef std::pair< int, int > Pii;
-    foreach( Pii p, m_crossingThetas ) {
-        assert( m_knownAltitudes.find( p.first ) != m_knownAltitudes.end() );
-        if( m_knownAltitudes.find( p.first )->second == -1 ) {
-            redraw( p.first, p.second );
-        } else {
-            redraw( p.second, p.first );
-        }
-    }*/
 }
 
 void TurksHead::drawSegment( int k, int theta ) const {
@@ -193,6 +186,24 @@ void TurksHead::pathSegment( int k, int minTheta, int maxTheta ) const {
         lineTo( getInnerCoordinates( k, theta ) );
     }
     m_ctx->close_path();
+}
+
+void TurksHead::redrawIntersections() const {
+    foreach( Intersection intersection, m_intersections ) {
+        redrawIntersection( intersection );
+    }
+}
+
+void TurksHead::redrawIntersection( const Intersection& intersection ) const {
+    if( getAltitude( intersection.m, intersection.thetaOnPathM ) > getAltitude( intersection.n, intersection.thetaOnPathN ) ) {
+        clip( intersection.n, intersection.thetaOnPathN );
+        redraw( intersection.m, intersection.thetaOnPathM );
+    /// @todo Understand why the next bloc is useless. Explain in the article.
+    /*} else {
+        clip( intersection.m, intersection.thetaOnPathM );
+        redraw( intersection.n, intersection.thetaOnPathN );*/
+    }
+    m_ctx->reset_clip();
 }
 
 boost::tuple< double, double > TurksHead::getOuterCoordinates( int k, int theta ) const {
@@ -269,77 +280,52 @@ void TurksHead::setSourceHsv( double h, double s, double v ) const {
     }
 }
 
-/*void TurksHead::redraw( int thetaLow, int thetaHight ) const {
-    m_ctx->save();
-    clip( thetaLow );
-
-    std::map< int, int >::const_iterator it = m_knownAltitudes.find( thetaHight );
-    assert( it != m_knownAltitudes.begin() );
-    assert( it != m_knownAltitudes.end() );
-    assert( boost::next( it ) != m_knownAltitudes.end() );
-
-    int minTheta = getPreviousCheckPoint( it );
-    int maxTheta = getNextCheckPoint( it );
-    for( int theta = minTheta; theta <= maxTheta; ++theta ) {
-        // Draw several times the same thing, to fight the antialiasing
-        //drawSegment( theta );
-        drawSegment( theta );
-        drawSegment( theta );
-    }
-    m_ctx->restore();
-}
-
-int TurksHead::getPreviousCheckPoint( std::map< int, int >::const_iterator it ) const {
-    if( q < 3 ) {
-        return ( boost::prior( it )->first + it->first ) / 2;
-    } else if( p < 3 ) {
-        return ( boost::prior( it )->first + it->first ) / 2; /// @todo Rework...
-    } else {
-        return boost::prior( it )->first + 1;
-    }
-}
-
-int TurksHead::getNextCheckPoint( std::map< int, int >::const_iterator it ) const {
-    if( q < 3 ) {
-        return ( boost::next( it )->first + it->first ) / 2;
-    } else if( p < 3 ) {
-        return ( boost::next( it )->first + it->first ) / 2; /// @todo Rework...
-    } else {
-        return boost::next( it )->first - 1;
-    }
-}
-
-void TurksHead::clip( int thetaLow ) const {
-    std::map< int, int >::const_iterator it = m_knownAltitudes.find( thetaLow );
-    assert( it != m_knownAltitudes.begin() );
-    assert( it != m_knownAltitudes.end() );
-    assert( boost::next( it ) != m_knownAltitudes.end() );
-
-    pathSegment( getPreviousCheckPoint( it ), getNextCheckPoint( it ) );
+void TurksHead::clip( int k, int theta ) const {
+    pathSegment( k, getPrevKnownAltitude( k, theta - 1 ).first, getNextKnownAltitude( k, theta + 1 ).first );
+    /*m_ctx->set_source_rgba( 0, 1, 0, 0.5 );
+    m_ctx->fill_preserve();*/
     m_ctx->clip();
-}*/
+}
+
+void TurksHead::redraw( int k, int theta ) const {
+    drawSegments( k, getPrevKnownAltitude( k, theta - 1 ).first, getNextKnownAltitude( k, theta + 1 ).first );
+}
+
+std::pair< int, int > TurksHead::getPrevKnownAltitude( int k, int theta ) const {
+    std::map< int, int >::const_iterator nextIt = m_knownAltitudes[ k ].lower_bound( theta );
+
+    if( nextIt == m_knownAltitudes[ k ].begin() ) {
+        std::pair< int, int > prev = *m_knownAltitudes[ k ].rbegin();
+        prev.first -= m_maxThetaOnPath;
+        return prev;
+    } else if( nextIt == m_knownAltitudes[ k ].end() ) {
+        return *m_knownAltitudes[ k ].rbegin();
+    } else {
+        return *boost::prior( nextIt );
+    }
+}
+
+std::pair< int, int > TurksHead::getNextKnownAltitude( int k, int theta ) const {
+    std::map< int, int >::const_iterator nextIt = m_knownAltitudes[ k ].lower_bound( theta );
+
+    if( nextIt == m_knownAltitudes[ k ].begin() ) {
+        return *nextIt;
+    } else if( nextIt == m_knownAltitudes[ k ].end() ) {
+        std::pair< int, int > next = *m_knownAltitudes[ k ].begin();
+        next.first += m_maxThetaOnPath;
+        return next;
+    } else {
+        return *nextIt;
+    }
+}
 
 double TurksHead::getAltitude( int k, int theta ) const {
     if( m_knownAltitudes[ k ].empty() ) {
         return 1;
     }
 
-    std::map< int, int >::const_iterator nextIt = m_knownAltitudes[ k ].lower_bound( theta );
-
-    std::pair< int, int > prev, next;
-
-    if( nextIt == m_knownAltitudes[ k ].begin() ) {
-        prev = *m_knownAltitudes[ k ].rbegin();
-        prev.first -= m_maxThetaOnPath;
-        next = *nextIt;
-    } else if( nextIt == m_knownAltitudes[ k ].end() ) {
-        prev = *m_knownAltitudes[ k ].rbegin();
-        next = *m_knownAltitudes[ k ].begin();
-        next.first += m_maxThetaOnPath;
-    } else {
-        prev = *boost::prior( nextIt );
-        next = *nextIt;
-    }
+    std::pair< int, int > prev = getPrevKnownAltitude( k, theta );
+    std::pair< int, int > next = getNextKnownAltitude( k, theta );
 
     return prev.second + ( next.second - prev.second ) * ( theta - prev.first ) / float( next.first - prev.first );
 }

@@ -22,9 +22,20 @@ public:
     void draw( Cairo::RefPtr< Cairo::Context > ) const;
 
 private:
+    struct Intersection {
+        int m;
+        int thetaOnPathM;
+        int n;
+        int thetaOnPathN;
+    };
+
+private:
     void drawPaths() const;
     void drawPath( int k ) const;
+    void drawSegments( int k, int minTheta, int maxTheta ) const;
     void drawSegment( int k, int theta ) const;
+    void redrawIntersections() const;
+    void redrawIntersection( const Intersection& ) const;
 
     boost::tuple< double, double > getCoordinates( int k, int theta ) const;
     boost::tuple< double, double > getInnerCoordinates( int k, int theta ) const;
@@ -43,8 +54,8 @@ private:
     void computePathPairIntersections( int m, int n );
     void addIntersection( int m, int n, int a, int b );
 
-    void redraw( int thetaLow, int thetaHight ) const;
-    void clip( int theta ) const;
+    void clip( int k, int theta ) const;
+    void redraw( int k, int theta ) const;
 
     void pathSegment( int k, int minTheta, int maxTheta ) const;
 
@@ -55,8 +66,8 @@ private:
 
     double angleFromTheta( int theta ) const;
 
-    int getPreviousCheckPoint( std::map< int, int >::const_iterator ) const;
-    int getNextCheckPoint( std::map< int, int >::const_iterator ) const;
+    std::pair< int, int > getPrevKnownAltitude( int k, int theta ) const;
+    std::pair< int, int > getNextKnownAltitude( int k, int theta ) const;
 
 private:
     int p;
@@ -66,12 +77,6 @@ private:
     int m_thetaSteps;
     int m_maxThetaOnPath;
     std::vector< std::map< int, int > > m_knownAltitudes;
-    struct Intersection {
-        int m;
-        int thetaOnPathM;
-        int n;
-        int thetaOnPathN;
-    };
     std::list< Intersection > m_intersections;
 private:
     double m_radius;
