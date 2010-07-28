@@ -172,7 +172,7 @@ void TurksHead::drawSegments( int k, int minTheta, int maxTheta ) const {
 
 void TurksHead::drawSegment( int k, int theta ) const {
     pathSegment( k, theta, theta + 1 );
-    //setSourceHsv( theta * 360. / m_maxThetaOnPath, 0.5, 0.5 + getAltitude( theta ) / 2 );
+    //setSourceHsv( theta * 360. / m_maxThetaOnPath, 0.5, 0.5 + getAltitude( k, theta ) / 2 );
     setSourceHsv( k * 360. / d, 0.5, 0.5 + getAltitude( k, theta ) / 2 );
     m_ctx->fill();
 }
@@ -281,14 +281,30 @@ void TurksHead::setSourceHsv( double h, double s, double v ) const {
 }
 
 void TurksHead::clip( int k, int theta ) const {
-    pathSegment( k, getPrevKnownAltitude( k, theta - 1 ).first, getNextKnownAltitude( k, theta + 1 ).first );
-    /*m_ctx->set_source_rgba( 0, 1, 0, 0.5 );
+    pathSegment( k, getPrevRedrawLimit( k, theta ), getNextRedrawLimit( k, theta ) );
+    /*m_ctx->set_source_rgba( 0, 0, 1, 0.5 );
     m_ctx->fill_preserve();*/
     m_ctx->clip();
 }
 
 void TurksHead::redraw( int k, int theta ) const {
-    drawSegments( k, getPrevKnownAltitude( k, theta - 1 ).first, getNextKnownAltitude( k, theta + 1 ).first );
+    drawSegments( k, getPrevRedrawLimit( k, theta ), getNextRedrawLimit( k, theta ) );
+}
+
+int TurksHead::getPrevRedrawLimit( int k, int theta ) const {
+    if( p < 3 || q < 3 ) {
+        return ( theta + getPrevKnownAltitude( k, theta - 1 ).first ) / 2;
+    } else {
+        return getPrevKnownAltitude( k, theta - 1 ).first;
+    }
+}
+
+int TurksHead::getNextRedrawLimit( int k, int theta ) const {
+    if( p < 3 || q < 3 ) {
+        return ( theta + getNextKnownAltitude( k, theta + 1 ).first ) / 2;
+    } else {
+        return getNextKnownAltitude( k, theta + 1 ).first;
+    }
 }
 
 std::pair< int, double > TurksHead::getPrevKnownAltitude( int k, int theta ) const {

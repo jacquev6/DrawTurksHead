@@ -69,6 +69,9 @@ private:
     std::pair< int, double > getPrevKnownAltitude( int k, int theta ) const;
     std::pair< int, double > getNextKnownAltitude( int k, int theta ) const;
 
+    int getPrevRedrawLimit( int k, int theta ) const;
+    int getNextRedrawLimit( int k, int theta ) const;
+
 private:
     int p;
     int q;
