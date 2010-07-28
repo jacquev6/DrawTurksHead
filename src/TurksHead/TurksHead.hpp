@@ -35,7 +35,7 @@ private:
 
     int phi( int k ) const;
 
-    double getAltitude( int theta ) const;
+    double getAltitude( int k, int theta ) const;
     void computeKnownAltitudes();
 
     void computeIntersections();
@@ -65,7 +65,7 @@ private:
     int d;
     int m_thetaSteps;
     int m_maxThetaOnPath;
-    std::map< int, int > m_knownAltitudes;
+    std::vector< std::map< int, int > > m_knownAltitudes;
     struct Intersection {
         int m;
         int thetaOnPathM;

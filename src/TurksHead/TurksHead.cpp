@@ -13,6 +13,7 @@
 #include <boost/lambda/lambda.hpp>
 #include <boost/foreach.hpp>
 #include <boost/utility.hpp>
+#include <boost/lexical_cast.hpp> /// @todo Remove
 
 #define foreach BOOST_FOREACH
 
@@ -22,7 +23,7 @@ TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRad
     p( bights ),
     q( leads ),
     d( boost::math::gcd( p, q ) ),
-    m_thetaSteps( 100 ),
+    m_thetaSteps( 15 ),
     m_maxThetaOnPath( 2 * q * p * m_thetaSteps / d ),
     m_radius( ( innerRadius + outerRadius ) / 2 ),
     m_deltaRadius( ( outerRadius - innerRadius - lineWidth ) / 2 ),
@@ -44,8 +45,8 @@ void TurksHead::computeIntersections() {
 
 std::list< std::pair< int, int > > TurksHead::allPathPairs() const {
     std::list< std::pair< int, int > > allPairs;
-    for( int m = 0; m < d; ++m ) {
-        for( int n = m; n < d; ++n ) {
+    for( int m = 0; m != d; ++m ) {
+        for( int n = m; n != d; ++n ) {
             allPairs.push_back( std::make_pair( m, n ) );
         }
     }
@@ -94,19 +95,27 @@ void TurksHead::addIntersection( int m, int n, int a, int b ) {
 }
 
 void TurksHead::computeKnownAltitudes() {
-/*    if( m_crossingThetas.empty() ) {
-        m_knownAltitudes[ -m_thetaSteps ] = 1;
-        m_knownAltitudes[ ( 2 * q * p + 1 ) * m_thetaSteps ] = 1;
-    } else {
-        m_knownAltitudes[ -m_thetaSteps ] = 1;
-        int alt = -1;
-        typedef std::pair< int, int > Pii;
-        foreach( Pii p, m_crossingThetas ) {
-            m_knownAltitudes[ p.first ] = alt;
-            alt *= -1;
+    std::vector< std::set< int > > knownThetas;
+    knownThetas.resize( d );
+    m_knownAltitudes.resize( d );
+    foreach( Intersection intersection, m_intersections ) {
+        knownThetas[ intersection.m ].insert( intersection.thetaOnPathM );
+        knownThetas[ intersection.n ].insert( intersection.thetaOnPathN );
+    }
+    int alt = 1;
+    foreach( int theta, knownThetas[ 0 ] ) {
+        m_knownAltitudes[ 0 ][ theta ] = alt;
+        alt *= -1;
+    }
+    /// @todo Remove this loop, by making m_knownAltitudes a std::map< int, int > in stead of a std::vector< std::map< int, int > >
+    /// And perform the rotation in getAltitude
+    for( int k = 1; k != d; ++k ) {
+        foreach( int theta, knownThetas[ k ] ) {
+            int rotatedTheta = ( theta - phi( k ) + m_maxThetaOnPath ) % m_maxThetaOnPath;
+            assert( m_knownAltitudes[ 0 ].find( rotatedTheta ) != m_knownAltitudes[ 0 ].end() );
+            m_knownAltitudes[ k ][ theta ] = m_knownAltitudes[ 0 ][ rotatedTheta ];
         }
-        m_knownAltitudes[ ( 2 * q * p + 1 ) * m_thetaSteps ] = alt;
-    }*/
+    }
 }
 
 void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
@@ -115,6 +124,9 @@ void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
     m_ctx->set_antialias( Cairo::ANTIALIAS_NONE );
 
     drawPaths();
+    //drawPath( 0 );
+
+    /*// Debug drawings to be removed
 
     m_ctx->set_source_rgb( 0, 0, 0 );
     m_ctx->set_line_width( 6 );
@@ -125,18 +137,34 @@ void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
     }
     m_ctx->stroke();
 
+    m_ctx->set_source_rgb( 1, 0, 0 );
+    m_ctx->set_font_size( 25 );
+    for( int k = 0; k != d; ++k ) {
+        typedef std::pair< int, int > Pii;
+        foreach( Pii p, m_knownAltitudes[ k ] ) {
+            moveTo( getCoordinates( k, p.first ) );
+            m_ctx->rel_move_to( 0, 20 * k );
+            m_ctx->show_text(
+                boost::lexical_cast< std::string >( k ) + ": "
+                + boost::lexical_cast< std::string >( p.first / m_thetaSteps ) + ": "
+                + boost::lexical_cast< std::string >( p.second )
+            );
+        }
+    }
+    // End of debug drawings/**/
+
     m_ctx->restore();
 }
 
 void TurksHead::drawPaths() const {
-    for( int path = 0; path < d; ++path ) {
-        drawPath( path );
+    for( int k = 0; k < d; ++k ) {
+        drawPath( k );
     }
 }
 
-void TurksHead::drawPath( int path ) const {
+void TurksHead::drawPath( int k ) const {
     for( int theta = 0; theta <= m_maxThetaOnPath; ++theta ) {
-        drawSegment( path, theta );
+        drawSegment( k, theta );
     }
     /*typedef std::pair< int, int > Pii;
     foreach( Pii p, m_crossingThetas ) {
@@ -149,39 +177,39 @@ void TurksHead::drawPath( int path ) const {
     }*/
 }
 
-void TurksHead::drawSegment( int path, int theta ) const {
-    pathSegment( path, theta - 1, theta + 1 );
+void TurksHead::drawSegment( int k, int theta ) const {
+    pathSegment( k, theta, theta + 1 );
     //setSourceHsv( theta * 360. / m_maxThetaOnPath, 0.5, 0.5 + getAltitude( theta ) / 2 );
-    setSourceHsv( path * 360. / d, 0.5, 0.8 );
+    setSourceHsv( k * 360. / d, 0.5, 0.5 + getAltitude( k, theta ) / 2 );
     m_ctx->fill();
 }
 
-void TurksHead::pathSegment( int path, int minTheta, int maxTheta ) const {
-    moveTo( getOuterCoordinates( path, minTheta ) );
+void TurksHead::pathSegment( int k, int minTheta, int maxTheta ) const {
+    moveTo( getOuterCoordinates( k, minTheta ) );
     for( int theta = minTheta + 1; theta <= maxTheta; ++theta ) {
-        lineTo( getOuterCoordinates( path, theta ) );
+        lineTo( getOuterCoordinates( k, theta ) );
     }
     for( int theta = maxTheta; theta >= minTheta; --theta ) {
-        lineTo( getInnerCoordinates( path, theta ) );
+        lineTo( getInnerCoordinates( k, theta ) );
     }
     m_ctx->close_path();
 }
 
-boost::tuple< double, double > TurksHead::getOuterCoordinates( int path, int theta ) const {
-    double x, y; boost::tie( x, y ) = getCoordinates( path, theta );
-    double nx, ny; boost::tie( nx, ny ) = getNormal( path, theta );
+boost::tuple< double, double > TurksHead::getOuterCoordinates( int k, int theta ) const {
+    double x, y; boost::tie( x, y ) = getCoordinates( k, theta );
+    double nx, ny; boost::tie( nx, ny ) = getNormal( k, theta );
     return boost::make_tuple( x + nx, y + ny );
 }
 
-boost::tuple< double, double > TurksHead::getInnerCoordinates( int path, int theta ) const {
-    double x, y; boost::tie( x, y ) = getCoordinates( path, theta );
-    double nx, ny; boost::tie( nx, ny ) = getNormal( path, theta );
+boost::tuple< double, double > TurksHead::getInnerCoordinates( int k, int theta ) const {
+    double x, y; boost::tie( x, y ) = getCoordinates( k, theta );
+    double nx, ny; boost::tie( nx, ny ) = getNormal( k, theta );
     return boost::make_tuple( x - nx, y - ny );
 }
 
-boost::tuple< double, double > TurksHead::getNormal( int path, int theta ) const {
-    double x0, y0; boost::tie( x0, y0 ) = getCoordinates( path, theta - 1 );
-    double x1, y1; boost::tie( x1, y1 ) = getCoordinates( path, theta + 1 );
+boost::tuple< double, double > TurksHead::getNormal( int k, int theta ) const {
+    double x0, y0; boost::tie( x0, y0 ) = getCoordinates( k, theta - 1 );
+    double x1, y1; boost::tie( x1, y1 ) = getCoordinates( k, theta + 1 );
 
     double dx = x1 - x0;
     double dy = y1 - y0;
@@ -193,20 +221,20 @@ boost::tuple< double, double > TurksHead::getNormal( int path, int theta ) const
     return boost::make_tuple( nx, ny );
 }
 
-boost::tuple< double, double > TurksHead::getCoordinates( int path, int theta ) const {
-    return convertRadialToCartesianCoordinates( getRadius( path, theta ), theta );
+boost::tuple< double, double > TurksHead::getCoordinates( int k, int theta ) const {
+    return convertRadialToCartesianCoordinates( getRadius( k, theta ), theta );
 }
 
-double TurksHead::getRadius( int path, int theta ) const {
-    return m_radius + m_deltaRadius * cos( p * angleFromTheta( theta - phi( path ) ) / q );
+double TurksHead::getRadius( int k, int theta ) const {
+    return m_radius + m_deltaRadius * cos( p * angleFromTheta( theta - phi( k ) ) / q );
 }
 
 double TurksHead::angleFromTheta( int theta ) const {
     return M_PI * theta / p / m_thetaSteps;
 }
 
-int TurksHead::phi( int path ) const {
-    return 2 * path * m_thetaSteps;
+int TurksHead::phi( int k ) const {
+    return 2 * k * m_thetaSteps;
 }
 
 boost::tuple< double, double > TurksHead::convertRadialToCartesianCoordinates( double radius, int theta ) const {
@@ -291,12 +319,29 @@ void TurksHead::clip( int thetaLow ) const {
     m_ctx->clip();
 }*/
 
-double TurksHead::getAltitude( int theta ) const {
-    std::map< int, int >::const_iterator nextIt = m_knownAltitudes.lower_bound( theta );
-    assert( nextIt != m_knownAltitudes.begin() );
-    assert( nextIt != m_knownAltitudes.end() );
-    std::map< int, int >::const_iterator prevIt = boost::prior( nextIt );
-    return prevIt->second + ( nextIt->second - prevIt->second ) * ( theta - prevIt->first ) / float( nextIt->first - prevIt->first );
+double TurksHead::getAltitude( int k, int theta ) const {
+    if( m_knownAltitudes[ k ].empty() ) {
+        return 1;
+    }
+
+    std::map< int, int >::const_iterator nextIt = m_knownAltitudes[ k ].lower_bound( theta );
+
+    std::pair< int, int > prev, next;
+
+    if( nextIt == m_knownAltitudes[ k ].begin() ) {
+        prev = *m_knownAltitudes[ k ].rbegin();
+        prev.first -= m_maxThetaOnPath;
+        next = *nextIt;
+    } else if( nextIt == m_knownAltitudes[ k ].end() ) {
+        prev = *m_knownAltitudes[ k ].rbegin();
+        next = *m_knownAltitudes[ k ].begin();
+        next.first += m_maxThetaOnPath;
+    } else {
+        prev = *boost::prior( nextIt );
+        next = *nextIt;
+    }
+
+    return prev.second + ( next.second - prev.second ) * ( theta - prev.first ) / float( next.first - prev.first );
 }
 
 } // Namespace
