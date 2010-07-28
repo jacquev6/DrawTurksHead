@@ -18,11 +18,11 @@
 namespace TurksHead {
 
 TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRadius, double lineWidth ) :
-    m_leads( leads ),
-    m_bights( bights ),
-    m_paths( boost::math::gcd( m_bights, m_leads ) ),
+    p( bights ),
+    q( leads ),
+    d( boost::math::gcd( p, q ) ),
     m_thetaSteps( 100 ),
-    m_maxThetaOnPath( 2 * m_leads * m_bights * m_thetaSteps / m_paths ),
+    m_maxThetaOnPath( 2 * q * p * m_thetaSteps / d ),
     m_radius( ( innerRadius + outerRadius ) / 2 ),
     m_deltaRadius( ( outerRadius - innerRadius - lineWidth ) / 2 ),
     m_lineWidth( lineWidth )
@@ -32,10 +32,10 @@ TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRad
 }
 
 void TurksHead::computeCrossingThetas() {
-    for( int a = 1; a < m_leads; ++a ) {
-        for( int b = std::ceil( float( a ) * m_bights / m_leads ); b <= ( 2 - float( a ) / m_leads ) * m_bights; ++b ) {
-            int theta1 = ( m_leads * b - a * m_bights ) * m_thetaSteps;
-            int theta2 = ( m_leads * b + a * m_bights ) * m_thetaSteps;
+    for( int a = 1; a < q; ++a ) {
+        for( int b = std::ceil( float( a ) * p / q ); b <= ( 2 - float( a ) / q ) * p; ++b ) {
+            int theta1 = ( q * b - a * p ) * m_thetaSteps;
+            int theta2 = ( q * b + a * p ) * m_thetaSteps;
             m_crossingThetas[ theta1 ] = theta2;
             m_crossingThetas[ theta2 ] = theta1;
         }
@@ -45,7 +45,7 @@ void TurksHead::computeCrossingThetas() {
 void TurksHead::computeKnownAltitudes() {
     if( m_crossingThetas.empty() ) {
         m_knownAltitudes[ -m_thetaSteps ] = 1;
-        m_knownAltitudes[ ( 2 * m_leads * m_bights + 1 ) * m_thetaSteps ] = 1;
+        m_knownAltitudes[ ( 2 * q * p + 1 ) * m_thetaSteps ] = 1;
     } else {
         m_knownAltitudes[ -m_thetaSteps ] = 1;
         int alt = -1;
@@ -54,7 +54,7 @@ void TurksHead::computeKnownAltitudes() {
             m_knownAltitudes[ p.first ] = alt;
             alt *= -1;
         }
-        m_knownAltitudes[ ( 2 * m_leads * m_bights + 1 ) * m_thetaSteps ] = alt;
+        m_knownAltitudes[ ( 2 * q * p + 1 ) * m_thetaSteps ] = alt;
     }
 }
 
@@ -69,7 +69,7 @@ void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
 }
 
 void TurksHead::drawPaths() const {
-    for( int path = 0; path < m_paths; ++path ) {
+    for( int path = 0; path < d; ++path ) {
         drawPath( path );
     }
 }
@@ -92,7 +92,7 @@ void TurksHead::drawPath( int path ) const {
 void TurksHead::drawSegment( int path, int theta ) const {
     pathSegment( path, theta - 1, theta + 1 );
     //setSourceHsv( theta * 360. / m_maxThetaOnPath, 0.5, 0.5 + getAltitude( theta ) / 2 );
-    setSourceHsv( path * 360. / m_paths, 0.5, 0.8 );
+    setSourceHsv( path * 360. / d, 0.5, 0.8 );
     m_ctx->fill();
 }
 
@@ -138,11 +138,11 @@ boost::tuple< double, double > TurksHead::getCoordinates( int path, int theta ) 
 }
 
 double TurksHead::getRadius( int path, int theta ) const {
-    return m_radius + m_deltaRadius * cos( m_bights * angleFromTheta( theta + phi( path ) ) / m_leads );
+    return m_radius + m_deltaRadius * cos( p * angleFromTheta( theta + phi( path ) ) / q );
 }
 
 double TurksHead::angleFromTheta( int theta ) const {
-    return M_PI * theta / m_bights / m_thetaSteps;
+    return M_PI * theta / p / m_thetaSteps;
 }
 
 int TurksHead::phi( int path ) const {
@@ -202,9 +202,9 @@ void TurksHead::setSourceHsv( double h, double s, double v ) const {
 }
 
 int TurksHead::getPreviousCheckPoint( std::map< int, int >::const_iterator it ) const {
-    if( m_leads < 3 ) {
+    if( q < 3 ) {
         return ( boost::prior( it )->first + it->first ) / 2;
-    } else if( m_bights < 3 ) {
+    } else if( p < 3 ) {
         return ( boost::prior( it )->first + it->first ) / 2; /// @todo Rework...
     } else {
         return boost::prior( it )->first + 1;
@@ -212,9 +212,9 @@ int TurksHead::getPreviousCheckPoint( std::map< int, int >::const_iterator it ) 
 }
 
 int TurksHead::getNextCheckPoint( std::map< int, int >::const_iterator it ) const {
-    if( m_leads < 3 ) {
+    if( q < 3 ) {
         return ( boost::next( it )->first + it->first ) / 2;
-    } else if( m_bights < 3 ) {
+    } else if( p < 3 ) {
         return ( boost::next( it )->first + it->first ) / 2; /// @todo Rework...
     } else {
         return boost::next( it )->first - 1;

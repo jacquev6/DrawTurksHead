@@ -21,17 +21,17 @@ public:
 
 private:
     void drawPaths() const;
-    void drawPath( int path ) const;
-    void drawSegment( int path, int theta ) const;
+    void drawPath( int k ) const;
+    void drawSegment( int k, int theta ) const;
 
-    boost::tuple< double, double > getCoordinates( int path, int theta ) const;
-    boost::tuple< double, double > getInnerCoordinates( int path, int theta ) const;
-    boost::tuple< double, double > getOuterCoordinates( int path, int theta ) const;
-    boost::tuple< double, double > getNormal( int path, int theta ) const;
-    double getRadius( int path, int theta ) const;
+    boost::tuple< double, double > getCoordinates( int k, int theta ) const;
+    boost::tuple< double, double > getInnerCoordinates( int k, int theta ) const;
+    boost::tuple< double, double > getOuterCoordinates( int k, int theta ) const;
+    boost::tuple< double, double > getNormal( int k, int theta ) const;
+    double getRadius( int k, int theta ) const;
     boost::tuple< double, double > convertRadialToCartesianCoordinates( double radius, int theta ) const;
 
-    int phi( int path ) const;
+    int phi( int k ) const;
 
     double getAltitude( int theta ) const;
     void computeKnownAltitudes();
@@ -40,7 +40,7 @@ private:
     void redraw( int thetaLow, int thetaHight ) const;
     void clip( int theta ) const;
 
-    void pathSegment( int path, int minTheta, int maxTheta ) const;
+    void pathSegment( int k, int minTheta, int maxTheta ) const;
 
     void moveTo( const boost::tuple< double, double >& ) const;
     void lineTo( const boost::tuple< double, double >& ) const;
@@ -53,10 +53,10 @@ private:
     int getNextCheckPoint( std::map< int, int >::const_iterator ) const;
 
 private:
-    int m_leads;
-    int m_bights;
+    int p;
+    int q;
 private:
-    int m_paths;
+    int d;
     int m_thetaSteps;
     int m_maxThetaOnPath;
     std::map< int, int > m_knownAltitudes;
