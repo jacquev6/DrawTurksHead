@@ -20,7 +20,6 @@ for leads in range( 1, width + 1 ):
     for bights in range( 1, height + 1 ):
         ctx.save()
         ctx.translate( size * bights, size * leads )
-        print "Creating TurksHead( leads = %d, bights = %d )" % ( leads, bights )
         t = turkshead.TurksHead( leads, bights, size / 8. * 0.9, size / 2. * 0.9, size / 15. )
         t.draw( ctx )
         ctx.restore()

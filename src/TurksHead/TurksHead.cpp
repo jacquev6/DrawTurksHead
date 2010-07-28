@@ -5,7 +5,6 @@
 #include <cmath>
 #include <map>
 #include <cassert>
-#include <iostream> /// @todo Remove
 
 // Boost
 #include <boost/math/common_factor.hpp>
@@ -13,7 +12,6 @@
 #include <boost/lambda/lambda.hpp>
 #include <boost/foreach.hpp>
 #include <boost/utility.hpp>
-#include <boost/lexical_cast.hpp> /// @todo Remove
 
 #define foreach BOOST_FOREACH
 
@@ -85,12 +83,6 @@ void TurksHead::addIntersection( int m, int n, int a, int b ) {
     intersection.thetaOnPathN = ( a * p + b * q + m + n ) * m_thetaSteps;
     intersection.thetaOnPathM = intersection.thetaOnPathN - 2 * a * p * m_thetaSteps;
 
-    /*std::cout << "Intersection between paths " << m << " and " << n << ", "
-        "with a == " << a << " and b == " << b << ": "
-        "theta_1 == " << angleFromTheta( intersection.thetaOnPathN ) / M_PI << ", "
-        "theta_2 == " << angleFromTheta( intersection.thetaOnPathM ) / M_PI << ", "
-        << std::endl;*/
-
     m_intersections.push_back( intersection );
 }
 
@@ -125,31 +117,6 @@ void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
 
     drawPaths();
     redrawIntersections();
-
-    // Debug drawings to be removed
-    m_ctx->set_source_rgb( 1, 0, 0 );
-    m_ctx->set_line_width( 6 );
-    m_ctx->set_line_cap( Cairo::LINE_CAP_ROUND );
-    foreach( Intersection intersection, m_intersections ) {
-        moveTo( getCoordinates( intersection.m, intersection.thetaOnPathM ) );
-        lineTo( getCoordinates( intersection.n, intersection.thetaOnPathN ) );
-    }
-    m_ctx->stroke();
-
-    /*m_ctx->set_font_size( 15 );
-    for( int k = 0; k != d; ++k ) {
-        typedef std::pair< int, int > Pii;
-        foreach( Pii p, m_knownAltitudes[ k ] ) {
-            moveTo( getCoordinates( k, p.first ) );
-            m_ctx->rel_move_to( 0, 12 * k );
-            m_ctx->show_text(
-                boost::lexical_cast< std::string >( k ) + ": "
-                + boost::lexical_cast< std::string >( p.first / m_thetaSteps ) + ": "
-                + boost::lexical_cast< std::string >( p.second )
-            );
-        }
-    }
-    // End of debug drawings/**/
 
     m_ctx->restore();
 }
@@ -198,7 +165,7 @@ void TurksHead::redrawIntersection( const Intersection& intersection ) const {
     if( getAltitude( intersection.m, intersection.thetaOnPathM ) > getAltitude( intersection.n, intersection.thetaOnPathN ) ) {
         clip( intersection.n, intersection.thetaOnPathN );
         redraw( intersection.m, intersection.thetaOnPathM );
-    /// @todo Understand why the next bloc is useless. Explain in the article.
+    /// @todo Understand why the next bloc is useless. Explain in the documentation article.
     /*} else {
         clip( intersection.m, intersection.thetaOnPathM );
         redraw( intersection.n, intersection.thetaOnPathN );*/
@@ -282,8 +249,6 @@ void TurksHead::setSourceHsv( double h, double s, double v ) const {
 
 void TurksHead::clip( int k, int theta ) const {
     pathSegment( k, getPrevRedrawLimit( k, theta ), getNextRedrawLimit( k, theta ) );
-    /*m_ctx->set_source_rgba( 0, 0, 1, 0.5 );
-    m_ctx->fill_preserve();*/
     m_ctx->clip();
 }
 
