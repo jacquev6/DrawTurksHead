@@ -111,35 +111,42 @@ void TurksHead::computeKnownAltitudes() {
 }
 
 void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
+    setupDrawing( context );
+    drawAllPaths();
+    redrawAllIntersections();
+    teardownDrawing();
+}
+
+void TurksHead::setupDrawing( Cairo::RefPtr< Cairo::Context > context ) const {
     m_ctx = context;
     m_ctx->save();
     m_ctx->set_antialias( Cairo::ANTIALIAS_NONE );
-
-    drawPaths();
-    redrawIntersections();
-
-    m_ctx->restore();
 }
 
-void TurksHead::drawPaths() const {
+void TurksHead::teardownDrawing() const {
+    m_ctx->restore();
+    m_ctx.clear();
+}
+
+void TurksHead::drawAllPaths() const {
     for( int k = 0; k < d; ++k ) {
         drawPath( k );
     }
 }
 
 void TurksHead::drawPath( int k ) const {
-    drawSegments( k, 0, m_maxThetaOnPath );
+    drawSegment( k, 0, m_maxThetaOnPath );
 }
 
-void TurksHead::drawSegments( int k, int minTheta, int maxTheta ) const {
+void TurksHead::drawSegment( int k, int minTheta, int maxTheta ) const {
     for( int theta = minTheta; theta <= maxTheta; ++theta ) {
-        drawSegment( k, theta );
+        drawStep( k, theta );
     }
 }
 
-void TurksHead::drawSegment( int k, int theta ) const {
+void TurksHead::drawStep( int k, int theta ) const {
     pathSegment( k, theta, theta + 1 );
-    //setSourceHsv( theta * 360. / m_maxThetaOnPath, 0.5, 0.5 + getAltitude( k, theta ) / 2 );
+    /// @todo Use a callback function given by the user to choose the color. Even better, this function could draw a portion of rope.
     setSourceHsv( k * 360. / d, 0.5, 0.5 + getAltitude( k, theta ) / 2 );
     m_ctx->fill();
 }
@@ -155,7 +162,7 @@ void TurksHead::pathSegment( int k, int minTheta, int maxTheta ) const {
     m_ctx->close_path();
 }
 
-void TurksHead::redrawIntersections() const {
+void TurksHead::redrawAllIntersections() const {
     foreach( Intersection intersection, m_intersections ) {
         redrawIntersection( intersection );
     }
@@ -163,12 +170,12 @@ void TurksHead::redrawIntersections() const {
 
 void TurksHead::redrawIntersection( const Intersection& intersection ) const {
     if( getAltitude( intersection.m, intersection.thetaOnPathM ) > getAltitude( intersection.n, intersection.thetaOnPathN ) ) {
-        clip( intersection.n, intersection.thetaOnPathN );
-        redraw( intersection.m, intersection.thetaOnPathM );
+        clipRegion( intersection.n, intersection.thetaOnPathN );
+        redrawRegion( intersection.m, intersection.thetaOnPathM );
     /// @todo Understand why the next bloc is useless. Explain in the documentation article.
     /*} else {
-        clip( intersection.m, intersection.thetaOnPathM );
-        redraw( intersection.n, intersection.thetaOnPathN );*/
+        clipRegion( intersection.m, intersection.thetaOnPathM );
+        redrawRegion( intersection.n, intersection.thetaOnPathN );*/
     }
     m_ctx->reset_clip();
 }
@@ -247,13 +254,17 @@ void TurksHead::setSourceHsv( double h, double s, double v ) const {
     }
 }
 
-void TurksHead::clip( int k, int theta ) const {
-    pathSegment( k, getPrevRedrawLimit( k, theta ), getNextRedrawLimit( k, theta ) );
+void TurksHead::clipSegment( int k, int minTheta, int maxTheta ) const {
+    pathSegment( k, minTheta, maxTheta );
     m_ctx->clip();
 }
 
-void TurksHead::redraw( int k, int theta ) const {
-    drawSegments( k, getPrevRedrawLimit( k, theta ), getNextRedrawLimit( k, theta ) );
+void TurksHead::clipRegion( int k, int theta ) const {
+    clipSegment( k, getPrevRedrawLimit( k, theta ), getNextRedrawLimit( k, theta ) );
+}
+
+void TurksHead::redrawRegion( int k, int theta ) const {
+    drawSegment( k, getPrevRedrawLimit( k, theta ), getNextRedrawLimit( k, theta ) );
 }
 
 int TurksHead::getPrevRedrawLimit( int k, int theta ) const {
@@ -273,6 +284,8 @@ int TurksHead::getNextRedrawLimit( int k, int theta ) const {
 }
 
 std::pair< int, double > TurksHead::getPrevKnownAltitude( int k, int theta ) const {
+    assert( !m_knownAltitudes[ k ].empty() );
+
     std::map< int, double >::const_iterator nextIt = m_knownAltitudes[ k ].lower_bound( theta );
 
     if( nextIt == m_knownAltitudes[ k ].begin() ) {
@@ -287,6 +300,8 @@ std::pair< int, double > TurksHead::getPrevKnownAltitude( int k, int theta ) con
 }
 
 std::pair< int, double > TurksHead::getNextKnownAltitude( int k, int theta ) const {
+    assert( !m_knownAltitudes[ k ].empty() );
+
     std::map< int, double >::const_iterator nextIt = m_knownAltitudes[ k ].lower_bound( theta );
 
     if( nextIt == m_knownAltitudes[ k ].begin() ) {
@@ -302,7 +317,7 @@ std::pair< int, double > TurksHead::getNextKnownAltitude( int k, int theta ) con
 
 double TurksHead::getAltitude( int k, int theta ) const {
     if( m_knownAltitudes[ k ].empty() ) {
-        return 1;
+        return 0;
     }
 
     std::pair< int, double > prev = getPrevKnownAltitude( k, theta );

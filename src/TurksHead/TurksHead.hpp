@@ -30,11 +30,14 @@ private:
     };
 
 private:
-    void drawPaths() const;
+    void setupDrawing( Cairo::RefPtr< Cairo::Context > ) const;
+    void teardownDrawing() const;
+
+    void drawAllPaths() const;
     void drawPath( int k ) const;
-    void drawSegments( int k, int minTheta, int maxTheta ) const;
-    void drawSegment( int k, int theta ) const;
-    void redrawIntersections() const;
+    void drawSegment( int k, int minTheta, int maxTheta ) const;
+    void drawStep( int k, int theta ) const;
+    void redrawAllIntersections() const;
     void redrawIntersection( const Intersection& ) const;
 
     boost::tuple< double, double > getCoordinates( int k, int theta ) const;
@@ -54,8 +57,9 @@ private:
     void computePathPairIntersections( int m, int n );
     void addIntersection( int m, int n, int a, int b );
 
-    void clip( int k, int theta ) const;
-    void redraw( int k, int theta ) const;
+    void clipRegion( int k, int theta ) const;
+    void redrawRegion( int k, int theta ) const;
+    void clipSegment( int k, int minTheta, int maxTheta ) const;
 
     void pathSegment( int k, int minTheta, int maxTheta ) const;
 
