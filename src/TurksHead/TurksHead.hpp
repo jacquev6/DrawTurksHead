@@ -8,9 +8,43 @@
 
 // Boost
 #include <boost/tuple/tuple.hpp>
+#include <boost/operators.hpp>
 
 // Cairo
 #include <cairomm/cairomm.h>
+
+#define STRONG_TYPEDEF( T, D ) \
+struct D : \
+    boost::operators< D >, \
+    boost::operators< D, T > \
+{ \
+    explicit D( T t_ ) : t( t_ ) {}\
+    T index() { return t; } \
+\
+    /*bool operator=( D );*/ \
+    bool operator=( T ); \
+\
+    void operator++() { ++t; }\
+    void operator--() { --t; }\
+    D operator-(); \
+\
+    D operator+=( D d ) { t += d.t; return *this; } \
+    D operator+=( T d ) { t += d;   return *this; } \
+    D operator-=( D d ) { t -= d.t; return *this; } \
+    D operator-=( T d ) { t -= d;   return *this; } \
+    D operator*=( T ); \
+    D operator/=( T d ) { t /= d;   return *this; } \
+    D operator%=( D d ) { t %= d.t; return *this; } \
+    D operator%=( T ); \
+\
+    bool operator==( D d ) const { return t == d.t; } \
+    bool operator==( T d ) const { return t == d; } \
+    bool operator<( D d ) const { return t < d.t; } \
+    bool operator<( T d ) const { return t < d; } \
+\
+private: \
+    T t; \
+};
 
 namespace TurksHead {
 
@@ -22,11 +56,22 @@ public:
     void draw( Cairo::RefPtr< Cairo::Context > ) const;
 
 private:
+    STRONG_TYPEDEF( int, Theta )
+
+    STRONG_TYPEDEF( int, Path )
+
     struct Intersection {
-        int m;
-        int thetaOnPathM;
-        int n;
-        int thetaOnPathN;
+        Intersection( Path, Theta, Path, Theta );
+        Path m;
+        Theta thetaOnPathM;
+        Path n;
+        Theta thetaOnPathN;
+    };
+
+    struct Segment {
+        Segment( Theta min, Theta max );
+        Theta minTheta;
+        Theta maxTheta;
     };
 
 private:
@@ -34,47 +79,47 @@ private:
     void teardownDrawing() const;
 
     void drawAllPaths() const;
-    void drawPath( int k ) const;
-    void drawSegment( int k, int minTheta, int maxTheta ) const;
-    void drawStep( int k, int theta ) const;
+    void draw( Path k ) const;
+    void drawSegment( Path k, Theta minTheta, Theta maxTheta ) const;
+    void drawStep( Path k, Theta theta ) const;
     void redrawAllIntersections() const;
     void redrawIntersection( const Intersection& ) const;
 
-    boost::tuple< double, double > getCoordinates( int k, int theta ) const;
-    boost::tuple< double, double > getInnerCoordinates( int k, int theta ) const;
-    boost::tuple< double, double > getOuterCoordinates( int k, int theta ) const;
-    boost::tuple< double, double > getNormal( int k, int theta ) const;
-    double getRadius( int k, int theta ) const;
-    boost::tuple< double, double > convertRadialToCartesianCoordinates( double radius, int theta ) const;
+    boost::tuple< double, double > getCoordinates( Path k, Theta theta ) const;
+    boost::tuple< double, double > getInnerCoordinates( Path k, Theta theta ) const;
+    boost::tuple< double, double > getOuterCoordinates( Path k, Theta theta ) const;
+    boost::tuple< double, double > getNormal( Path k, Theta theta ) const;
+    double getRadius( Path k, Theta theta ) const;
+    boost::tuple< double, double > convertRadialToCartesianCoordinates( double radius, Theta theta ) const;
 
-    int phi( int k ) const;
+    Theta phi( Path k ) const;
 
-    double getAltitude( int k, int theta ) const;
+    double getAltitude( Path k, Theta theta ) const;
     void computeKnownAltitudes();
 
     void computeIntersections();
-    std::list< std::pair< int, int > > allPathPairs() const;
-    void computePathPairIntersections( int m, int n );
-    void addIntersection( int m, int n, int a, int b );
+    std::list< std::pair< Path, Path > > allPathPairs() const;
+    void computePathPairIntersections( Path m, Path n );
+    void addIntersection( Path m, Path n, int a, int b );
 
-    void clipRegion( int k, int theta ) const;
-    void redrawRegion( int k, int theta ) const;
-    void clipSegment( int k, int minTheta, int maxTheta ) const;
+    void clipRegion( Path k, Theta theta ) const;
+    void redrawRegion( Path k, Theta theta ) const;
+    void clipSegment( Path k, Theta minTheta, Theta maxTheta ) const;
 
-    void pathSegment( int k, int minTheta, int maxTheta ) const;
+    void pathSegment( Path k, Theta minTheta, Theta maxTheta ) const;
 
     void moveTo( const boost::tuple< double, double >& ) const;
     void lineTo( const boost::tuple< double, double >& ) const;
 
     void setSourceHsv( double h, double s, double v ) const;
 
-    double angleFromTheta( int theta ) const;
+    double angleFromTheta( Theta theta ) const;
 
-    std::pair< int, double > getPrevKnownAltitude( int k, int theta ) const;
-    std::pair< int, double > getNextKnownAltitude( int k, int theta ) const;
+    std::pair< Theta, double > getPrevKnownAltitude( Path k, Theta theta ) const;
+    std::pair< Theta, double > getNextKnownAltitude( Path k, Theta theta ) const;
 
-    int getPrevRedrawLimit( int k, int theta ) const;
-    int getNextRedrawLimit( int k, int theta ) const;
+    Theta getPrevRedrawLimit( Path k, Theta theta ) const;
+    Theta getNextRedrawLimit( Path k, Theta theta ) const;
 
 private:
     int p;
@@ -82,8 +127,8 @@ private:
 private:
     int d;
     int m_thetaSteps;
-    int m_maxThetaOnPath;
-    std::vector< std::map< int, double > > m_knownAltitudes;
+    Theta m_maxThetaOnPath;
+    std::map< Path, std::map< Theta, double > > m_knownAltitudes;
     std::list< Intersection > m_intersections;
 private:
     double m_radius;
@@ -93,9 +138,6 @@ private:
 
 private:
     mutable Cairo::RefPtr< Cairo::Context > m_ctx;
-
-private:
-    static const int s_stepsTheta;
 };
 
 } // Namespace

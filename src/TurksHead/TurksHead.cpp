@@ -17,6 +17,20 @@
 
 namespace TurksHead {
 
+TurksHead::Intersection::Intersection( Path m_, Theta thetaOnPathM_, Path n_, Theta thetaOnPathN_ ) :
+    m( m_ ),
+    thetaOnPathM( thetaOnPathM_ ),
+    n( n_ ),
+    thetaOnPathN( thetaOnPathN_ )
+{
+}
+
+TurksHead::Segment::Segment( Theta min, Theta max ) :
+    minTheta( min ),
+    maxTheta( max )
+{
+}
+
 TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRadius, double lineWidth ) :
     p( bights ),
     q( leads ),
@@ -32,34 +46,36 @@ TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRad
 }
 
 void TurksHead::computeIntersections() {
-    typedef std::pair< int, int > Pii;
+    typedef std::pair< Path, Path > Pii;
     foreach( Pii p, allPathPairs() ) {
-        int m = p.first;
-        int n = p.second;
+        Path m = p.first;
+        Path n = p.second;
         computePathPairIntersections( m, n );
     }
-    assert( m_intersections.size() == p * ( q - 1 ) );
+    assert( m_intersections.size() == size_t( p * ( q - 1 ) ) );
 }
 
-std::list< std::pair< int, int > > TurksHead::allPathPairs() const {
-    std::list< std::pair< int, int > > allPairs;
-    for( int m = 0; m != d; ++m ) {
-        for( int n = m; n != d; ++n ) {
+std::list< std::pair< TurksHead::Path, TurksHead::Path > > TurksHead::allPathPairs() const {
+    std::list< std::pair< Path, Path > > allPairs;
+    for( Path m( 0 ); m != d; ++m ) {
+        for( Path n( m ); n != d; ++n ) {
             allPairs.push_back( std::make_pair( m, n ) );
         }
     }
     return allPairs;
 }
 
-void TurksHead::computePathPairIntersections( int m, int n ) {
-    int alpha = -( m + n );
-    int beta = 2 * p * q / d - ( m + n );
+void TurksHead::computePathPairIntersections( Path m, Path n ) {
+    int m_plus_n = m.index() + n.index();
+
+    int alpha = -m_plus_n;
+    int beta = 2 * p * q / d - m_plus_n;
 
     int minA = std::ceil( -1. * q / d );
     int maxA = std::ceil( 1. * q / d );
 
-    int minB = std::ceil( -1. * ( m + n ) / q );
-    int maxB = std::ceil( 2. * p / d - ( m + n ) / q );
+    int minB = std::ceil( -1. * m_plus_n / q );
+    int maxB = std::ceil( 2. * p / d - m_plus_n / q );
 
     if( m == n ) {
         minA = 1;
@@ -76,36 +92,31 @@ void TurksHead::computePathPairIntersections( int m, int n ) {
     }
 }
 
-void TurksHead::addIntersection( int m, int n, int a, int b ) {
-    Intersection intersection;
-    intersection.m = m;
-    intersection.n = n;
-    intersection.thetaOnPathN = ( a * p + b * q + m + n ) * m_thetaSteps;
-    intersection.thetaOnPathM = intersection.thetaOnPathN - 2 * a * p * m_thetaSteps;
+void TurksHead::addIntersection( Path m, Path n, int a, int b ) {
+    Theta thetaOnPathN( ( a * p + b * q + m.index() + n.index() ) * m_thetaSteps );
+    Theta thetaOnPathM( thetaOnPathN - 2 * a * p * m_thetaSteps );
 
-    m_intersections.push_back( intersection );
+    m_intersections.push_back( Intersection( m, thetaOnPathM, n, thetaOnPathN ) );
 }
 
 void TurksHead::computeKnownAltitudes() {
-    std::vector< std::set< int > > knownThetas;
-    knownThetas.resize( d );
-    m_knownAltitudes.resize( d );
+    std::map< Path, std::set< Theta > > knownThetas;
     foreach( Intersection intersection, m_intersections ) {
         knownThetas[ intersection.m ].insert( intersection.thetaOnPathM );
         knownThetas[ intersection.n ].insert( intersection.thetaOnPathN );
     }
     int alt = 1;
-    foreach( int theta, knownThetas[ 0 ] ) {
-        m_knownAltitudes[ 0 ][ theta ] = alt;
+    foreach( Theta theta, knownThetas[ Path( 0 ) ] ) {
+        m_knownAltitudes[ Path( 0 ) ][ theta ] = alt;
         alt *= -1;
     }
     /// @todo Remove this loop, by making m_knownAltitudes a std::map< int, int > in stead of a std::vector< std::map< int, int > >
     /// And perform the rotation in getAltitude
-    for( int k = 1; k != d; ++k ) {
-        foreach( int theta, knownThetas[ k ] ) {
-            int rotatedTheta = ( theta - phi( k ) + m_maxThetaOnPath ) % m_maxThetaOnPath;
-            assert( m_knownAltitudes[ 0 ].find( rotatedTheta ) != m_knownAltitudes[ 0 ].end() );
-            m_knownAltitudes[ k ][ theta ] = m_knownAltitudes[ 0 ][ rotatedTheta ];
+    for( Path k( 1 ); k != d; ++k ) {
+        foreach( Theta theta, knownThetas[ k ] ) {
+            Theta rotatedTheta( ( theta - phi( k ) + m_maxThetaOnPath ) % m_maxThetaOnPath );
+            assert( m_knownAltitudes[ Path( 0 ) ].find( rotatedTheta ) != m_knownAltitudes[ Path( 0 ) ].end() );
+            m_knownAltitudes[ k ][ theta ] = m_knownAltitudes[ Path( 0 ) ][ rotatedTheta ];
         }
     }
 }
@@ -129,34 +140,34 @@ void TurksHead::teardownDrawing() const {
 }
 
 void TurksHead::drawAllPaths() const {
-    for( int k = 0; k < d; ++k ) {
-        drawPath( k );
+    for( Path k( 0 ); k < d; ++k ) {
+        draw( k );
     }
 }
 
-void TurksHead::drawPath( int k ) const {
-    drawSegment( k, 0, m_maxThetaOnPath );
+void TurksHead::draw( Path k ) const {
+    drawSegment( k, Theta( 0 ), m_maxThetaOnPath );
 }
 
-void TurksHead::drawSegment( int k, int minTheta, int maxTheta ) const {
-    for( int theta = minTheta; theta <= maxTheta; ++theta ) {
+void TurksHead::drawSegment( Path k, Theta minTheta, Theta maxTheta ) const {
+    for( Theta theta = minTheta; theta <= maxTheta; ++theta ) {
         drawStep( k, theta );
     }
 }
 
-void TurksHead::drawStep( int k, int theta ) const {
+void TurksHead::drawStep( Path k, Theta theta ) const {
     pathSegment( k, theta, theta + 1 );
     /// @todo Use a callback function given by the user to choose the color. Even better, this function could draw a portion of rope.
-    setSourceHsv( k * 360. / d, 0.5, 0.5 + getAltitude( k, theta ) / 2 );
+    setSourceHsv( k.index() * 360. / d, 0.5, 0.5 + getAltitude( k, theta ) / 2 );
     m_ctx->fill();
 }
 
-void TurksHead::pathSegment( int k, int minTheta, int maxTheta ) const {
+void TurksHead::pathSegment( Path k, Theta minTheta, Theta maxTheta ) const {
     moveTo( getOuterCoordinates( k, minTheta ) );
-    for( int theta = minTheta + 1; theta <= maxTheta; ++theta ) {
+    for( Theta theta( minTheta + 1 ); theta <= maxTheta; ++theta ) {
         lineTo( getOuterCoordinates( k, theta ) );
     }
-    for( int theta = maxTheta; theta >= minTheta; --theta ) {
+    for( Theta theta = maxTheta; theta >= minTheta; --theta ) {
         lineTo( getInnerCoordinates( k, theta ) );
     }
     m_ctx->close_path();
@@ -180,19 +191,19 @@ void TurksHead::redrawIntersection( const Intersection& intersection ) const {
     m_ctx->reset_clip();
 }
 
-boost::tuple< double, double > TurksHead::getOuterCoordinates( int k, int theta ) const {
+boost::tuple< double, double > TurksHead::getOuterCoordinates( Path k, Theta theta ) const {
     double x, y; boost::tie( x, y ) = getCoordinates( k, theta );
     double nx, ny; boost::tie( nx, ny ) = getNormal( k, theta );
     return boost::make_tuple( x + nx, y + ny );
 }
 
-boost::tuple< double, double > TurksHead::getInnerCoordinates( int k, int theta ) const {
+boost::tuple< double, double > TurksHead::getInnerCoordinates( Path k, Theta theta ) const {
     double x, y; boost::tie( x, y ) = getCoordinates( k, theta );
     double nx, ny; boost::tie( nx, ny ) = getNormal( k, theta );
     return boost::make_tuple( x - nx, y - ny );
 }
 
-boost::tuple< double, double > TurksHead::getNormal( int k, int theta ) const {
+boost::tuple< double, double > TurksHead::getNormal( Path k, Theta theta ) const {
     double x0, y0; boost::tie( x0, y0 ) = getCoordinates( k, theta - 1 );
     double x1, y1; boost::tie( x1, y1 ) = getCoordinates( k, theta + 1 );
 
@@ -206,23 +217,23 @@ boost::tuple< double, double > TurksHead::getNormal( int k, int theta ) const {
     return boost::make_tuple( nx, ny );
 }
 
-boost::tuple< double, double > TurksHead::getCoordinates( int k, int theta ) const {
+boost::tuple< double, double > TurksHead::getCoordinates( Path k, Theta theta ) const {
     return convertRadialToCartesianCoordinates( getRadius( k, theta ), theta );
 }
 
-double TurksHead::getRadius( int k, int theta ) const {
+double TurksHead::getRadius( Path k, Theta theta ) const {
     return m_radius + m_deltaRadius * cos( p * angleFromTheta( theta - phi( k ) ) / q );
 }
 
-double TurksHead::angleFromTheta( int theta ) const {
-    return M_PI * theta / p / m_thetaSteps;
+double TurksHead::angleFromTheta( Theta theta ) const {
+    return M_PI * theta.index() / p / m_thetaSteps;
 }
 
-int TurksHead::phi( int k ) const {
-    return 2 * k * m_thetaSteps;
+TurksHead::Theta TurksHead::phi( Path k ) const {
+    return Theta( 2 * k.index() * m_thetaSteps );
 }
 
-boost::tuple< double, double > TurksHead::convertRadialToCartesianCoordinates( double radius, int theta ) const {
+boost::tuple< double, double > TurksHead::convertRadialToCartesianCoordinates( double radius, Theta theta ) const {
     return boost::make_tuple(
         radius * std::cos( angleFromTheta( theta ) ),
         radius * std::sin( angleFromTheta( theta ) )
@@ -254,20 +265,20 @@ void TurksHead::setSourceHsv( double h, double s, double v ) const {
     }
 }
 
-void TurksHead::clipSegment( int k, int minTheta, int maxTheta ) const {
+void TurksHead::clipSegment( Path k, Theta minTheta, Theta maxTheta ) const {
     pathSegment( k, minTheta, maxTheta );
     m_ctx->clip();
 }
 
-void TurksHead::clipRegion( int k, int theta ) const {
+void TurksHead::clipRegion( Path k, Theta theta ) const {
     clipSegment( k, getPrevRedrawLimit( k, theta ), getNextRedrawLimit( k, theta ) );
 }
 
-void TurksHead::redrawRegion( int k, int theta ) const {
+void TurksHead::redrawRegion( Path k, Theta theta ) const {
     drawSegment( k, getPrevRedrawLimit( k, theta ), getNextRedrawLimit( k, theta ) );
 }
 
-int TurksHead::getPrevRedrawLimit( int k, int theta ) const {
+TurksHead::Theta TurksHead::getPrevRedrawLimit( Path k, Theta theta ) const {
     if( p < 3 || q < 3 ) {
         return ( theta + getPrevKnownAltitude( k, theta - 1 ).first ) / 2;
     } else {
@@ -275,7 +286,7 @@ int TurksHead::getPrevRedrawLimit( int k, int theta ) const {
     }
 }
 
-int TurksHead::getNextRedrawLimit( int k, int theta ) const {
+TurksHead::Theta TurksHead::getNextRedrawLimit( Path k, Theta theta ) const {
     if( p < 3 || q < 3 ) {
         return ( theta + getNextKnownAltitude( k, theta + 1 ).first ) / 2;
     } else {
@@ -283,31 +294,37 @@ int TurksHead::getNextRedrawLimit( int k, int theta ) const {
     }
 }
 
-std::pair< int, double > TurksHead::getPrevKnownAltitude( int k, int theta ) const {
-    assert( !m_knownAltitudes[ k ].empty() );
+std::pair< TurksHead::Theta, double > TurksHead::getPrevKnownAltitude( Path k, Theta theta ) const {
+    assert( m_knownAltitudes.find( k ) != m_knownAltitudes.end() );
+    assert( !m_knownAltitudes.find( k )->second.empty() );
 
-    std::map< int, double >::const_iterator nextIt = m_knownAltitudes[ k ].lower_bound( theta );
+    const std::map< Theta, double >& knownAltitudes = m_knownAltitudes.find( k )->second;
 
-    if( nextIt == m_knownAltitudes[ k ].begin() ) {
-        std::pair< int, double > prev = *m_knownAltitudes[ k ].rbegin();
+    std::map< Theta, double >::const_iterator nextIt = knownAltitudes.lower_bound( theta );
+
+    if( nextIt == knownAltitudes.begin() ) {
+        std::pair< Theta, double > prev = *knownAltitudes.rbegin();
         prev.first -= m_maxThetaOnPath;
         return prev;
-    } else if( nextIt == m_knownAltitudes[ k ].end() ) {
-        return *m_knownAltitudes[ k ].rbegin();
+    } else if( nextIt == knownAltitudes.end() ) {
+        return *knownAltitudes.rbegin();
     } else {
         return *boost::prior( nextIt );
     }
 }
 
-std::pair< int, double > TurksHead::getNextKnownAltitude( int k, int theta ) const {
-    assert( !m_knownAltitudes[ k ].empty() );
+std::pair< TurksHead::Theta, double > TurksHead::getNextKnownAltitude( Path k, Theta theta ) const {
+    assert( m_knownAltitudes.find( k ) != m_knownAltitudes.end() );
+    assert( !m_knownAltitudes.find( k )->second.empty() );
 
-    std::map< int, double >::const_iterator nextIt = m_knownAltitudes[ k ].lower_bound( theta );
+    const std::map< Theta, double >& knownAltitudes = m_knownAltitudes.find( k )->second;
 
-    if( nextIt == m_knownAltitudes[ k ].begin() ) {
+    std::map< Theta, double >::const_iterator nextIt = knownAltitudes.lower_bound( theta );
+
+    if( nextIt == knownAltitudes.begin() ) {
         return *nextIt;
-    } else if( nextIt == m_knownAltitudes[ k ].end() ) {
-        std::pair< int, double > next = *m_knownAltitudes[ k ].begin();
+    } else if( nextIt == knownAltitudes.end() ) {
+        std::pair< Theta, double > next = *knownAltitudes.begin();
         next.first += m_maxThetaOnPath;
         return next;
     } else {
@@ -315,15 +332,17 @@ std::pair< int, double > TurksHead::getNextKnownAltitude( int k, int theta ) con
     }
 }
 
-double TurksHead::getAltitude( int k, int theta ) const {
-    if( m_knownAltitudes[ k ].empty() ) {
+double TurksHead::getAltitude( Path k, Theta theta ) const {
+    if( m_knownAltitudes.find( k ) == m_knownAltitudes.end() ||
+        m_knownAltitudes.find( k )->second.empty() ) {
+
         return 0;
     }
 
-    std::pair< int, double > prev = getPrevKnownAltitude( k, theta );
-    std::pair< int, double > next = getNextKnownAltitude( k, theta );
+    std::pair< Theta, double > prev = getPrevKnownAltitude( k, theta );
+    std::pair< Theta, double > next = getNextKnownAltitude( k, theta );
 
-    return prev.second + ( next.second - prev.second ) * ( theta - prev.first ) / ( next.first - prev.first );
+    return prev.second + ( next.second - prev.second ) * ( theta - prev.first ).index() / ( next.first - prev.first ).index();
 }
 
 } // Namespace
