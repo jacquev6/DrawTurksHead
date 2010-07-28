@@ -3,6 +3,8 @@
 
 // Standard library
 #include <map>
+#include <set>
+#include <list>
 
 // Boost
 #include <boost/tuple/tuple.hpp>
@@ -35,7 +37,11 @@ private:
 
     double getAltitude( int theta ) const;
     void computeKnownAltitudes();
-    void computeCrossingThetas();
+
+    void computeIntersections();
+    std::list< std::pair< int, int > > allPathPairs() const;
+    void computePathPairIntersections( int m, int n );
+    void addIntersection( int m, int n, int a, int b );
 
     void redraw( int thetaLow, int thetaHight ) const;
     void clip( int theta ) const;
@@ -60,7 +66,13 @@ private:
     int m_thetaSteps;
     int m_maxThetaOnPath;
     std::map< int, int > m_knownAltitudes;
-    std::map< int, int > m_crossingThetas;
+    struct Intersection {
+        int m;
+        int thetaOnPathM;
+        int n;
+        int thetaOnPathN;
+    };
+    std::list< Intersection > m_intersections;
 private:
     double m_radius;
     double m_deltaRadius;

@@ -5,6 +5,7 @@
 #include <cmath>
 #include <map>
 #include <cassert>
+#include <iostream> /// @todo Remove
 
 // Boost
 #include <boost/math/common_factor.hpp>
@@ -27,23 +28,73 @@ TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRad
     m_deltaRadius( ( outerRadius - innerRadius - lineWidth ) / 2 ),
     m_lineWidth( lineWidth )
 {
-    computeCrossingThetas();
+    computeIntersections();
     computeKnownAltitudes();
 }
 
-void TurksHead::computeCrossingThetas() {
-    for( int a = 1; a < q; ++a ) {
-        for( int b = std::ceil( float( a ) * p / q ); b <= ( 2 - float( a ) / q ) * p; ++b ) {
-            int theta1 = ( q * b - a * p ) * m_thetaSteps;
-            int theta2 = ( q * b + a * p ) * m_thetaSteps;
-            m_crossingThetas[ theta1 ] = theta2;
-            m_crossingThetas[ theta2 ] = theta1;
+void TurksHead::computeIntersections() {
+    typedef std::pair< int, int > Pii;
+    foreach( Pii p, allPathPairs() ) {
+        int m = p.first;
+        int n = p.second;
+        computePathPairIntersections( m, n );
+    }
+    assert( m_intersections.size() == p * ( q - 1 ) );
+}
+
+std::list< std::pair< int, int > > TurksHead::allPathPairs() const {
+    std::list< std::pair< int, int > > allPairs;
+    for( int m = 0; m < d; ++m ) {
+        for( int n = m; n < d; ++n ) {
+            allPairs.push_back( std::make_pair( m, n ) );
+        }
+    }
+    return allPairs;
+}
+
+void TurksHead::computePathPairIntersections( int m, int n ) {
+    int alpha = -( m + n );
+    int beta = 2 * p * q / d - ( m + n );
+
+    int minA = std::ceil( -1. * q / d );
+    int maxA = std::ceil( 1. * q / d );
+
+    int minB = std::ceil( -1. * ( m + n ) / q );
+    int maxB = std::ceil( 2. * p / d - ( m + n ) / q );
+
+    if( m == n ) {
+        minA = 1;
+    }
+
+    for( int a = minA; a < maxA; ++a ) {
+        for( int b = minB; b < maxB; ++b ) {
+            /// @todo Rework the inequalities on a and b, so that this test can be avoided
+            /// And the loop on a, b will be logicaly cleaner and more significant (and maybe faster)
+            if( alpha <= a * p + b * q && a * p + b * q < beta && alpha <= -a * p + b * q && -a * p + b * q < beta ) {
+                addIntersection( m, n, a, b );
+            }
         }
     }
 }
 
+void TurksHead::addIntersection( int m, int n, int a, int b ) {
+    Intersection intersection;
+    intersection.m = m;
+    intersection.n = n;
+    intersection.thetaOnPathN = ( a * p + b * q + m + n ) * m_thetaSteps;
+    intersection.thetaOnPathM = intersection.thetaOnPathN - 2 * a * p * m_thetaSteps;
+
+    /*std::cout << "Intersection between paths " << m << " and " << n << ", "
+        "with a == " << a << " and b == " << b << ": "
+        "theta_1 == " << angleFromTheta( intersection.thetaOnPathN ) / M_PI << ", "
+        "theta_2 == " << angleFromTheta( intersection.thetaOnPathM ) / M_PI << ", "
+        << std::endl;*/
+
+    m_intersections.push_back( intersection );
+}
+
 void TurksHead::computeKnownAltitudes() {
-    if( m_crossingThetas.empty() ) {
+/*    if( m_crossingThetas.empty() ) {
         m_knownAltitudes[ -m_thetaSteps ] = 1;
         m_knownAltitudes[ ( 2 * q * p + 1 ) * m_thetaSteps ] = 1;
     } else {
@@ -55,7 +106,7 @@ void TurksHead::computeKnownAltitudes() {
             alt *= -1;
         }
         m_knownAltitudes[ ( 2 * q * p + 1 ) * m_thetaSteps ] = alt;
-    }
+    }*/
 }
 
 void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
@@ -64,6 +115,15 @@ void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
     m_ctx->set_antialias( Cairo::ANTIALIAS_NONE );
 
     drawPaths();
+
+    m_ctx->set_source_rgb( 0, 0, 0 );
+    m_ctx->set_line_width( 6 );
+    m_ctx->set_line_cap( Cairo::LINE_CAP_ROUND );
+    foreach( Intersection intersection, m_intersections ) {
+        moveTo( getCoordinates( intersection.m, intersection.thetaOnPathM ) );
+        lineTo( getCoordinates( intersection.n, intersection.thetaOnPathN ) );
+    }
+    m_ctx->stroke();
 
     m_ctx->restore();
 }
@@ -138,7 +198,7 @@ boost::tuple< double, double > TurksHead::getCoordinates( int path, int theta ) 
 }
 
 double TurksHead::getRadius( int path, int theta ) const {
-    return m_radius + m_deltaRadius * cos( p * angleFromTheta( theta + phi( path ) ) / q );
+    return m_radius + m_deltaRadius * cos( p * angleFromTheta( theta - phi( path ) ) / q );
 }
 
 double TurksHead::angleFromTheta( int theta ) const {
