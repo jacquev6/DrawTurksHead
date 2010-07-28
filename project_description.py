@@ -9,6 +9,13 @@ DynamicLibrary(
     externalLibraries = [ "cairomm-1.0" ]
 )
 
+Executable(
+    name = "draw_turks_head",
+    sources = [ "src/draw_turks_head.cpp" ],
+    localLibraries = [ "turkshead" ],
+    externalLibraries = [ "cairomm-1.0", "boost_program_options" ]
+)
+
 CppPythonModule(
     name = "turkshead._turkshead",
     sources = AllCppIn( "src/PythonModule" ),
