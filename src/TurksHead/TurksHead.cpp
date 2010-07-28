@@ -21,7 +21,8 @@ TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRad
     m_leads( leads ),
     m_bights( bights ),
     m_paths( boost::math::gcd( m_bights, m_leads ) ),
-    m_maxThetaOnPath( 2 * m_leads * m_bights * s_stepsTheta / m_paths ),
+    m_thetaSteps( 100 ),
+    m_maxThetaOnPath( 2 * m_leads * m_bights * m_thetaSteps / m_paths ),
     m_radius( ( innerRadius + outerRadius ) / 2 ),
     m_deltaRadius( ( outerRadius - innerRadius - lineWidth ) / 2 ),
     m_lineWidth( lineWidth )
@@ -29,8 +30,6 @@ TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRad
     computeCrossingThetas();
     computeKnownAltitudes();
 }
-
-const int TurksHead::s_stepsTheta = 100;
 
 void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
     m_ctx = context;
@@ -142,8 +141,8 @@ double TurksHead::getAltitude( int theta ) const {
 void TurksHead::computeCrossingThetas() {
     for( int a = 1; a < m_leads; ++a ) {
         for( int b = std::ceil( float( a ) * m_bights / m_leads ); b <= ( 2 - float( a ) / m_leads ) * m_bights; ++b ) {
-            int theta1 = ( m_leads * b - a * m_bights ) * s_stepsTheta;
-            int theta2 = ( m_leads * b + a * m_bights ) * s_stepsTheta;
+            int theta1 = ( m_leads * b - a * m_bights ) * m_thetaSteps;
+            int theta2 = ( m_leads * b + a * m_bights ) * m_thetaSteps;
             m_crossingThetas[ theta1 ] = theta2;
             m_crossingThetas[ theta2 ] = theta1;
         }
@@ -152,17 +151,17 @@ void TurksHead::computeCrossingThetas() {
 
 void TurksHead::computeKnownAltitudes() {
     if( m_crossingThetas.empty() ) {
-        m_knownAltitudes[ -s_stepsTheta ] = 1;
-        m_knownAltitudes[ ( 2 * m_leads * m_bights + 1 ) * s_stepsTheta ] = 1;
+        m_knownAltitudes[ -m_thetaSteps ] = 1;
+        m_knownAltitudes[ ( 2 * m_leads * m_bights + 1 ) * m_thetaSteps ] = 1;
     } else {
-        m_knownAltitudes[ -s_stepsTheta ] = 1;
+        m_knownAltitudes[ -m_thetaSteps ] = 1;
         int alt = -1;
         typedef std::pair< int, int > Pii;
         foreach( Pii p, m_crossingThetas ) {
             m_knownAltitudes[ p.first ] = alt;
             alt *= -1;
         }
-        m_knownAltitudes[ ( 2 * m_leads * m_bights + 1 ) * s_stepsTheta ] = alt;
+        m_knownAltitudes[ ( 2 * m_leads * m_bights + 1 ) * m_thetaSteps ] = alt;
     }
 }
 
@@ -208,7 +207,7 @@ boost::tuple< double, double > TurksHead::convertRadialToCartesianCoordinates( d
 }
 
 double TurksHead::angleFromTheta( int theta ) const {
-    return M_PI * theta / m_bights / s_stepsTheta;
+    return M_PI * theta / m_bights / m_thetaSteps;
 }
 
 void TurksHead::moveTo( const boost::tuple< double, double >& p ) const {

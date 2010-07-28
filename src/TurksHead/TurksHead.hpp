@@ -55,7 +55,8 @@ private:
     int m_bights;
 private:
     int m_paths;
-    double m_maxThetaOnPath;
+    int m_thetaSteps;
+    int m_maxThetaOnPath;
     std::map< int, int > m_knownAltitudes;
     std::map< int, int > m_crossingThetas;
 private:
