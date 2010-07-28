@@ -66,8 +66,8 @@ private:
 
     double angleFromTheta( int theta ) const;
 
-    std::pair< int, int > getPrevKnownAltitude( int k, int theta ) const;
-    std::pair< int, int > getNextKnownAltitude( int k, int theta ) const;
+    std::pair< int, double > getPrevKnownAltitude( int k, int theta ) const;
+    std::pair< int, double > getNextKnownAltitude( int k, int theta ) const;
 
 private:
     int p;
@@ -76,7 +76,7 @@ private:
     int d;
     int m_thetaSteps;
     int m_maxThetaOnPath;
-    std::vector< std::map< int, int > > m_knownAltitudes;
+    std::vector< std::map< int, double > > m_knownAltitudes;
     std::list< Intersection > m_intersections;
 private:
     double m_radius;

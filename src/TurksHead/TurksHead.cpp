@@ -291,11 +291,11 @@ void TurksHead::redraw( int k, int theta ) const {
     drawSegments( k, getPrevKnownAltitude( k, theta - 1 ).first, getNextKnownAltitude( k, theta + 1 ).first );
 }
 
-std::pair< int, int > TurksHead::getPrevKnownAltitude( int k, int theta ) const {
-    std::map< int, int >::const_iterator nextIt = m_knownAltitudes[ k ].lower_bound( theta );
+std::pair< int, double > TurksHead::getPrevKnownAltitude( int k, int theta ) const {
+    std::map< int, double >::const_iterator nextIt = m_knownAltitudes[ k ].lower_bound( theta );
 
     if( nextIt == m_knownAltitudes[ k ].begin() ) {
-        std::pair< int, int > prev = *m_knownAltitudes[ k ].rbegin();
+        std::pair< int, double > prev = *m_knownAltitudes[ k ].rbegin();
         prev.first -= m_maxThetaOnPath;
         return prev;
     } else if( nextIt == m_knownAltitudes[ k ].end() ) {
@@ -305,13 +305,13 @@ std::pair< int, int > TurksHead::getPrevKnownAltitude( int k, int theta ) const 
     }
 }
 
-std::pair< int, int > TurksHead::getNextKnownAltitude( int k, int theta ) const {
-    std::map< int, int >::const_iterator nextIt = m_knownAltitudes[ k ].lower_bound( theta );
+std::pair< int, double > TurksHead::getNextKnownAltitude( int k, int theta ) const {
+    std::map< int, double >::const_iterator nextIt = m_knownAltitudes[ k ].lower_bound( theta );
 
     if( nextIt == m_knownAltitudes[ k ].begin() ) {
         return *nextIt;
     } else if( nextIt == m_knownAltitudes[ k ].end() ) {
-        std::pair< int, int > next = *m_knownAltitudes[ k ].begin();
+        std::pair< int, double > next = *m_knownAltitudes[ k ].begin();
         next.first += m_maxThetaOnPath;
         return next;
     } else {
@@ -324,10 +324,10 @@ double TurksHead::getAltitude( int k, int theta ) const {
         return 1;
     }
 
-    std::pair< int, int > prev = getPrevKnownAltitude( k, theta );
-    std::pair< int, int > next = getNextKnownAltitude( k, theta );
+    std::pair< int, double > prev = getPrevKnownAltitude( k, theta );
+    std::pair< int, double > next = getNextKnownAltitude( k, theta );
 
-    return prev.second + ( next.second - prev.second ) * ( theta - prev.first ) / float( next.first - prev.first );
+    return prev.second + ( next.second - prev.second ) * ( theta - prev.first ) / ( next.first - prev.first );
 }
 
 } // Namespace
