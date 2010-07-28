@@ -71,15 +71,14 @@ void TurksHead::draw( Cairo::RefPtr< Cairo::Context > context ) const {
 void TurksHead::drawPaths() const {
     for( int path = 0; path < m_paths; ++path ) {
         drawPath( path );
-        m_ctx->rotate( 2 * M_PI / m_paths );
     }
 }
 
 void TurksHead::drawPath( int path ) const {
     for( int theta = 0; theta <= m_maxThetaOnPath; ++theta ) {
-        drawSegment( theta );
+        drawSegment( path, theta );
     }
-    typedef std::pair< int, int > Pii;
+    /*typedef std::pair< int, int > Pii;
     foreach( Pii p, m_crossingThetas ) {
         assert( m_knownAltitudes.find( p.first ) != m_knownAltitudes.end() );
         if( m_knownAltitudes.find( p.first )->second == -1 ) {
@@ -87,16 +86,102 @@ void TurksHead::drawPath( int path ) const {
         } else {
             redraw( p.second, p.first );
         }
-    }
+    }*/
 }
 
-void TurksHead::drawSegment( int theta ) const {
-    pathSegment( theta - 1, theta + 1 );
-    setSourceHsv( theta * 360. / m_maxThetaOnPath, 0.5, 0.5 + getAltitude( theta ) / 2 );
+void TurksHead::drawSegment( int path, int theta ) const {
+    pathSegment( path, theta - 1, theta + 1 );
+    //setSourceHsv( theta * 360. / m_maxThetaOnPath, 0.5, 0.5 + getAltitude( theta ) / 2 );
+    setSourceHsv( path * 360. / m_paths, 0.5, 0.8 );
     m_ctx->fill();
 }
 
-void TurksHead::redraw( int thetaLow, int thetaHight ) const {
+void TurksHead::pathSegment( int path, int minTheta, int maxTheta ) const {
+    moveTo( getOuterCoordinates( path, minTheta ) );
+    for( int theta = minTheta + 1; theta <= maxTheta; ++theta ) {
+        lineTo( getOuterCoordinates( path, theta ) );
+    }
+    for( int theta = maxTheta; theta >= minTheta; --theta ) {
+        lineTo( getInnerCoordinates( path, theta ) );
+    }
+    m_ctx->close_path();
+}
+
+boost::tuple< double, double > TurksHead::getOuterCoordinates( int path, int theta ) const {
+    double x, y; boost::tie( x, y ) = getCoordinates( path, theta );
+    double nx, ny; boost::tie( nx, ny ) = getNormal( path, theta );
+    return boost::make_tuple( x + nx, y + ny );
+}
+
+boost::tuple< double, double > TurksHead::getInnerCoordinates( int path, int theta ) const {
+    double x, y; boost::tie( x, y ) = getCoordinates( path, theta );
+    double nx, ny; boost::tie( nx, ny ) = getNormal( path, theta );
+    return boost::make_tuple( x - nx, y - ny );
+}
+
+boost::tuple< double, double > TurksHead::getNormal( int path, int theta ) const {
+    double x0, y0; boost::tie( x0, y0 ) = getCoordinates( path, theta - 1 );
+    double x1, y1; boost::tie( x1, y1 ) = getCoordinates( path, theta + 1 );
+
+    double dx = x1 - x0;
+    double dy = y1 - y0;
+    double n = std::sqrt( dx * dx + dy * dy );
+
+    double nx = -m_lineWidth * dy / n / 2;
+    double ny = m_lineWidth * dx / n / 2;
+
+    return boost::make_tuple( nx, ny );
+}
+
+boost::tuple< double, double > TurksHead::getCoordinates( int path, int theta ) const {
+    return convertRadialToCartesianCoordinates( getRadius( path, theta ), theta );
+}
+
+double TurksHead::getRadius( int path, int theta ) const {
+    return m_radius + m_deltaRadius * cos( m_bights * angleFromTheta( theta + phi( path ) ) / m_leads );
+}
+
+double TurksHead::angleFromTheta( int theta ) const {
+    return M_PI * theta / m_bights / m_thetaSteps;
+}
+
+int TurksHead::phi( int path ) const {
+    return 2 * path * m_thetaSteps;
+}
+
+boost::tuple< double, double > TurksHead::convertRadialToCartesianCoordinates( double radius, int theta ) const {
+    return boost::make_tuple(
+        radius * std::cos( angleFromTheta( theta ) ),
+        radius * std::sin( angleFromTheta( theta ) )
+    );
+}
+
+void TurksHead::moveTo( const boost::tuple< double, double >& p ) const {
+    m_ctx->move_to( p.get< 0 >(), p.get< 1 >() );
+}
+
+void TurksHead::lineTo( const boost::tuple< double, double >& p ) const {
+    m_ctx->line_to( p.get< 0 >(), p.get< 1 >() );
+}
+
+void TurksHead::setSourceHsv( double h, double s, double v ) const {
+    int hi = h / 60;
+    double f = h / 60 - hi;
+    hi %= 60;
+    double p = v * ( 1 - s );
+    double q = v * ( 1 - f * s );
+    double t = v * ( 1 - ( 1 - f ) * s );
+    switch( hi ) {
+        case 0: return m_ctx->set_source_rgb( v, t, p );
+        case 1: return m_ctx->set_source_rgb( q, v, p );
+        case 2: return m_ctx->set_source_rgb( p, v, t );
+        case 3: return m_ctx->set_source_rgb( p, q, v );
+        case 4: return m_ctx->set_source_rgb( t, p, v );
+        case 5: return m_ctx->set_source_rgb( v, p, q );
+    }
+}
+
+/*void TurksHead::redraw( int thetaLow, int thetaHight ) const {
     m_ctx->save();
     clip( thetaLow );
 
@@ -136,17 +221,6 @@ int TurksHead::getNextCheckPoint( std::map< int, int >::const_iterator it ) cons
     }
 }
 
-void TurksHead::pathSegment( int minTheta, int maxTheta ) const {
-    moveTo( getOuterCoordinates( minTheta ) );
-    for( int theta = minTheta + 1; theta <= maxTheta; ++theta ) {
-        lineTo( getOuterCoordinates( theta ) );
-    }
-    for( int theta = maxTheta; theta >= minTheta; --theta ) {
-        lineTo( getInnerCoordinates( theta ) );
-    }
-    m_ctx->close_path();
-}
-
 void TurksHead::clip( int thetaLow ) const {
     std::map< int, int >::const_iterator it = m_knownAltitudes.find( thetaLow );
     assert( it != m_knownAltitudes.begin() );
@@ -155,7 +229,7 @@ void TurksHead::clip( int thetaLow ) const {
 
     pathSegment( getPreviousCheckPoint( it ), getNextCheckPoint( it ) );
     m_ctx->clip();
-}
+}*/
 
 double TurksHead::getAltitude( int theta ) const {
     std::map< int, int >::const_iterator nextIt = m_knownAltitudes.lower_bound( theta );
@@ -163,76 +237,6 @@ double TurksHead::getAltitude( int theta ) const {
     assert( nextIt != m_knownAltitudes.end() );
     std::map< int, int >::const_iterator prevIt = boost::prior( nextIt );
     return prevIt->second + ( nextIt->second - prevIt->second ) * ( theta - prevIt->first ) / float( nextIt->first - prevIt->first );
-}
-
-boost::tuple< double, double > TurksHead::getOuterCoordinates( int theta ) const {
-    double x, y; boost::tie( x, y ) = getCoordinates( theta );
-    double nx, ny; boost::tie( nx, ny ) = getNormal( theta );
-    return boost::make_tuple( x + nx, y + ny );
-}
-
-boost::tuple< double, double > TurksHead::getInnerCoordinates( int theta ) const {
-    double x, y; boost::tie( x, y ) = getCoordinates( theta );
-    double nx, ny; boost::tie( nx, ny ) = getNormal( theta );
-    return boost::make_tuple( x - nx, y - ny );
-}
-
-boost::tuple< double, double > TurksHead::getNormal( int theta ) const {
-    double x0, y0; boost::tie( x0, y0 ) = getCoordinates( theta - 1 );
-    double x1, y1; boost::tie( x1, y1 ) = getCoordinates( theta + 1 );
-
-    double dx = x1 - x0;
-    double dy = y1 - y0;
-    double n = std::sqrt( dx * dx + dy * dy );
-
-    double nx = -m_lineWidth * dy / n / 2;
-    double ny = m_lineWidth * dx / n / 2;
-
-    return boost::make_tuple( nx, ny );
-}
-
-boost::tuple< double, double > TurksHead::getCoordinates( int theta ) const {
-    return convertRadialToCartesianCoordinates( getRadius( theta ), theta );
-}
-
-double TurksHead::getRadius( int theta ) const {
-    return m_radius + m_deltaRadius * cos( m_bights * angleFromTheta( theta ) / m_leads );
-}
-
-boost::tuple< double, double > TurksHead::convertRadialToCartesianCoordinates( double radius, int theta ) const {
-    return boost::make_tuple(
-        radius * std::cos( angleFromTheta( theta ) ),
-        radius * std::sin( angleFromTheta( theta ) )
-    );
-}
-
-double TurksHead::angleFromTheta( int theta ) const {
-    return M_PI * theta / m_bights / m_thetaSteps;
-}
-
-void TurksHead::moveTo( const boost::tuple< double, double >& p ) const {
-    m_ctx->move_to( p.get< 0 >(), p.get< 1 >() );
-}
-
-void TurksHead::lineTo( const boost::tuple< double, double >& p ) const {
-    m_ctx->line_to( p.get< 0 >(), p.get< 1 >() );
-}
-
-void TurksHead::setSourceHsv( double h, double s, double v ) const {
-    int hi = h / 60;
-    double f = h / 60 - hi;
-    hi %= 60;
-    double p = v * ( 1 - s );
-    double q = v * ( 1 - f * s );
-    double t = v * ( 1 - ( 1 - f ) * s );
-    switch( hi ) {
-        case 0: return m_ctx->set_source_rgb( v, t, p );
-        case 1: return m_ctx->set_source_rgb( q, v, p );
-        case 2: return m_ctx->set_source_rgb( p, v, t );
-        case 3: return m_ctx->set_source_rgb( p, q, v );
-        case 4: return m_ctx->set_source_rgb( t, p, v );
-        case 5: return m_ctx->set_source_rgb( v, p, q );
-    }
 }
 
 } // Namespace
