@@ -5,8 +5,12 @@ import cairo
 
 import turkshead
 
+class TurksHead( turkshead.TurksHead ):
+    def get_hue( self, k, theta ):
+        return ( ( k * 360. / self.d ) + 180 ) % 360
+
 width = 9
-height = 9
+height = 5
 size = 200
 
 img = cairo.ImageSurface( cairo.FORMAT_RGB24, width * size, height * size )
@@ -16,11 +20,11 @@ ctx.paint()
 ctx.translate( -size / 2, -size / 2 )
 ctx.set_source_rgb( 0, 0, 0 )
 
-for leads in range( 1, width + 1 ):
-    for bights in range( 1, height + 1 ):
+for leads in range( 1, height + 1 ):
+    for bights in range( 1, width + 1 ):
         ctx.save()
         ctx.translate( size * bights, size * leads )
-        t = turkshead.TurksHead( leads, bights, size / 8. * 0.9, size / 2. * 0.9, size / 15. )
+        t = TurksHead( leads, bights, size / 8. * 0.9, size / 2. * 0.9, size / 15. )
         t.draw( ctx )
         ctx.restore()
 

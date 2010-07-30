@@ -51,9 +51,13 @@ namespace TurksHead {
 class TurksHead {
 public:
     TurksHead( int leads, int bights, double innerRadius, double outerRadius, double lineWidth );
+    virtual ~TurksHead();
 
 public:
     void draw( Cairo::RefPtr< Cairo::Context > ) const;
+    int getD() const;
+    int getP() const;
+    int getQ() const;
 
 private:
     STRONG_TYPEDEF( int, Theta )
@@ -85,6 +89,14 @@ private:
     void redrawAllIntersections() const;
     void redrawIntersection( const Intersection& ) const;
 
+public: /// @todo Remove this work arround: those functions should be private
+    void setColor( Path k, Theta ) const;
+    double getHue( Path, Theta ) const;
+    virtual double doGetHue( int k, int theta ) const;
+    double getSaturation( Path, Theta ) const;
+    virtual double doGetSaturation( int k, int theta ) const;
+
+private:
     boost::tuple< double, double > getCoordinates( Path k, Theta theta ) const;
     boost::tuple< double, double > getInnerCoordinates( Path k, Theta theta ) const;
     boost::tuple< double, double > getOuterCoordinates( Path k, Theta theta ) const;

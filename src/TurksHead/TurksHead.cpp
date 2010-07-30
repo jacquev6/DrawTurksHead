@@ -31,6 +31,9 @@ TurksHead::Segment::Segment( Theta min, Theta max ) :
 {
 }
 
+TurksHead::~TurksHead() {
+}
+
 TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRadius, double lineWidth ) :
     p( bights ),
     q( leads ),
@@ -158,8 +161,28 @@ void TurksHead::drawSegment( Path k, Theta minTheta, Theta maxTheta ) const {
 void TurksHead::drawStep( Path k, Theta theta ) const {
     pathSegment( k, theta, theta + 1 );
     /// @todo Use a callback function given by the user to choose the color. Even better, this function could draw a portion of rope.
-    setSourceHsv( k.index() * 360. / d, 0.5, 0.5 + getAltitude( k, theta ) / 2 );
+    setColor( k, theta );
     m_ctx->fill();
+}
+
+void TurksHead::setColor( Path k, Theta theta ) const {
+    setSourceHsv( getHue( k, theta ), getSaturation( k, theta ), 0.5 + getAltitude( k, theta ) / 2 );
+}
+
+double TurksHead::getHue( Path k, Theta theta ) const {
+    return doGetHue( k.index(), theta.index() );
+}
+
+double TurksHead::doGetHue( int k, int theta ) const {
+    return k * 360. / d;
+}
+
+double TurksHead::getSaturation( Path k, Theta theta ) const {
+    return doGetSaturation( k.index(), theta.index() );
+}
+
+double TurksHead::doGetSaturation( int k, int theta ) const {
+    return 0.5;
 }
 
 void TurksHead::pathSegment( Path k, Theta minTheta, Theta maxTheta ) const {
@@ -343,6 +366,18 @@ double TurksHead::getAltitude( Path k, Theta theta ) const {
     std::pair< Theta, double > next = getNextKnownAltitude( k, theta );
 
     return prev.second + ( next.second - prev.second ) * ( theta - prev.first ).index() / ( next.first - prev.first ).index();
+}
+
+int TurksHead::getD() const {
+    return d;
+}
+
+int TurksHead::getP() const {
+    return p;
+}
+
+int TurksHead::getQ() const {
+    return q;
 }
 
 } // Namespace
