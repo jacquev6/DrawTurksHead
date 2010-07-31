@@ -38,7 +38,7 @@ TurksHead::TurksHead( int leads, int bights, double innerRadius, double outerRad
     p( bights ),
     q( leads ),
     d( boost::math::gcd( p, q ) ),
-    m_thetaSteps( 15 ),
+    m_thetaSteps( 100 ),
     m_maxThetaOnPath( 2 * q * p * m_thetaSteps / d ),
     m_radius( ( innerRadius + outerRadius ) / 2 ),
     m_deltaRadius( ( outerRadius - innerRadius - lineWidth ) / 2 ),
@@ -161,28 +161,16 @@ void TurksHead::drawSegment( Path k, Theta minTheta, Theta maxTheta ) const {
 void TurksHead::drawStep( Path k, Theta theta ) const {
     pathSegment( k, theta, theta + 1 );
     /// @todo Use a callback function given by the user to choose the color. Even better, this function could draw a portion of rope.
-    setColor( k, theta );
+    setSource( k, theta );
     m_ctx->fill();
 }
 
-void TurksHead::setColor( Path k, Theta theta ) const {
-    setSourceHsv( getHue( k, theta ), getSaturation( k, theta ), 0.5 + getAltitude( k, theta ) / 2 );
+void TurksHead::setSource( Path k, Theta theta ) const {
+    setSourceHsv( computeColorHsv( k.index(), theta.index() ) );
 }
 
-double TurksHead::getHue( Path k, Theta theta ) const {
-    return doGetHue( k.index(), theta.index() );
-}
-
-double TurksHead::doGetHue( int k, int theta ) const {
-    return k * 360. / d;
-}
-
-double TurksHead::getSaturation( Path k, Theta theta ) const {
-    return doGetSaturation( k.index(), theta.index() );
-}
-
-double TurksHead::doGetSaturation( int k, int theta ) const {
-    return 0.5;
+boost::tuple< double, double, double > TurksHead::computeColorHsv( int k, int theta ) const {
+    return boost::make_tuple( k * 360. / d, 0.5, 0.5 + getAltitude( Path( k ), Theta( theta ) ) / 2 );
 }
 
 void TurksHead::pathSegment( Path k, Theta minTheta, Theta maxTheta ) const {
@@ -269,6 +257,10 @@ void TurksHead::moveTo( const boost::tuple< double, double >& p ) const {
 
 void TurksHead::lineTo( const boost::tuple< double, double >& p ) const {
     m_ctx->line_to( p.get< 0 >(), p.get< 1 >() );
+}
+
+void TurksHead::setSourceHsv( boost::tuple< double, double, double > hsv ) const {
+    setSourceHsv( hsv.get< 0 >(), hsv.get< 1 >(), hsv.get< 2 >() );
 }
 
 void TurksHead::setSourceHsv( double h, double s, double v ) const {
@@ -368,16 +360,16 @@ double TurksHead::getAltitude( Path k, Theta theta ) const {
     return prev.second + ( next.second - prev.second ) * ( theta - prev.first ).index() / ( next.first - prev.first ).index();
 }
 
-int TurksHead::getD() const {
-    return d;
-}
-
 int TurksHead::getP() const {
     return p;
 }
 
 int TurksHead::getQ() const {
     return q;
+}
+
+int TurksHead::getD() const {
+    return d;
 }
 
 } // Namespace

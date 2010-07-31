@@ -6,8 +6,8 @@ import cairo
 import turkshead
 
 class TurksHead( turkshead.TurksHead ):
-    def get_hue( self, k, theta ):
-        return ( ( k * 360. / self.d ) + 180 ) % 360
+    def computeColorHsv( self, k, theta ):
+        return ( k * 360. / self.d, 0.5, 0.5 + self.getAltitude( k, theta ) / 2 )
 
 width = 9
 height = 5

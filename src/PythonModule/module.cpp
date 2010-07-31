@@ -26,14 +26,25 @@ public:
     void draw( boost::python::object context ) {
         TurksHead::draw( Cairo::RefPtr< Cairo::Context >( new Cairo::Context( PycairoContext_GET( context.ptr() ) ) ) );
     }
+    
+    double getAltitude( int k, int theta ) {
+        return TurksHead::TurksHead::getAltitude(
+            TurksHead::TurksHead::Path( k ),
+            TurksHead::TurksHead::Theta( theta )
+        );
+    }
 
 private:
-    double doGetHue( int k, int theta ) const {
-        using namespace boost::python;
-        if( override f = this->get_override( "get_hue" ) ) {
-            return f( k, theta );
+    boost::tuple< double, double, double > computeColorHsv( int k, int theta ) const {
+        //return TurksHead::TurksHead::computeColorHsv( k, theta );
+        if( boost::python::override f = this->get_override( "computeColorHsv" ) ) {
+            boost::python::tuple r = f( k, theta );
+            double h = boost::python::extract< double >( r[0] );
+            double s = boost::python::extract< double >( r[1] );
+            double v = boost::python::extract< double >( r[2] );
+            return boost::make_tuple( h, s, v );
         } else {
-            return TurksHead::TurksHead::doGetHue( k, theta );
+            return TurksHead::TurksHead::computeColorHsv( k, theta );
         }
     }
 };
@@ -41,12 +52,14 @@ private:
 }
 
 BOOST_PYTHON_MODULE( _turkshead ) {
-    using namespace boost::python;
     Pycairo_IMPORT; // Initialization of Pycairo_CAPI
     
-    /// @todo Look at http://www.boost.org/doc/libs/1_43_0/libs/parameter/doc/html/python.html, to add named parameters to the constructor
-    class_< PythonTurksHead >( "TurksHead", init< int, int, double, double, double >() )
+    /// @todo Look at http://www.boost.org/doc/libs/1_43_0/libs/parameter/doc/html/python.html to add named parameters to the constructor
+    boost::python::class_< PythonTurksHead >( "TurksHead", boost::python::init< int, int, double, double, double >() )
         .def( "draw", &PythonTurksHead::draw )
+        .add_property( "p", &TurksHead::TurksHead::getP )
+        .add_property( "q", &TurksHead::TurksHead::getQ )
         .add_property( "d", &TurksHead::TurksHead::getD )
+        .def( "getAltitude", &PythonTurksHead::getAltitude )
     ;
 }

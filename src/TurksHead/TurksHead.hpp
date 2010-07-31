@@ -55,15 +55,16 @@ public:
 
 public:
     void draw( Cairo::RefPtr< Cairo::Context > ) const;
-    int getD() const;
     int getP() const;
     int getQ() const;
+    int getD() const;
 
-private:
+protected: /// @todo Remove this work arround: this function should be private. MAYBE...
     STRONG_TYPEDEF( int, Theta )
 
     STRONG_TYPEDEF( int, Path )
 
+private:
     struct Intersection {
         Intersection( Path, Theta, Path, Theta );
         Path m;
@@ -89,12 +90,9 @@ private:
     void redrawAllIntersections() const;
     void redrawIntersection( const Intersection& ) const;
 
-public: /// @todo Remove this work arround: those functions should be private
-    void setColor( Path k, Theta ) const;
-    double getHue( Path, Theta ) const;
-    virtual double doGetHue( int k, int theta ) const;
-    double getSaturation( Path, Theta ) const;
-    virtual double doGetSaturation( int k, int theta ) const;
+    void setSource( Path k, Theta ) const;
+protected: /// @todo Remove this work arround: this function should be private
+    virtual boost::tuple< double, double, double > computeColorHsv( int, int ) const;
 
 private:
     boost::tuple< double, double > getCoordinates( Path k, Theta theta ) const;
@@ -106,7 +104,9 @@ private:
 
     Theta phi( Path k ) const;
 
+protected: /// @todo Remove this work arround: this function should be private. MAYBE...
     double getAltitude( Path k, Theta theta ) const;
+private:
     void computeKnownAltitudes();
 
     void computeIntersections();
@@ -123,6 +123,7 @@ private:
     void moveTo( const boost::tuple< double, double >& ) const;
     void lineTo( const boost::tuple< double, double >& ) const;
 
+    void setSourceHsv( boost::tuple< double, double, double > ) const;
     void setSourceHsv( double h, double s, double v ) const;
 
     double angleFromTheta( Theta theta ) const;
