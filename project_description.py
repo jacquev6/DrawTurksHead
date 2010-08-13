@@ -29,3 +29,11 @@ PythonPackage(
     stripFromModules = lambda s: s.replace( "src/PythonModule", "turkshead" ),
     cppPythonModules = [ "turkshead._turkshead" ]
 )
+
+ExecutableScript(
+    "src/draw_turks_head.py"
+)
+
+ExecutableScript(
+    "src/draw_mosaic.py"
+)

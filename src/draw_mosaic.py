@@ -5,13 +5,13 @@ import cairo
 
 import turkshead
 
-class TurksHead( turkshead.TurksHead ):
+class MyTurksHead( turkshead.TurksHead ):
     def computeColorHsv( self, k, theta ):
-        return ( k * 360. / self.d, 0.5, 0.5 + self.getAltitude( k, theta ) / 2 )
+        return ( ( k * 360. / self.d + 240. ) % 360., 0.5, 0.5 + self.getAltitude( k, theta ) / 2 )
 
 width = 9
 height = 5
-size = 200
+size = 100
 
 img = cairo.ImageSurface( cairo.FORMAT_RGB24, width * size, height * size )
 ctx = cairo.Context( img )
@@ -24,7 +24,7 @@ for leads in range( 1, height + 1 ):
     for bights in range( 1, width + 1 ):
         ctx.save()
         ctx.translate( size * bights, size * leads )
-        t = TurksHead( leads, bights, size / 8. * 0.9, size / 2. * 0.9, size / 15. )
+        t = MyTurksHead( leads, bights, size / 8. * 0.9, size / 2. * 0.9, size / 15. )
         t.draw( ctx )
         ctx.restore()
 
