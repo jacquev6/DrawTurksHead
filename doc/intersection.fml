@@ -1,0 +1,13 @@
+\begin{array}{l}
+
+\shadow{\Leftrightarrow} r_i( \theta_2 ) \cdot \vec u( \theta_2 ) = r_j( \theta_1 ) \cdot \vec u( \theta_1 ) \\
+
+\Leftrightarrow \left| \begin{array}{l}
+    \begin{cases} r_i( \theta_2 ) = r_j( \theta_1 ) \\ \vec u( \theta_2 ) = \vec u( \theta_1 ) \end{cases} \\
+    \mbox{or} \\
+    \begin{cases} r_i( \theta_2 ) = -r_j( \theta_1 ) \\ \vec u( \theta_2 ) = -\vec u( \theta_1 ) \end{cases}
+\end{array} \right. \\
+
+\Leftrightarrow \begin{cases} r_i( \theta_2 ) = r_j( \theta_1 ) \\ \vec u( \theta_2 ) = \vec u( \theta_1 ) \end{cases}, \mbox{ because } \forall \theta, r_i( \theta ) > 0 \\
+
+\end{array}

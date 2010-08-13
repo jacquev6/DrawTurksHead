@@ -1,0 +1,210 @@
+I) Introduction
+===============
+
+p bights
+q leads
+
+d = gcd( p, q )
+
+Pour k dans Z, définissons:
+    phi_k = 2*k*pi/p
+    r_k : theta |--> r + dr*cos( p*( theta - phi_k )/q )
+
+    -->                           --------->
+    r_k : theta |--> r_k( theta )*u( theta )
+
+                        -->
+    Gamma_k : courbe de r_k
+
+
+
+II) Périodicité et intersections
+================================
+
+Intersection de Gamma_n et Gamma_m
+
+-->               -->
+r_n( theta_1 ) == r_m( theta_2 )
+
+
+            ----------->    ----------->
+            u( theta_1 ) == u( theta_2 )
+        ET
+            r_n( theta_1 ) == r_m( theta_2 )
+<=> OU
+            ----------->     ----------->
+            u( theta_1 ) == -u( theta_2 )
+        ET
+            r_n( theta_1 ) == -r_m( theta_2 )
+
+
+        ----------->    ----------->
+        u( theta_1 ) == u( theta_2 )
+<=> ET                                         car r_k( theta ) > 0
+        r_n( theta_1 ) == r_m( theta_2 )
+
+
+        ----------->    ----------->
+        u( theta_1 ) == u( theta_2 )
+<=> ET
+        cos( p*( theta_1 - phi_n )/q ) = cos( p*( theta_2 - phi_m )/q )
+
+
+        Il existe a dans Z,
+        theta_2 = theta_1 + 2*a*pi
+<=> ET
+        Il existe b dans Z,
+            p*( theta_1 - phi_n )/q = 2*b*pi + p*( theta_2 - phi_m )/q
+        OU
+            p*( theta_1 - phi_n )/q = 2*b*pi - p*( theta_2 - phi_m )/q
+
+
+        Il existe ( a, b ) dans Z,
+        theta_2 = theta_1 + 2*a*pi
+        p*( theta_1 - phi_n )/q = 2*b*pi + p*( theta_2 - phi_m )/q
+<=> OU
+        Il existe ( a, b ) dans Z,
+        theta_2 = theta_1 + 2*a*pi
+        p*( theta_1 - phi_n )/q = 2*b*pi - p*( theta_2 - phi_m )/q
+
+
+        Il existe ( a, b ) dans Z,
+        theta_2 = theta_1 + 2*a*pi
+        p*( theta_1 - phi_n )/q = 2*b*pi + p*( theta_2 - phi_m )/q
+<=> OU                                                                    , en changeant a de signe ci-dessous
+        Il existe ( a, b ) dans Z,
+        theta_2 = theta_1 - 2*a*pi
+        p*( theta_1 - phi_n )/q = 2*b*pi - p*( theta_2 - phi_m )/q
+
+
+        Il existe ( a, b ) dans Z,
+        theta_2 = theta_1 + 2*a*pi
+        p*( theta_1 - 2*n*pi/p )/q = 2*b*pi + p*( theta_1 + 2*a*pi - 2*m*pi/p )/q
+<=> OU
+        Il existe ( a, b ) dans Z,
+        theta_2 = theta_1 - 2*a*pi
+        p*( theta_1 - 2*n*pi/p )/q = 2*b*pi - p*( theta_1 - 2*a*pi - 2*m*pi/p )/q
+
+
+        Il existe ( a, b ) dans Z,
+        theta_2 = theta_1 + 2*a*pi
+        p*theta_1 - 2*n*pi = 2*b*q*pi + p*theta_1 + 2*a*p*pi - 2*m*pi
+<=> OU
+        Il existe ( a, b ) dans Z,
+        theta_2 = theta_1 - 2*a*pi
+        p*theta_1 - 2*n*pi = 2*b*q*pi - p*theta_1 + 2*a*p*pi + 2*m*pi
+
+
+        Il existe ( a, b ) dans Z,
+        a*p + b*q = m - n
+        theta_2 = theta_1 + 2*a*pi
+<=> OU
+        Il existe ( a, b ) dans Z,
+        theta_2 = theta_1 - 2*a*pi
+        theta_1 = ( a*p + b*q + m + n )*pi/p
+
+
+        Il existe ( a, b ) dans Z,
+        a*p + b*q = m - n
+        theta_2 = theta_1 + 2*a*pi
+<=> OU
+        Il existe ( a, b ) dans Z,
+        theta_1 = ( a*p + b*q + m + n )*pi/p
+        theta_2 = theta_1 - 2*a*pi
+
+
+Il y a donc deux types d'intersection entre les courbes Gamma_k:
+Le premier type correspond à des courbes confondues. Par le théoreme de Bézout (ajouter un lien Wikipedia), on voit que cela se produit lorsque m - n est un multiple de d.
+Il est donc suffisant de dessiner les Gamma_k pour k entre 0 et d-1.
+Notons qu'on retrouve le résultat connu qui dit qu'on peut réaliser un bonnet turc à p ganses et q spires avec une seule corde si et seulement si p et q sont premiers entre eux.
+Dans le cas m = n, on a a*p + b*q = 0 = m - n avec, par exemple, a = q/d et b = -p/d.
+Cela montre qu'il est suffisant de dessiner Gamma_k pour theta entre 0 et 2*q*pi/d.
+
+
+Le deuxième type correspond à des courbes séquentes en un point.
+Soit une intersection ponctuelle entre Gamma_m et Gamma_n, avec 0 <= m <= n < d:
+    il existe a, b dans Z, tels que
+    theta_1 = ( a*p + b*q + m + n )*pi/p
+    theta_2 = ( a*p + b*q + m + n )*pi/p - 2*a*pi
+
+0 <= theta_1 < 2*q*pi/d
+0 <= theta_2 < 2*q*pi/d
+
+0 <= ( a*p + b*q + m + n )*pi/p < 2*q*pi/d
+0 <= ( a*p + b*q + m + n )*pi/p - 2*a*pi < 2*q*pi/d
+
+-( m + n ) <= a*p + b*q < 2*p*q/d - ( m + n )
+-( m + n ) <= -a*p + b*q < 2*p*q/d - ( m + n )
+
+(Somme des deux équations)
+=> -2*( m + n ) <= 2*b*q < 4*p*q/d - 2*( m + n )
+=> -( m + n )/q <= b < 2*p/d - ( m + n )/q
+
+(Opposé de la deuxième)
+-( m + n ) <= a*p + b*q < 2*p*q/d - ( m + n )
+m + n >= a*p - b*q > -2*p*q/d + m + n
+
+(Retournement de la deuxième)
+-( m + n ) <= a*p + b*q < 2*p*q/d - ( m + n )
+-2*p*q/d + m + n < a*p - b*q <= m + n
+
+(Somme des deux équations)
+-2*p*q/d < 2*a*p < 2*p*q/d
+-q/d < a < q/d
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
