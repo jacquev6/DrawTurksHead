@@ -35,7 +35,9 @@ class TurksHead:
     def getRadius( self, k, theta ):
         return self.r + self.dr * math.cos( self.p * ( theta - self.phi( k ) ) / self.q )
 
-    def drawPath( self, k ):
+    def drawPath( self, k, ctx = None ):
+        if ctx is not None:
+            self.ctx = ctx
         self.ctx.set_source_rgb( *colors[ k ] )
         theta = 0
         r = self.getRadius( k, theta )
@@ -47,7 +49,9 @@ class TurksHead:
         self.ctx.close_path()
         self.ctx.stroke()
 
-    def drawPaths( self ):
+    def drawPaths( self, ctx = None ):
+        if ctx is not None:
+            self.ctx = ctx
         for k in range( self.d ):
             self.drawPath( k )
 
@@ -60,7 +64,7 @@ class TurksHead:
                 self.curveIntersect( m, n )
 
         #print self.p, self.q, "=>", self.nbInter, "intersections", self.badInter, "bad inter", self.nbInter == self.p * ( self.q - 1 )
-        print self.p, self.q, "=>", self.badInter, self.nbInter == self.p * ( self.q - 1 )
+        #print self.p, self.q, "=>", self.badInter, self.nbInter == self.p * ( self.q - 1 )
 
     def drawPoints( self, n, theta_1, m, theta_2 ):
         r1 = self.getRadius( n, theta_1 )
@@ -107,10 +111,10 @@ class TurksHead:
                 else:
                     self.badInter += 1
 
-def main( size ):
+def draw( size, drawFunction, fileName ):
     img = cairo.ImageSurface( cairo.FORMAT_ARGB32, 100 * size, 100 * size )
     ctx = cairo.Context( img )
-    ctx.set_source_rgb( 0.7, 1, 1 )
+    ctx.set_source_rgb( 1, 1, 1 )
     ctx.paint()
     ctx.translate( 50, 50 )
     ctx.scale( 1, -1 )
@@ -121,9 +125,11 @@ def main( size ):
             t = TurksHead( p + 1, q + 1 )
             ctx.save()
             ctx.translate( 100 * p, -100 * q )
-            t.draw( ctx )
+            drawFunction( t, ctx )
             ctx.restore()
 
-    img.write_to_png( "DrawTurksHead.algo.png" )
+    img.write_to_png( fileName )
 
-main( 9 )
+draw( 6, lambda t, ctx: t.drawPath( 0, ctx ), "basic_waves_1.png" )
+draw( 6, lambda t, ctx: t.drawPaths( ctx ), "basic_waves_2.png" )
+draw( 6, lambda t, ctx: t.draw( ctx ), "intersections.png" )
