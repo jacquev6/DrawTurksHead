@@ -45,3 +45,7 @@ CppExecutable(
 PythonScript(
     source = "src/draw_turkshead_python.py"
 )
+
+PythonScript(
+    source = "src/draw_mosaic.py"
+)
