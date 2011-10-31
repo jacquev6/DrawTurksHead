@@ -7,18 +7,6 @@ import turkshead
 
 index = TemplateView.as_view( template_name = "DrawTurksHead/index.html" )
 
-demonstration = TemplateView.as_view( template_name = "DrawTurksHead/demonstration.html" )
-
-def roadmap( request ):
-    content = "".join( open( "../../DrawTurksHead/RoadMap.md" ).readlines() )
-    return render(
-        request,
-        "DrawTurksHead/roadmap.html",
-        {
-            "markdownContent" : content,
-        }
-    )
-
 def draw( request ):
     if "leads" in request.GET:
         leads = int( request.GET[ "leads" ] )
