@@ -9,7 +9,7 @@ The next question is how to fix \\(\\alpha\\). For a knot with \\(q\\) leads, th
 
 The next image shows this plot for small values of \\(p\\) and \\(q\\).
 
-<img src="/static/basic_waves_1.png"/>
+<img src="http://static.vincent-jacques.net/DrawTurksHead/basic_waves_1.png"/>
 
 This is mainly ok, but some cases look wrong (or example, \\(p=3\\) and \\(q=6\\)). This is due to the known result that, if \\(d=\\gcd( p, q )\\), you need \\(d\\) strings to make a Turk's head knot with \\(p\\) bights and \\(q\\) leads. This mean that we have to draw \\(d\\) curves. The total number of turns around the center is still the same, so each string makes \\(q/d\\) turns, and the range for \\(\\theta\\) is reduced to \\([0,2 \\cdot q \\cdot \\pi / d]\\).
 
@@ -17,7 +17,7 @@ Since the second curve must draw the second bight, it means that the second curv
 
 This give use our final family of curves: \\(r_k=r+\\delta_r \\cdot \\cos \\left( \\frac { p \\cdot ( \\theta - 2 \\cdot k \\cdot \\pi / p ) } { q } \\right)\\).
 
-<img src="/static/basic_waves_2.png"/>
+<img src="http://static.vincent-jacques.net/DrawTurksHead/basic_waves_2.png"/>
 
 Intersections and periodicity
 =============================
@@ -34,7 +34,7 @@ To be done... Thank you for your patience.
 
 This finally gives us the following intersection points:
 
-<img src="/static/intersections.png"/>
+<img src="http://static.vincent-jacques.net/DrawTurksHead/intersections.png"/>
 
 Special thanks to [MathJax](http://www.mathjax.org) for client-side rendering of math formulas.
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
