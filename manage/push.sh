@@ -25,7 +25,7 @@ version=$(grep '^version =' setup.py | sed 's/version = \"\(.*\)\"/\1/')
 
 git commit -am "Publish version $version"
 
-sdist_upload
+manage/sdist_upload.sh
 
 git tag -m "Version $version" v$version
 
