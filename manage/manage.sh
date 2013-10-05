@@ -1,9 +1,8 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 ############################ Copyrights and license ############################
 #                                                                              #
-# Copyright 2013 Vincent Jacques <vincent@vincent-jacques.net>                 #
+# Copyright                                                                    #
 #                                                                              #
 # This file is part of DrawTurksHead. http://jacquev6.github.com/DrawTurksHead #
 #                                                                              #
@@ -22,49 +21,62 @@
 #                                                                              #
 ################################################################################
 
-import setuptools
-import textwrap
-import subprocess
+function publish {
+    check
+    bump
+    doc
+    push
+}
 
-version = "0.1.1"
+function check {
+    pep8 --ignore=E501 . || exit
+}
+
+function fix_headers {
+    python scripts/fix_headers.py
+}
+
+function bump {
+    previousVersion=$( grep '^version =' setup.py | sed 's/version = \"\(.*\)\"/\1/' )
+    echo "Next version number? (previous: '$previousVersion')"
+    read version
+    sed -i -b "s/version = .*/version = \"$version\"/" setup.py
+}
+
+function doc {
+    rm -rf doc/build
+    mkdir doc/build
+    cd doc/build
+    git init
+    sphinx-build -b html -d doctrees .. . || exit
+    touch .nojekyll
+    echo /doctrees/ > .gitignore
+    git add . || exit
+    git commit --message "Automatic generation" || exit
+    git push --force ../.. HEAD:gh-pages || exit
+    cd ../..
+}
+
+function push {
+    echo "Break (Ctrl+c) here if something is wrong. Else, press enter"
+    read foobar
+
+    git commit -am "Publish version $version"
+
+    sdist_upload
+
+    git tag -m "Version $version" v$version
+
+    git push github master master:develop
+    git push --force github gh-pages
+    git push --tags
+}
+
+function sdist_upload {
+    cp COPYING* github
+    python setup.py sdist upload
+    rm -rf github/COPYING*
+}
 
 
-def parsePkgConfig(*args):
-    return [
-        s[2:]
-        for s
-        in subprocess.check_output(["pkg-config"] + list(args)).strip().split(" ")
-    ]
-
-
-_turkshead = setuptools.Extension(
-    "turkshead._turkshead",
-    ["turkshead/_turkshead.cpp", "turkshead/TurksHead.cpp"],
-    include_dirs=parsePkgConfig("pycairo", "cairomm-1.0", "--cflags-only-I"),
-    libraries=["boost_python"] + parsePkgConfig("cairomm-1.0", "--libs-only-l"),
-)
-
-
-if __name__ == "__main__":
-    setuptools.setup(
-        name="DrawTurksHead",
-        version=version,
-        description="Draw... Turk's head knots!",
-        author="Vincent Jacques",
-        author_email="vincent@vincent-jacques.net",
-        url="http://jacquev6.github.com/DrawTurksHead",
-        packages=[
-            "turkshead",
-        ],
-        package_data={
-            "turkshead": ["COPYING*"],
-        },
-        classifiers=[
-            "Development Status :: 4 - Beta",
-            "License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)",
-            "Programming Language :: Python",
-            "Programming Language :: Python :: 2",
-            "Programming Language :: Python :: 2.7",
-        ],
-        ext_modules=[_turkshead],
-    )
+$1

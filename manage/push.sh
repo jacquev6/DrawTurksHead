@@ -1,9 +1,8 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 ############################ Copyrights and license ############################
 #                                                                              #
-# Copyright 2013 Vincent Jacques <vincent@vincent-jacques.net>                 #
+# Copyright                                                                    #
 #                                                                              #
 # This file is part of DrawTurksHead. http://jacquev6.github.com/DrawTurksHead #
 #                                                                              #
@@ -22,49 +21,14 @@
 #                                                                              #
 ################################################################################
 
-import setuptools
-import textwrap
-import subprocess
+version=$(grep '^version =' setup.py | sed 's/version = \"\(.*\)\"/\1/')
 
-version = "0.1.1"
+git commit -am "Publish version $version"
 
+sdist_upload
 
-def parsePkgConfig(*args):
-    return [
-        s[2:]
-        for s
-        in subprocess.check_output(["pkg-config"] + list(args)).strip().split(" ")
-    ]
+git tag -m "Version $version" v$version
 
-
-_turkshead = setuptools.Extension(
-    "turkshead._turkshead",
-    ["turkshead/_turkshead.cpp", "turkshead/TurksHead.cpp"],
-    include_dirs=parsePkgConfig("pycairo", "cairomm-1.0", "--cflags-only-I"),
-    libraries=["boost_python"] + parsePkgConfig("cairomm-1.0", "--libs-only-l"),
-)
-
-
-if __name__ == "__main__":
-    setuptools.setup(
-        name="DrawTurksHead",
-        version=version,
-        description="Draw... Turk's head knots!",
-        author="Vincent Jacques",
-        author_email="vincent@vincent-jacques.net",
-        url="http://jacquev6.github.com/DrawTurksHead",
-        packages=[
-            "turkshead",
-        ],
-        package_data={
-            "turkshead": ["COPYING*"],
-        },
-        classifiers=[
-            "Development Status :: 4 - Beta",
-            "License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)",
-            "Programming Language :: Python",
-            "Programming Language :: Python :: 2",
-            "Programming Language :: Python :: 2.7",
-        ],
-        ext_modules=[_turkshead],
-    )
+git push github master master:develop
+git push --force github gh-pages
+git push --tags
