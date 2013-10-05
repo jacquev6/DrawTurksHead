@@ -1,3 +1,24 @@
+############################ Copyrights and license ############################
+#                                                                              #
+# Copyright 2010 Vincent Jacques <vincent@vincent-jacques.net>                 #
+#                                                                              #
+# This file is part of DrawTurksHead. http://jacquev6.github.com/DrawTurksHead #
+#                                                                              #
+# DrawTurksHead is free software: you can redistribute it and/or modify it     #
+# under the terms of the GNU Lesser General Public License as published by the #
+# Free Software Foundation, either version 3 of the License, or (at your       #
+# option) any later version.                                                   #
+#                                                                              #
+# DrawTurksHead is distributed in the hope that it will be useful, but WITHOUT #
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or        #
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License  #
+# for more details.                                                            #
+#                                                                              #
+# You should have received a copy of the GNU Lesser General Public License     #
+# along with DrawTurksHead. If not, see <http://www.gnu.org/licenses/>.        #
+#                                                                              #
+################################################################################
+
 DrawTurksHead is a tool to draw... Turk's Head Knots. Try it online. It can be used as a standalone command-line application under Windows, MacOs X and Linux (probably other Unixes), and as a C++ library or Python module to integrate in your applications. I may write a graphical user interface soon, and a Java interface later.
 
 So, what is a Turk's Head Knot? Well, I will avoid to repeat what has already been said over the web. Have a look to <a href="">wikipedia</a> and <a>[an other site]</a>. It looks like this: [two pictures of real Turk's Heads]
