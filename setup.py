@@ -26,7 +26,7 @@ import setuptools
 import textwrap
 import subprocess
 
-version = "0.1.2"
+version = "0.1.3"
 
 
 def parsePkgConfig(*args):
@@ -39,7 +39,7 @@ def parsePkgConfig(*args):
 
 _turkshead = setuptools.Extension(
     "turkshead._turkshead",
-    ["turkshead/_turkshead.cpp", "turkshead/TurksHead.cpp"],
+    ["turkshead/_turkshead.cpp", "turkshead/TurksHead.hpp", "turkshead/TurksHead.cpp"],
     include_dirs=parsePkgConfig("pycairo", "cairomm-1.0", "--cflags-only-I"),
     libraries=["boost_python"] + parsePkgConfig("cairomm-1.0", "--libs-only-l"),
 )
