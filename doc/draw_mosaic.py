@@ -1,5 +1,4 @@
-import optparse
-import fractions
+#!/usr/bin/env python
 
 import cairo
 

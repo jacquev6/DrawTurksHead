@@ -1,6 +1,3 @@
-// Standard library
-#include <iostream> /// @todo Remove
-
 // Boost
 #include <boost/python.hpp>
 
@@ -9,8 +6,8 @@
 // See http://www.cairographics.org/documentation/pycairo/2/pycairo_c_api.html
 static Pycairo_CAPI_t* Pycairo_CAPI;
 
-// DrawTurksHead
-#include <TurksHead/TurksHead.hpp>
+// Project
+#include "TurksHead.hpp"
 
 namespace {
 
