@@ -26,7 +26,7 @@ import setuptools
 import textwrap
 import subprocess
 
-version = "0.1.1"
+version = "0.1.2"
 
 
 def parsePkgConfig(*args):
