@@ -87,7 +87,7 @@ def extractBodyLines(lines):
     seenEndOfHeader = False
 
     for line in lines:
-        if len(line) > 0 and line[0] not in [ "#", "*" ] and not line.startswith("/*") and not line in endsOfHeader:
+        if len(line) > 0 and line[0] not in ["#", "*"] and not line.startswith("/*") and not line in endsOfHeader:
             seenEndOfHeader = True
         if seenEndOfHeader:
             bodyLines.append(line)
