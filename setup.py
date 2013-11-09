@@ -26,7 +26,7 @@ import setuptools
 import textwrap
 import subprocess
 
-version = "0.1.5"
+version = "0.1.6"
 
 
 def parsePkgConfig(*args):
@@ -57,7 +57,7 @@ if __name__ == "__main__":
             "turkshead",
         ],
         package_data={
-            "turkshead": ["COPYING*"],
+            "turkshead": ["COPYING*", "TurksHead.hpp"],
         },
         classifiers=[
             "Development Status :: 4 - Beta",
