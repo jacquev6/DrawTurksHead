@@ -16,7 +16,7 @@ def parse_pkg_config(*args):
         in subprocess.check_output(["pkg-config"] + list(args)).strip().split(" ")
     ]
 
-# @todo Add unit tests, reference them here to be run by setup.py test, change .travis.yml to run them
+# @todo Add unit tests, reference them here to be run by setup.py test, change .travis.yml to run them (with coveralls)
 # @todo Support Python 3 (on Travis as well)
 
 setuptools.setup(
