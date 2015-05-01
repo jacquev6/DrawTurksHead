@@ -11,6 +11,8 @@ before_install:
 - ./waf install
 - cd ..
 - pip install sphinx coveralls
+- ls /home/travis/virtualenv/python2.7/lib/pkgconfig
+- export PKG_CONFIG_PATH=PKG_CONFIG_PATH:/home/travis/virtualenv/python2.7/lib/pkgconfig
 install:
 - python setup.py install
 - cd
