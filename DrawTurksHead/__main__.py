@@ -6,7 +6,7 @@ import optparse
 
 import cairo
 
-import turkshead
+from . import TurksHead
 
 parser = optparse.OptionParser()
 parser.add_option("--width", type="int", default=800, help="Width")
@@ -30,6 +30,6 @@ ctx.paint()
 ctx.translate(width / 2, height / 2)
 ctx.scale(1, -1)
 
-turkshead.TurksHead(options.leads, options.bights, innerRadius, outerRadius, options.line_width).draw(ctx)
+TurksHead(options.leads, options.bights, innerRadius, outerRadius, options.line_width).draw(ctx)
 
 img.write_to_png(options.output)
