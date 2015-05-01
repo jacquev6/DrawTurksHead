@@ -15,9 +15,10 @@ before_install:
 - export PKG_CONFIG_PATH=PKG_CONFIG_PATH:/home/travis/virtualenv/python2.7/lib/pkgconfig
 install:
 - python setup.py install
-- cd
 script:
+- cd
 - python -m DrawTurksHead
+- cd -
 deploy:
   provider: pypi
   user: jacquev6
