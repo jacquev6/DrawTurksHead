@@ -4,7 +4,7 @@
 #include <boost/python.hpp>
 
 // PyCairo
-#include <pycairo/pycairo.h>
+#include <pycairo.h>
 // See http://www.cairographics.org/documentation/pycairo/2/pycairo_c_api.html
 static Pycairo_CAPI_t* Pycairo_CAPI;
 
