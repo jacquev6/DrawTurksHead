@@ -2,8 +2,8 @@
 Algorithm
 =========
 
-Intuitive construction of the curves to be drawn
-================================================
+Curves
+======
 
 Looking at the flat form of Turk's head knots, we see that the string oscillates between the center
 and the outside while it turns around the center.
@@ -64,3 +64,24 @@ This give use our final family of curves:
     :align: center
 
     :math:`r_k = 3 + \cos(p \cdot \theta/q - 2 \cdot k \cdot \pi/q)` for small values of :math:`p` and :math:`q`.
+
+Intersections
+=============
+
+The string must go once up and once down each time it crosses another string (or itself).
+So, we need to compute the coordinates of the intersection points.
+
+Let's forget what has been said in previous section, and analyse this from a mathematical point of view.
+
+Given two natural integers :math:`p` and :math:`q` and two real numbers :math:`r` and :math:`\delta_r` such that :math:`0 < \delta_r < r`.
+Let :math:`d=\gcd( p, q )`.
+Let's define the family of functions :math:`r_k : \theta \mapsto r + \delta_r \cdot \cos\left( p \cdot \frac{\theta - \phi_k}{q} \right)` with :math:`\phi_k = 2 \cdot k \cdot \pi / p` for :math:`k \in \mathbb Z`.
+Let :math:`\Gamma_k` be the graph of :math:`r_k` in polar coordinates, that is the graph of :math:`\vec { r_k } : \theta \mapsto r_k( \theta ) \cdot \vec u( \theta )`.
+
+:math:`\Gamma_m` and :math:`\Gamma_n` intersect if and only if :math:`\exists \theta_1, \theta_2 \in \mathbb R^2, \vec {r_n}( \theta_1 ) = \vec {r_m}( \theta_2 )`.
+
+To be done... Thank you for your patience.
+
+@todoc Include what's in doc_old/DrawTurksHead.algo.20100726.txt
+
+@todoc Insert a last figure with intersections
