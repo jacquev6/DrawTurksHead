@@ -44,4 +44,11 @@ setuptools.setup(
             libraries=["boost_python"] + parse_pkg_config("cairomm-1.0", "--libs-only-l"),
         ),
     ],
+    command_options={
+        "build_sphinx": {
+            "version": ("setup.py", version),
+            "release": ("setup.py", version),
+            "source_dir": ("setup.py", "doc"),
+        },
+    },
 )

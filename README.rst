@@ -57,6 +57,6 @@ Are you're good to go::
 Examples
 ========
 
-.. image:: doc/example1.png
+.. image:: http://dyn.vincent-jacques.net/turkshead?leads=4&bights=7&line_width=50&inner_radius=90
 
-.. image:: doc/example2.png
+.. image:: http://dyn.vincent-jacques.net/turkshead?leads=6&bights=9&line_width=30&inner_radius=40
