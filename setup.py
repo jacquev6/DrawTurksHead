@@ -27,6 +27,7 @@ setuptools.setup(
     author_email="vincent@vincent-jacques.net",
     url="http://pythonhosted.org/DrawTurksHead",
     packages=setuptools.find_packages(),
+    license="MIT",
     classifiers=[
         "Development Status :: 4 - Beta",
         "License :: OSI Approved",
