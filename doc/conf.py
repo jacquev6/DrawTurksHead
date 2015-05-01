@@ -2,6 +2,13 @@
 
 # Copyright 2013-2015 Vincent Jacques <vincent@vincent-jacques.net>
 
+import os
+import sys
+sys.path.append(os.path.dirname(__file__))
+import algorithm_images
+algorithm_images.create(os.path.dirname(__file__))
+
+
 master_doc = "index"
 project = "DrawTurksHead"
 author = '<a href="http://vincent-jacques.net/contact">Vincent Jacques</a>'
@@ -46,3 +53,8 @@ extensions.append("sphinx.ext.doctest")
 # doctest_global_setup
 # doctest_global_cleanup
 doctest_test_doctest_blocks=True
+
+
+# http://sphinx-doc.org/latest/ext/math.html
+extensions.append("sphinx.ext.mathjax")
+# mathjax_path
