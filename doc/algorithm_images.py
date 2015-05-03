@@ -55,7 +55,7 @@ def create_wave_for_small_pqs(directory, hcell, cells):
             draw(ctx, p + 1, q + 1)
             ctx.restore()
 
-    filename =os.path.join(directory, "wave_for_small_pqs.png")
+    filename = os.path.join(directory, "wave_for_small_pqs.png")
     img.write_to_png(filename)
 
 
@@ -96,5 +96,5 @@ def create_families_for_small_pqs(directory, hcell, cells):
             draw(ctx, p + 1, q + 1)
             ctx.restore()
 
-    filename =os.path.join(directory, "families_for_small_pqs.png")
+    filename = os.path.join(directory, "families_for_small_pqs.png")
     img.write_to_png(filename)

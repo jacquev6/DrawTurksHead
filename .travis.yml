@@ -16,9 +16,7 @@ before_install:
 install:
 - python setup.py install
 script:
-- cd
-- python -m DrawTurksHead
-- cd -
+- python setup.py build_sphinx --builder=doctest
 deploy:
   provider: pypi
   user: jacquev6

@@ -38,7 +38,7 @@ html_logo = "logo.png"
 
 # http://sphinx-doc.org/ext/autodoc.html
 extensions.append("sphinx.ext.autodoc")
-# autoclass_content
+autoclass_content = "both"
 autodoc_member_order = "bysource"
 # autodoc_default_flags
 # autodoc_docstring_signature
@@ -52,7 +52,7 @@ extensions.append("sphinx.ext.doctest")
 # doctest_path
 # doctest_global_setup
 # doctest_global_cleanup
-doctest_test_doctest_blocks=True
+doctest_test_doctest_blocks = True
 
 
 # http://sphinx-doc.org/latest/ext/math.html
