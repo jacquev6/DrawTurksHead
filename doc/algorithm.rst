@@ -28,27 +28,28 @@ This gives us:
 
 .. math::
 
-    r = r_0+\delta_r \cdot \cos(p \cdot \theta/q)
+    r = r_0 + \delta_r \cdot \cos \left(\frac{p \cdot \theta}{q} \right)
 
     \theta \in [0, 2 \cdot q \cdot \pi]
 
 .. figure:: wave_for_small_pqs.png
     :align: center
 
-    :math:`r = 3 + \cos(p \cdot \theta/q)` for small values of :math:`p` and :math:`q`.
+    :math:`r = 3 + \cos \left(\frac{p \cdot \theta}{q} \right)` for small values of :math:`p` and :math:`q`.
 
     :math:`q = 1` on the first line: the string makes one turn around the center.
 
     :math:`p = 1` on the left column: the string touches the outside once.
 
-This is mainly ok, but some cases look wrong (or example, :math:`p=3` and :math:`q=6`, with a darker red background on the previous figure).
-This is due to the known result that, if :math:`d=\gcd(p, q)`, you need :math:`d` strings to make a Turk's head knot with :math:`p` bights and :math:`q` leads.
-This mean that we have to draw :math:`d` curves.
+This is mainly ok, but cases on red background look wrong (For example, :math:`p = 3` and :math:`q = 6`, with a darker red background).
+This is due to the known result that, if :math:`d = \gcd(p, q)`, you need :math:`d` strings to make a Turk's head knot with :math:`p` bights and :math:`q` leads.
+This means that we have to draw :math:`d` curves.
 The total number of turns around the center is still the same, so each string makes :math:`q/d` turns,
 and the range for :math:`\theta` is reduced to :math:`[0, 2 \cdot q \cdot \pi / d]` for each curve.
 
 Since the second curve must draw the second bight, it means that the second curve must be shifted by :math:`2 \cdot \pi / p`.
 Extending this result tells us that the :math:`k^{th}` curve must be shifted by :math:`2 \cdot k \cdot \pi / p`.
+So :math:`r_k = r_0 + \delta_r \cdot \cos \left( \frac{p \cdot (\theta - 2 \cdot k \cdot \pi / p)}{q} \right)`.
 
 This give use our final family of curves:
 
@@ -56,14 +57,14 @@ This give use our final family of curves:
 
     r_k = r_0 + \delta_r \cdot \cos \left( \frac{p \cdot \theta - 2 \cdot k \cdot \pi}{q} \right)
 
-    \theta \in [0, 2 \cdot q \cdot \pi / d]
+    \theta \in \left[0, \frac{2 \cdot q \cdot \pi}{d} \right]
 
-    k \in [0, d]
+    k \in [0, d - 1]
 
 .. figure:: families_for_small_pqs.png
     :align: center
 
-    :math:`r_k = 3 + \cos(p \cdot \theta/q - 2 \cdot k \cdot \pi/q)` for small values of :math:`p` and :math:`q`.
+    :math:`r_k = 3 + \cos \left(\frac{p \cdot \theta - 2 \cdot k \cdot \pi}{q}\right)` for small values of :math:`p` and :math:`q`.
 
 Intersections
 =============
