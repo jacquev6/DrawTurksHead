@@ -32,14 +32,44 @@ This gives us:
 
     \theta \in [0, 2 \cdot q \cdot \pi]
 
-.. figure:: wave_for_small_pqs.png
-    :align: center
+Let's draw this with :math:`r_0 = 2` and :math:`\delta_r = 1` for for small values of :math:`p` and :math:`q`:
 
-    :math:`r = 3 + \cos \left(\frac{p \cdot \theta}{q} \right)` for small values of :math:`p` and :math:`q`.
+.. plot::
 
-    :math:`q = 1` on the first line: the string makes one turn around the center.
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import fractions
 
-    :math:`p = 1` on the left column: the string touches the outside once.
+    M = 7
+
+    plt.figure(figsize=(M, M))
+
+    for q in range(1, M + 1):
+      for p in range(1, M + 1):
+        d = fractions.gcd(p, q)  # Explained below
+
+        theta = np.arange(0, 2 * q * np.pi / d, 0.01)
+        r = 2 + np.cos(p * theta / q)
+
+        if d == 1:
+          bg = "white"
+        elif (p, q) == (3, 6):
+          bg = "#ff6666"
+        else:
+          bg = "#ffaaaa"
+        sp = plt.subplot(M, M, (q - 1) * M + p, polar=True, axisbg=bg)
+        sp.plot(theta, r)
+        sp.set_rmin(0)
+        sp.set_rmax(3.1)
+        sp.set_yticks([1, 2, 3])
+        sp.set_yticklabels([])
+        sp.set_xticklabels([])
+        sp.spines['polar'].set_visible(False)
+
+    plt.tight_layout()
+
+In the previous figure, :math:`q = 1` on the first line (the string makes one turn around the center) and
+:math:`p = 1` on the left column (the string touches the outside once).
 
 This is mainly ok, but cases on red background look wrong (For example, :math:`p = 3` and :math:`q = 6`, with a darker red background).
 This is due to the known result that, if :math:`d = \gcd(p, q)`, you need :math:`d` strings to make a Turk's head knot with :math:`p` bights and :math:`q` leads.
@@ -61,10 +91,36 @@ This give use our final family of curves:
 
     k \in [0, d - 1]
 
-.. figure:: families_for_small_pqs.png
-    :align: center
+.. plot::
 
-    :math:`r_k = 3 + \cos \left(\frac{p \cdot \theta - 2 \cdot k \cdot \pi}{q}\right)` for small values of :math:`p` and :math:`q`.
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import fractions
+
+    M = 7
+
+    plt.figure(figsize=(M, M))
+
+    for q in range(1, M + 1):
+      for p in range(1, M + 1):
+        d = fractions.gcd(p, q)
+
+        theta = np.arange(0, 2 * q * np.pi / d, 0.01)
+        r = []
+        for k in range(d):
+            r.append(2 + np.cos((p * theta - 2 * k * np.pi) / q))
+
+        sp = plt.subplot(M, M, (q - 1) * M + p, polar=True)
+        for k in range(d):
+            sp.plot(theta, r[k])
+        sp.set_rmin(0)
+        sp.set_rmax(3.1)
+        sp.set_yticks([1, 2, 3])
+        sp.set_yticklabels([])
+        sp.set_xticklabels([])
+        sp.spines['polar'].set_visible(False)
+
+    plt.tight_layout()
 
 Intersections
 =============
