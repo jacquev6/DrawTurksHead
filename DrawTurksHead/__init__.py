@@ -25,12 +25,12 @@ Draw the Turk's head on the Cairo context:
 
 Save the result to a file:
 
-    >>> img.write_to_png("doc/doctest1.png")
+    >>> img.write_to_png("doc/doctest/1.png")
 
-.. figure:: doctest1.png
+.. figure:: doctest/1.png
     :align: center
 
-    ``doc/doctest1.png``
+    ``doc/doctest/1.png``
 
 @todoc Describe how to override compute_color_hsv
 
@@ -54,12 +54,12 @@ You can choose the color of the drawing by overriding the :meth:`.TurksHead.comp
     ...     v = .5 + self.get_altitude(k, theta) / 2
     ...     return h, s, v
     >>> knot = MyTurksHead(leads=3, bights=7, inner=50, outer=200, line=30)
-    >>> draw_to_png(knot, "doc/doctest2.png")
+    >>> draw_to_png(knot, "doc/doctest/2.png")
 
-.. figure:: doctest2.png
+.. figure:: doctest/2.png
     :align: center
 
-    ``doc/doctest2.png``
+    ``doc/doctest/2.png``
 
 Or:
 
@@ -70,12 +70,12 @@ Or:
     ...     v = v / 2
     ...     return h, s, v
     >>> knot = MyTurksHead(leads=3, bights=7, inner=50, outer=200, line=30)
-    >>> draw_to_png(knot, "doc/doctest3.png")
+    >>> draw_to_png(knot, "doc/doctest/3.png")
 
-.. figure:: doctest3.png
+.. figure:: doctest/3.png
     :align: center
 
-    ``doc/doctest3.png``
+    ``doc/doctest/3.png``
 """
 
 from _turkshead import *
