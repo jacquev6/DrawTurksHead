@@ -313,8 +313,8 @@ There is an intersection for those :math:`a` and :math:`b` if and only if the th
     import matplotlib.pyplot as plt
     import fractions
 
-    P = 4
-    Q = 4
+    P = 7
+    Q = 8
 
     plt.figure(figsize=(P, Q))
 
@@ -337,7 +337,7 @@ There is an intersection for those :math:`a` and :math:`b` if and only if the th
             minB = int(np.ceil(-(m + n) / q))
             maxB = int(np.floor(2 * p / d - (m + n) / q))
             if m == n:
-              minA = 1  # @todoc Explain why we get several instances of intersections with self when we don't change minA (we add a constraint: theta_1 < thetha_2 that translates to a > 0)
+              minA = 1  # @todoc Explain why we get several instances of intersections with self when we don't change minA (we add a constraint: theta_1 < theta_2 that translates to a > 0)
             for a in range(minA, maxA):
               for b in range(minB, maxB):
                 if (
@@ -366,3 +366,5 @@ There is an intersection for those :math:`a` and :math:`b` if and only if the th
         sp.spines['polar'].set_visible(False)
 
     plt.tight_layout()
+
+@todoc There is more structure: all intersections are 0 mod pi/p so we could iterate directly on theta_1 instead of a and b. No?
