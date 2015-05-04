@@ -75,11 +75,145 @@ So, we need to compute the coordinates of the intersection points.
 Let's forget what has been said in previous section, and analyse this from a mathematical point of view.
 
 Given two natural integers :math:`p` and :math:`q` and two real numbers :math:`r` and :math:`\delta_r` such that :math:`0 < \delta_r < r`.
-Let :math:`d=\gcd( p, q )`.
-Let's define the family of functions :math:`r_k : \theta \mapsto r + \delta_r \cdot \cos\left( p \cdot \frac{\theta - \phi_k}{q} \right)` with :math:`\phi_k = 2 \cdot k \cdot \pi / p` for :math:`k \in \mathbb Z`.
-Let :math:`\Gamma_k` be the graph of :math:`r_k` in polar coordinates, that is the graph of :math:`\vec { r_k } : \theta \mapsto r_k( \theta ) \cdot \vec u( \theta )`.
+Let's define the family of functions :math:`r_k : \theta \mapsto r + \delta_r \cdot \cos\left(\frac{p \cdot \theta - 2 \cdot k \cdot \pi}{q}\right)` for :math:`k \in \mathbb Z`.
+Let :math:`\Gamma_k` be the graph of :math:`r_k` in polar coordinates, that is the graph of :math:`\vec{r_k} : \theta \mapsto r_k(\theta) \cdot \vec u(\theta)` where :math:`\vec u(\theta)` is the unit vector at polar angle :math:`\theta`.
 
-:math:`\Gamma_m` and :math:`\Gamma_n` intersect if and only if :math:`\exists \theta_1, \theta_2 \in \mathbb R^2, \vec {r_n}( \theta_1 ) = \vec {r_m}( \theta_2 )`.
+:math:`\Gamma_m` and :math:`\Gamma_n` intersect if and only if :math:`\exists \theta_1, \theta_2 \in \mathbb R^2, \vec{r_n}(\theta_1) = \vec{r_m}(\theta_2)`.
+
+.. math::
+
+    \begin{array}{rcl}
+        \vec{r_n}(\theta_1) = \vec{r_m}(\theta_2) & \iff & r_n(\theta_1) \cdot \vec u(\theta_1) = r_m(\theta_2) \cdot \vec u(\theta_2)
+    \\
+        & \iff & \left| \begin{array}{l}
+            \left\{ \begin{array}{l}
+                \vec u(\theta_1) = \vec u(\theta_2)
+            \\
+                r_n(\theta_1) = r_m(\theta_2)
+            \end{array} \right.
+        \\
+            \mbox{or}
+        \\
+            \left\{ \begin{array}{l}
+                \vec u(\theta_1) = -\vec u(\theta_2)
+            \\
+                r_n(\theta_1) = -r_m(\theta_2)
+            \end{array} \right.
+        \end{array} \right.
+    \end{array}
+
+:math:`r_k(\theta) > 0` so we can drop the case where :math:`\vec u(\theta_1) = - \vec u(\theta_2)`.
+
+.. math::
+
+    \begin{array}{rcl}
+        \vec{r_n}(\theta_1) = \vec{r_m}(\theta_2) & \iff & \left\{ \begin{array}{l}
+            \vec u(\theta_1) = \vec u(\theta_2)
+        \\
+            r_n(\theta_1) = r_m(\theta_2)
+        \end{array} \right.
+    \\
+        & \iff & \left\{ \begin{array}{l}
+            \vec u(\theta_1) = \vec u(\theta_2)
+        \\
+            r + \delta_r \cdot \cos\left(\frac{p \cdot \theta_1 - 2 \cdot n \cdot \pi}{q}\right) =
+            r + \delta_r \cdot \cos\left(\frac{p \cdot \theta_2 - 2 \cdot m \cdot \pi}{q}\right)
+        \end{array} \right.
+    \\
+        & \iff & \left\{ \begin{array}{l}
+            \vec u(\theta_1) = \vec u(\theta_2)
+        \\
+            \cos\left(\frac{p \cdot \theta_1 - 2 \cdot n \cdot \pi}{q}\right) =
+            \cos\left(\frac{p \cdot \theta_2 - 2 \cdot m \cdot \pi}{q}\right)
+        \end{array} \right.
+    \end{array}
+
+:math:`\vec u` is :math:`2 \pi \mbox{-periodic}` and :math:`\cos` is even and :math:`2 \pi \mbox{-periodic}` so:
+
+.. math::
+
+    \begin{array}{rcl}
+        \vec{r_n}(\theta_1) = \vec{r_m}(\theta_2) & \iff & \left\{ \begin{array}{l}
+            \exists a \in \mathbb{Z}, \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
+        \\
+            \exists b \in \mathbb{Z}, \left| \begin{array}{l}
+                \frac{p \cdot \theta_1 - 2 \cdot n \cdot \pi}{q} = 2 \cdot b \cdot \pi +
+                \frac{p \cdot \theta_2 - 2 \cdot m \cdot \pi}{q}
+            \\
+                \mbox{or}
+            \\
+                \frac{p \cdot \theta_1 - 2 \cdot n \cdot \pi}{q} = 2 \cdot b \cdot \pi -
+                \frac{p \cdot \theta_2 - 2 \cdot m \cdot \pi}{q}
+            \end{array} \right.
+        \end{array} \right.
+    \\
+        & \iff & \left| \begin{array}{l}
+            \exists (a, b) \in \mathbb{Z}^2, \left\{ \begin{array}{l}
+                \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
+            \\
+                \frac{p \cdot \theta_1 - 2 \cdot n \cdot \pi}{q} = 2 \cdot b \cdot \pi +
+                \frac{p \cdot \theta_2 - 2 \cdot m \cdot \pi}{q}
+            \end{array}\right.
+        \\
+            \mbox{or}
+        \\
+            \exists (a, b) \in \mathbb{Z}^2, \left\{ \begin{array}{l}
+                \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
+            \\
+                \frac{p \cdot \theta_1 - 2 \cdot n \cdot \pi}{q} = 2 \cdot b \cdot \pi -
+                \frac{p \cdot \theta_2 - 2 \cdot m \cdot \pi}{q}
+            \end{array}\right.
+        \end{array} \right.
+    \end{array}
+
+
+The first case corresponds to identical curves:
+
+.. math::
+    \begin{array}{cl}
+        & \exists (a, b) \in \mathbb{Z}^2, \left\{ \begin{array}{l}
+            \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
+        \\
+            \frac{p \cdot \theta_1 - 2 \cdot n \cdot \pi}{q} = 2 \cdot b \cdot \pi +
+            \frac{p \cdot \theta_2 - 2 \cdot m \cdot \pi}{q}
+        \end{array}\right.
+    \\
+        \iff & \cdots
+    \\
+        \iff & \exists (a, b) \in \mathbb{Z}^2, \left\{ \begin{array}{l}
+            \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
+        \\
+            m - n = a \cdot p + b \cdot q
+        \end{array}\right.
+    \end{array}
+
+So, given :math:`m`, :math:`n`, :math:`p` and :math:`q`, if we can find :math:`a` and :math:`b` such that :math:`m - n = a \cdot p + b \cdot q`,
+then :math:`\Gamma_m` and :math:`\Gamma_n` will be identical.
+Let :math:`d = \gcd(p, q)`.
+According to `Bézout's identity <https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity>`__,
+:math:`\exists (a, b) \in \mathbb{Z}, m - n = a \cdot p + b \cdot q` if and only if :math:`m - n` is a multiple of :math:`d`.
+
+Applying this to :math:`m = n + d` proves that :math:`\Gamma_{n + d}` is identical to :math:`\Gamma_{n}`.
+This proves that it's enough to draw :math:`\Gamma_{k}` for :math:`k \in [0, d-1]`.
+
+For :math:`m = n`, we can use :math:`a = q/d` and :math:`b = -p/d`.
+Then we have :math:`\theta_2 = \theta_1 + \frac{2 \cdot q \cdot \pi}{d}`.
+This proves that it's enough to draw each :math:`\Gamma_{k}` on :math:`\theta \in [0, \frac{2 \cdot q \cdot \pi}{d}]`.
+
+
+The second case corresponds to intersections of different curves:
+
+.. math::
+    \begin{array}{cl}
+        & \exists (a, b) \in \mathbb{Z}^2, \left\{ \begin{array}{l}
+            \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
+        \\
+            \frac{p \cdot \theta_1 - 2 \cdot n \cdot \pi}{q} = 2 \cdot b \cdot \pi -
+            \frac{p \cdot \theta_2 - 2 \cdot m \cdot \pi}{q}
+        \end{array}\right.
+    \\
+        \iff & \cdots
+    \end{array}
 
 To be done... Thank you for your patience.
 
