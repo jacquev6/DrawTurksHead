@@ -30,7 +30,7 @@ This gives us:
 
     r = r_0 + \delta_r \cdot \cos \left(\frac{p \cdot \theta}{q} \right)
 
-    \theta \in [0, 2 \cdot q \cdot \pi]
+    \theta \in \left[0, 2 \cdot q \cdot \pi \right[
 
 Let's draw this with :math:`r_0 = 2` and :math:`\delta_r = 1` for for small values of :math:`p` and :math:`q`:
 
@@ -40,16 +40,17 @@ Let's draw this with :math:`r_0 = 2` and :math:`\delta_r = 1` for for small valu
     import matplotlib.pyplot as plt
     import fractions
 
-    M = 7
+    P = 7
+    Q = 8
 
-    plt.figure(figsize=(M, M))
+    plt.figure(figsize=(P, Q))
 
-    for q in range(1, M + 1):
-      for p in range(1, M + 1):
+    for p in range(1, P + 1):
+      for q in range(1, Q + 1):
         d = fractions.gcd(p, q)  # Explained below
 
+        r = lambda theta: 2 + np.cos(p * theta / q)
         theta = np.arange(0, 2 * q * np.pi / d, 0.01)
-        r = 2 + np.cos(p * theta / q)
 
         if d == 1:
           bg = "white"
@@ -57,8 +58,8 @@ Let's draw this with :math:`r_0 = 2` and :math:`\delta_r = 1` for for small valu
           bg = "#ff6666"
         else:
           bg = "#ffaaaa"
-        sp = plt.subplot(M, M, (q - 1) * M + p, polar=True, axisbg=bg)
-        sp.plot(theta, r)
+        sp = plt.subplot(Q, P, (q - 1) * P + p, polar=True, axisbg=bg)
+        sp.plot(theta, r(theta))
         sp.set_rmin(0)
         sp.set_rmax(3.1)
         sp.set_yticks([1, 2, 3])
@@ -79,7 +80,7 @@ and the range for :math:`\theta` is reduced to :math:`[0, 2 \cdot q \cdot \pi / 
 
 Since the second curve must draw the second bight, it means that the second curve must be shifted by :math:`2 \cdot \pi / p`.
 Extending this result tells us that the :math:`k^{th}` curve must be shifted by :math:`2 \cdot k \cdot \pi / p`.
-So :math:`r_k = r_0 + \delta_r \cdot \cos \left( \frac{p \cdot (\theta - 2 \cdot k \cdot \pi / p)}{q} \right)`.
+So :math:`r_k = r_0 + \delta_r \cdot \cos \left(\frac{p \cdot (\theta - 2 \cdot k \cdot \pi / p)}{q} \right)`.
 
 This give use our final family of curves:
 
@@ -87,7 +88,7 @@ This give use our final family of curves:
 
     r_k = r_0 + \delta_r \cdot \cos \left( \frac{p \cdot \theta - 2 \cdot k \cdot \pi}{q} \right)
 
-    \theta \in \left[0, \frac{2 \cdot q \cdot \pi}{d} \right]
+    \theta \in \left[0, \frac{2 \cdot q \cdot \pi}{d} \right[
 
     k \in [0, d - 1]
 
@@ -97,22 +98,25 @@ This give use our final family of curves:
     import matplotlib.pyplot as plt
     import fractions
 
-    M = 7
+    P = 7
+    Q = 8
 
-    plt.figure(figsize=(M, M))
+    plt.figure(figsize=(P, Q))
 
-    for q in range(1, M + 1):
-      for p in range(1, M + 1):
+    for p in range(1, P + 1):
+      for q in range(1, Q + 1):
         d = fractions.gcd(p, q)
 
-        theta = np.arange(0, 2 * q * np.pi / d, 0.01)
         r = []
         for k in range(d):
-            r.append(2 + np.cos((p * theta - 2 * k * np.pi) / q))
+          r.append(
+            lambda theta, k=k: 2 + np.cos((p * theta - 2 * k * np.pi) / q)
+          )
+        theta = np.arange(0, 2 * q * np.pi / d, 0.01)
 
-        sp = plt.subplot(M, M, (q - 1) * M + p, polar=True)
+        sp = plt.subplot(Q, P, (q - 1) * P + p, polar=True)
         for k in range(d):
-            sp.plot(theta, r[k])
+          sp.plot(theta, r[k](theta))
         sp.set_rmin(0)
         sp.set_rmax(3.1)
         sp.set_yticks([1, 2, 3])
@@ -134,18 +138,18 @@ Given two natural integers :math:`p` and :math:`q` and two real numbers :math:`r
 Let's define the family of functions :math:`r_k : \theta \mapsto r + \delta_r \cdot \cos\left(\frac{p \cdot \theta - 2 \cdot k \cdot \pi}{q}\right)` for :math:`k \in \mathbb Z`.
 Let :math:`\Gamma_k` be the graph of :math:`r_k` in polar coordinates, that is the graph of :math:`\vec{r_k} : \theta \mapsto r_k(\theta) \cdot \vec u(\theta)` where :math:`\vec u(\theta)` is the unit vector at polar angle :math:`\theta`.
 
-:math:`\Gamma_m` and :math:`\Gamma_n` intersect if and only if :math:`\exists \theta_1, \theta_2 \in \mathbb R^2, \vec{r_n}(\theta_1) = \vec{r_m}(\theta_2)`.
+:math:`\Gamma_m` and :math:`\Gamma_n` intersect if and only if :math:`\exists \theta_1, \theta_2 \in \mathbb R^2, \vec{r_m}(\theta_1) = \vec{r_n}(\theta_2)`.
 
 .. math::
 
     \begin{array}{rcl}
-        \vec{r_n}(\theta_1) = \vec{r_m}(\theta_2) & \iff & r_n(\theta_1) \cdot \vec u(\theta_1) = r_m(\theta_2) \cdot \vec u(\theta_2)
+        \vec{r_m}(\theta_1) = \vec{r_n}(\theta_2) & \iff & r_m(\theta_1) \cdot \vec u(\theta_1) = r_n(\theta_2) \cdot \vec u(\theta_2)
     \\
         & \iff & \left| \begin{array}{l}
             \left\{ \begin{array}{l}
                 \vec u(\theta_1) = \vec u(\theta_2)
             \\
-                r_n(\theta_1) = r_m(\theta_2)
+                r_m(\theta_1) = r_n(\theta_2)
             \end{array} \right.
         \\
             \mbox{or}
@@ -153,7 +157,7 @@ Let :math:`\Gamma_k` be the graph of :math:`r_k` in polar coordinates, that is t
             \left\{ \begin{array}{l}
                 \vec u(\theta_1) = -\vec u(\theta_2)
             \\
-                r_n(\theta_1) = -r_m(\theta_2)
+                r_m(\theta_1) = -r_n(\theta_2)
             \end{array} \right.
         \end{array} \right.
     \end{array}
@@ -163,24 +167,17 @@ Let :math:`\Gamma_k` be the graph of :math:`r_k` in polar coordinates, that is t
 .. math::
 
     \begin{array}{rcl}
-        \vec{r_n}(\theta_1) = \vec{r_m}(\theta_2) & \iff & \left\{ \begin{array}{l}
+        \vec{r_m}(\theta_1) = \vec{r_n}(\theta_2) & \iff & \left\{ \begin{array}{l}
             \vec u(\theta_1) = \vec u(\theta_2)
         \\
-            r_n(\theta_1) = r_m(\theta_2)
+            r_m(\theta_1) = r_n(\theta_2)
         \end{array} \right.
     \\
         & \iff & \left\{ \begin{array}{l}
             \vec u(\theta_1) = \vec u(\theta_2)
         \\
-            r + \delta_r \cdot \cos\left(\frac{p \cdot \theta_1 - 2 \cdot n \cdot \pi}{q}\right) =
-            r + \delta_r \cdot \cos\left(\frac{p \cdot \theta_2 - 2 \cdot m \cdot \pi}{q}\right)
-        \end{array} \right.
-    \\
-        & \iff & \left\{ \begin{array}{l}
-            \vec u(\theta_1) = \vec u(\theta_2)
-        \\
-            \cos\left(\frac{p \cdot \theta_1 - 2 \cdot n \cdot \pi}{q}\right) =
-            \cos\left(\frac{p \cdot \theta_2 - 2 \cdot m \cdot \pi}{q}\right)
+            \cos\left(\frac{p \cdot \theta_1 - 2 \cdot m \cdot \pi}{q}\right) =
+            \cos\left(\frac{p \cdot \theta_2 - 2 \cdot n \cdot \pi}{q}\right)
         \end{array} \right.
     \end{array}
 
@@ -189,17 +186,17 @@ Let :math:`\Gamma_k` be the graph of :math:`r_k` in polar coordinates, that is t
 .. math::
 
     \begin{array}{rcl}
-        \vec{r_n}(\theta_1) = \vec{r_m}(\theta_2) & \iff & \left\{ \begin{array}{l}
+        \vec{r_m}(\theta_1) = \vec{r_n}(\theta_2) & \iff & \left\{ \begin{array}{l}
             \exists a \in \mathbb{Z}, \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
         \\
             \exists b \in \mathbb{Z}, \left| \begin{array}{l}
-                \frac{p \cdot \theta_1 - 2 \cdot n \cdot \pi}{q} = 2 \cdot b \cdot \pi +
-                \frac{p \cdot \theta_2 - 2 \cdot m \cdot \pi}{q}
+                \frac{p \cdot \theta_1 - 2 \cdot m \cdot \pi}{q} = 2 \cdot b \cdot \pi +
+                \frac{p \cdot \theta_2 - 2 \cdot n \cdot \pi}{q}
             \\
                 \mbox{or}
             \\
-                \frac{p \cdot \theta_1 - 2 \cdot n \cdot \pi}{q} = 2 \cdot b \cdot \pi -
-                \frac{p \cdot \theta_2 - 2 \cdot m \cdot \pi}{q}
+                \frac{p \cdot \theta_1 - 2 \cdot m \cdot \pi}{q} = 2 \cdot b \cdot \pi -
+                \frac{p \cdot \theta_2 - 2 \cdot n \cdot \pi}{q}
             \end{array} \right.
         \end{array} \right.
     \\
@@ -207,8 +204,8 @@ Let :math:`\Gamma_k` be the graph of :math:`r_k` in polar coordinates, that is t
             \exists (a, b) \in \mathbb{Z}^2, \left\{ \begin{array}{l}
                 \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
             \\
-                \frac{p \cdot \theta_1 - 2 \cdot n \cdot \pi}{q} = 2 \cdot b \cdot \pi +
-                \frac{p \cdot \theta_2 - 2 \cdot m \cdot \pi}{q}
+                \frac{p \cdot \theta_1 - 2 \cdot m \cdot \pi}{q} = 2 \cdot b \cdot \pi +
+                \frac{p \cdot \theta_2 - 2 \cdot n \cdot \pi}{q}
             \end{array}\right.
         \\
             \mbox{or}
@@ -216,63 +213,156 @@ Let :math:`\Gamma_k` be the graph of :math:`r_k` in polar coordinates, that is t
             \exists (a, b) \in \mathbb{Z}^2, \left\{ \begin{array}{l}
                 \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
             \\
-                \frac{p \cdot \theta_1 - 2 \cdot n \cdot \pi}{q} = 2 \cdot b \cdot \pi -
-                \frac{p \cdot \theta_2 - 2 \cdot m \cdot \pi}{q}
+                \frac{p \cdot \theta_1 - 2 \cdot m \cdot \pi}{q} = 2 \cdot b \cdot \pi -
+                \frac{p \cdot \theta_2 - 2 \cdot n \cdot \pi}{q}
             \end{array}\right.
         \end{array} \right.
     \end{array}
 
-
 The first case corresponds to identical curves:
 
 .. math::
+
     \begin{array}{cl}
         & \exists (a, b) \in \mathbb{Z}^2, \left\{ \begin{array}{l}
             \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
         \\
-            \frac{p \cdot \theta_1 - 2 \cdot n \cdot \pi}{q} = 2 \cdot b \cdot \pi +
-            \frac{p \cdot \theta_2 - 2 \cdot m \cdot \pi}{q}
+            \frac{p \cdot \theta_1 - 2 \cdot m \cdot \pi}{q} = 2 \cdot b \cdot \pi +
+            \frac{p \cdot \theta_2 - 2 \cdot n \cdot \pi}{q}
         \end{array}\right.
-    \\
-        \iff & \cdots
     \\
         \iff & \exists (a, b) \in \mathbb{Z}^2, \left\{ \begin{array}{l}
             \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
         \\
-            m - n = a \cdot p + b \cdot q
+            n - m = a \cdot p + b \cdot q
         \end{array}\right.
     \end{array}
 
-So, given :math:`m`, :math:`n`, :math:`p` and :math:`q`, if we can find :math:`a` and :math:`b` such that :math:`m - n = a \cdot p + b \cdot q`,
+So, given :math:`m`, :math:`n`, :math:`p` and :math:`q`, if we can find :math:`a` and :math:`b` such that :math:`n - m = a \cdot p + b \cdot q`,
 then :math:`\Gamma_m` and :math:`\Gamma_n` will be identical.
 Let :math:`d = \gcd(p, q)`.
 According to `Bézout's identity <https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity>`__,
-:math:`\exists (a, b) \in \mathbb{Z}, m - n = a \cdot p + b \cdot q` if and only if :math:`m - n` is a multiple of :math:`d`.
+:math:`\exists (a, b) \in \mathbb{Z}, n - m = a \cdot p + b \cdot q` if and only if :math:`n - m` is a multiple of :math:`d`.
 
-Applying this to :math:`m = n + d` proves that :math:`\Gamma_{n + d}` is identical to :math:`\Gamma_{n}`.
+Applying this to :math:`n = m + d` proves that :math:`\Gamma_{n + d}` is identical to :math:`\Gamma_{n}`.
 This proves that it's enough to draw :math:`\Gamma_{k}` for :math:`k \in [0, d-1]`.
 
 For :math:`m = n`, we can use :math:`a = q/d` and :math:`b = -p/d`.
 Then we have :math:`\theta_2 = \theta_1 + \frac{2 \cdot q \cdot \pi}{d}`.
-This proves that it's enough to draw each :math:`\Gamma_{k}` on :math:`\theta \in [0, \frac{2 \cdot q \cdot \pi}{d}]`.
+This proves that it's enough to draw each :math:`\Gamma_{k}` on :math:`\theta \in \left[0, \frac{2 \cdot q \cdot \pi}{d}\right[`.
 
 
 The second case corresponds to intersections of different curves:
 
 .. math::
+
     \begin{array}{cl}
         & \exists (a, b) \in \mathbb{Z}^2, \left\{ \begin{array}{l}
             \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
         \\
-            \frac{p \cdot \theta_1 - 2 \cdot n \cdot \pi}{q} = 2 \cdot b \cdot \pi -
-            \frac{p \cdot \theta_2 - 2 \cdot m \cdot \pi}{q}
+            \frac{p \cdot \theta_1 - 2 \cdot m \cdot \pi}{q} = 2 \cdot b \cdot \pi -
+            \frac{p \cdot \theta_2 - 2 \cdot n \cdot \pi}{q}
         \end{array}\right.
     \\
-        \iff & \cdots
+        \iff & \exists (a, b) \in \mathbb{Z}^2, \left\{ \begin{array}{l}
+            \theta_1 = \frac{b \cdot q - a \cdot p + m + n}{p} \cdot \pi
+        \\
+            \theta_2 = \frac{b \cdot q + a \cdot p + m + n}{p} \cdot \pi
+        \end{array}\right.
     \end{array}
 
-To be done... Thank you for your patience.
+Let's limit the domain to search for :math:`a` and :math:`b`: to find all intersection points,
+it's enough to consider :math:`0 \le m \le n \lt d`
+and :math:`(\theta_1, \theta_2) \in \left[0, \frac{2 \cdot q \cdot \pi}{d}\right[`.
 
-@todoc Include what's in doc_old/DrawTurksHead.algo.20100726.txt
+.. math::
 
-@todoc Insert a last figure with intersections
+    \begin{array}{cl}
+        & \left\{ \begin{array}{l}
+            0 \le \theta_1 \lt \frac{2 \cdot \pi}{d}
+        \\
+            0 \le \theta_2 \lt \frac{2 \cdot \pi}{d}
+        \end{array}\right.
+    \\
+        \iff & \left\{ \begin{array}{l}
+            0 \le \frac{b \cdot q - a \cdot p + m + n}{p} \cdot \pi \lt \frac{2 \cdot q \cdot \pi}{d}
+        \\
+            0 \le \frac{b \cdot q + a \cdot p + m + n}{p} \cdot \pi \lt \frac{2 \cdot q \cdot \pi}{d}
+        \end{array}\right.
+    \\
+        \iff & \left\{ \begin{array}{l}
+            - m - n \le b \cdot q - a \cdot p \lt \frac{2 \cdot p \cdot q}{d} - m - n
+        \\
+            - m - n \le b \cdot q + a \cdot p \lt \frac{2 \cdot p \cdot q}{d} - m - n
+        \end{array}\right.
+    \\
+        \implies & \left\{ \begin{array}{l}
+            -\frac{m+n}{q} \le b \lt \frac{2 \cdot p}{d} - \frac{m+n}{q} \qquad \mbox{(sum)}
+        \\
+            -\frac{q}{d} < a < \frac{q}{d} \qquad \mbox{(difference)}
+        \end{array}\right.
+    \end{array}
+
+So to find all intersections, it's enough to loop on :math:`a \in \left[-\frac{q}{d}, \frac{q}{d} \right]`
+and :math:`b \in \left[-\frac{m+n}{q}, \frac{2 \cdot p}{d} - \frac{m+n}{q} \right]`.
+There is an intersection for those :math:`a` and :math:`b` if and only if the third system of inequations above is verified.
+   
+.. plot::
+
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import fractions
+
+    P = 4
+    Q = 4
+
+    plt.figure(figsize=(P, Q))
+
+    for p in range(1, P + 1):
+      for q in range(1, Q + 1):
+        d = fractions.gcd(p, q)
+
+        r = []
+        for k in range(d):
+          r.append(
+            lambda theta, k=k: 2 + np.cos((p * theta - 2 * k * np.pi) / q)
+          )
+        theta = np.arange(0, 2 * q * np.pi / d, 0.01)
+
+        intersections = []
+        for m in range(d):
+          for n in range(m, d):
+            minA = int(np.ceil(-q / d))
+            maxA = int(np.ceil(q / d))
+            minB = int(np.ceil(-(m + n) / q))
+            maxB = int(np.floor(2 * p / d - (m + n) / q))
+            if m == n:
+              minA = 1  # @todoc Explain why we get several instances of intersections with self when we don't change minA (we add a constraint: theta_1 < thetha_2 that translates to a > 0)
+            for a in range(minA, maxA):
+              for b in range(minB, maxB):
+                if (
+                  -m - n <= b * q - a * p < 2 * p * q / d - m - n
+                  and
+                  -m - n <= b * q + a * p < 2 * p * q / d - m - n
+                ):
+                  theta_1 = (b * q - a * p + m + n) * np.pi / p
+                  intersections.append((theta_1, r[m](theta_1)))
+        # @todoc Explain why the total number of intersections is (q - 1) * p
+        assert len(intersections) == (q - 1) * p
+
+        sp = plt.subplot(Q, P, (q - 1) * P + p, polar=True)
+        for k in range(d):
+          sp.plot(theta, r[k](theta))
+        sp.plot(
+          [theta for theta, r in intersections],
+          [r for theta, r in intersections],
+          "r."
+        )
+        sp.set_rmin(0)
+        sp.set_rmax(3.1)
+        sp.set_yticks([1, 2, 3])
+        sp.set_yticklabels([])
+        sp.set_xticklabels([])
+        sp.spines['polar'].set_visible(False)
+
+    plt.tight_layout()

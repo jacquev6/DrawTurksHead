@@ -115,7 +115,7 @@ void TurksHead::compute_known_altitudes() {
         known_altitudes[Path(0)][theta] = alt;
         alt *= -1;
     }
-    /// @todo Remove this loop, by making known_altitudes a std::map<int, int> in stead of a std::vector<std::map<int, int> >
+    /// @todo Remove this loop, by making known_altitudes a std::map<int, int> instead of a std::vector<std::map<int, int> >
     /// And perform the rotation in get_altitude
     for(Path k(1); k != d; ++k) {
         foreach(Theta theta, known_thetas[k]) {
