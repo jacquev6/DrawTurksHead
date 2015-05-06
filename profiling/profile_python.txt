@@ -1,91 +1,31 @@
-Wed May  6 16:39:43 2015    profiling/profile_python.stats
+Wed May  6 16:55:35 2015    profiling/profile_python.stats
 
-         169307 function calls (168768 primitive calls) in 0.176 seconds
+         1020152 function calls in 1.367 seconds
 
    Ordered by: cumulative time
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-        1    0.000    0.000    0.177    0.177 <string>:1(<module>)
-        1    0.000    0.000    0.134    0.134 turkshead.py:121(draw)
-      384    0.010    0.000    0.126    0.000 turkshead.py:136(__draw_segment)
-        1    0.000    0.000    0.075    0.075 turkshead.py:159(__redraw_intersections)
-        1    0.000    0.000    0.060    0.060 turkshead.py:131(__draw_strings)
-     7008    0.039    0.000    0.048    0.000 turkshead.py:150(__path_segment)
-        1    0.000    0.000    0.042    0.042 turkshead.py:65(__init__)
-     6912    0.021    0.000    0.042    0.000 turkshead.py:143(__compute_color)
-     6912    0.030    0.000    0.030    0.000 {method 'fill' of 'cairo.Context' objects}
-        1    0.000    0.000    0.025    0.025 knot.py:28(__init__)
-     6912    0.006    0.000    0.021    0.000 turkshead.py:115(compute_color_rgb)
-        4    0.001    0.000    0.021    0.005 knot.py:39(__make_strings)
-        3    0.000    0.000    0.018    0.006 turkshead.py:18(normalize_string)
-      576    0.001    0.000    0.017    0.000 turkshead.py:26(normalize_segment)
-     1152    0.003    0.000    0.016    0.000 turkshead.py:49(normalize_end)
-    10090    0.004    0.000    0.015    0.000 {isinstance}
-      578    0.001    0.000    0.013    0.000 fractions.py:508(__hash__)
-1564/1034    0.002    0.000    0.013    0.000 fractions.py:527(__eq__)
-     1902    0.004    0.000    0.012    0.000 fractions.py:68(__new__)
-       96    0.000    0.000    0.012    0.000 turkshead.py:33(normalize_bridge)
-     1177    0.001    0.000    0.012    0.000 fractions.py:360(forward)
-     7853    0.007    0.000    0.011    0.000 abc.py:128(__instancecheck__)
-     1152    0.002    0.000    0.010    0.000 fractions.py:409(_div)
-     6912    0.009    0.000    0.009    0.000 color.py:8(hsv_to_rgb)
-        4    0.001    0.000    0.008    0.002 {sorted}
-     6912    0.005    0.000    0.007    0.000 turkshead.py:109(compute_color_hsv)
-    27744    0.007    0.000    0.007    0.000 {method 'line_to' of 'cairo.Context' objects}
-      530    0.001    0.000    0.006    0.000 fractions.py:168(from_float)
-       96    0.000    0.000    0.006    0.000 turkshead.py:41(normalize_tunnel)
-     1329    0.001    0.000    0.005    0.000 fractions.py:572(__lt__)
-     1425    0.002    0.000    0.005    0.000 fractions.py:546(_richcmp)
-        1    0.000    0.000    0.004    0.004 knot.py:113(intersections)
-     8926    0.003    0.000    0.003    0.000 _weakrefset.py:70(__contains__)
-     6912    0.003    0.000    0.003    0.000 {method 'set_source_rgb' of 'cairo.Context' objects}
-       97    0.000    0.000    0.002    0.000 knot.py:119(_intersections)
-     7008    0.002    0.000    0.002    0.000 {method 'move_to' of 'cairo.Context' objects}
-     6912    0.002    0.000    0.002    0.000 turkshead.py:88(d)
-     7008    0.001    0.000    0.001    0.000 {method 'close_path' of 'cairo.Context' objects}
-     4701    0.001    0.000    0.001    0.000 {built-in method __new__ of type object at 0x91f8e0}
-     7861    0.001    0.000    0.001    0.000 {getattr}
-     6402    0.001    0.000    0.001    0.000 fractions.py:261(numerator)
-     1904    0.001    0.000    0.001    0.000 fractions.py:18(gcd)
-     5744    0.001    0.000    0.001    0.000 fractions.py:265(denominator)
-      676    0.001    0.000    0.001    0.000 numbers.py:284(__float__)
-      530    0.000    0.000    0.000    0.000 {method 'as_integer_ratio' of 'float' objects}
-       96    0.000    0.000    0.000    0.000 fractions.py:584(__ge__)
-       19    0.000    0.000    0.000    0.000 fractions.py:387(_add)
-      8/4    0.000    0.000    0.000    0.000 abc.py:148(__subclasscheck__)
-     1329    0.000    0.000    0.000    0.000 {operator.lt}
-        9    0.000    0.000    0.000    0.000 {zip}
-     1060    0.000    0.000    0.000    0.000 {math.isinf}
-     1060    0.000    0.000    0.000    0.000 {math.isnan}
-      578    0.000    0.000    0.000    0.000 {hash}
-     10/5    0.000    0.000    0.000    0.000 {issubclass}
-       96    0.000    0.000    0.000    0.000 <string>:8(__new__)
-       96    0.000    0.000    0.000    0.000 {method 'clip' of 'cairo.Context' objects}
-      195    0.000    0.000    0.000    0.000 knot.py:51(<genexpr>)
-       13    0.000    0.000    0.000    0.000 _weakrefset.py:58(__iter__)
-        6    0.000    0.000    0.000    0.000 fractions.py:395(_sub)
-      483    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
-       96    0.000    0.000    0.000    0.000 {method 'reset_clip' of 'cairo.Context' objects}
-        7    0.000    0.000    0.000    0.000 _weakrefset.py:26(__exit__)
-       37    0.000    0.000    0.000    0.000 {range}
-        3    0.000    0.000    0.000    0.000 knot.py:9(iter_overlaping_pairs)
-        3    0.000    0.000    0.000    0.000 knot.py:14(iter_successive_pairs)
-        7    0.000    0.000    0.000    0.000 _weakrefset.py:20(__enter__)
-       96    0.000    0.000    0.000    0.000 {operator.ge}
-        4    0.000    0.000    0.000    0.000 _weakrefset.py:36(__init__)
-        8    0.000    0.000    0.000    0.000 _weakrefset.py:83(add)
-       15    0.000    0.000    0.000    0.000 {method 'add' of 'set' objects}
-        7    0.000    0.000    0.000    0.000 _weakrefset.py:52(_commit_removals)
-        7    0.000    0.000    0.000    0.000 _weakrefset.py:16(__init__)
-       17    0.000    0.000    0.000    0.000 {len}
+        1    0.000    0.000    1.367    1.367 <string>:1(<module>)
+        1    0.000    0.000    1.367    1.367 turkshead.py:121(draw)
+     1632    0.109    0.000    1.287    0.001 turkshead.py:136(__draw_segment)
+        1    0.002    0.002    0.785    0.785 turkshead.py:159(__redraw_intersections)
+        1    0.001    0.001    0.582    0.582 turkshead.py:131(__draw_strings)
+    72984    0.414    0.000    0.515    0.000 turkshead.py:150(__path_segment)
+    72576    0.210    0.000    0.436    0.000 turkshead.py:143(__compute_color)
+    72576    0.275    0.000    0.275    0.000 {method 'fill' of 'cairo.Context' objects}
+    72576    0.057    0.000    0.226    0.000 turkshead.py:115(compute_color_rgb)
+    72576    0.099    0.000    0.099    0.000 color.py:8(hsv_to_rgb)
+    72576    0.052    0.000    0.070    0.000 turkshead.py:109(compute_color_hsv)
+   290712    0.070    0.000    0.070    0.000 {method 'line_to' of 'cairo.Context' objects}
+    72576    0.029    0.000    0.029    0.000 {method 'set_source_rgb' of 'cairo.Context' objects}
+    72984    0.018    0.000    0.018    0.000 {method 'move_to' of 'cairo.Context' objects}
+    72576    0.017    0.000    0.017    0.000 turkshead.py:88(d)
+    72984    0.014    0.000    0.014    0.000 {method 'close_path' of 'cairo.Context' objects}
+      408    0.000    0.000    0.000    0.000 {method 'clip' of 'cairo.Context' objects}
+      408    0.000    0.000    0.000    0.000 {method 'reset_clip' of 'cairo.Context' objects}
         1    0.000    0.000    0.000    0.000 {method 'save' of 'cairo.Context' objects}
         1    0.000    0.000    0.000    0.000 {method 'restore' of 'cairo.Context' objects}
-        7    0.000    0.000    0.000    0.000 {method 'remove' of 'set' objects}
         1    0.000    0.000    0.000    0.000 {method 'set_antialias' of 'cairo.Context' objects}
-        1    0.000    0.000    0.000    0.000 {max}
-        5    0.000    0.000    0.000    0.000 {method '__subclasses__' of 'type' objects}
-        8    0.000    0.000    0.000    0.000 {method '__subclasshook__' of 'object' objects}
-        2    0.000    0.000    0.000    0.000 turkshead.py:74(p)
         1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
 
 
@@ -93,176 +33,40 @@ Wed May  6 16:39:43 2015    profiling/profile_python.stats
 
 Function                                              called...
                                                           ncalls  tottime  cumtime
-<string>:1(<module>)                                  ->       1    0.000    0.042  turkshead.py:65(__init__)
-                                                               1    0.000    0.134  turkshead.py:121(draw)
-turkshead.py:121(draw)                                ->       1    0.000    0.060  turkshead.py:131(__draw_strings)
-                                                               1    0.000    0.075  turkshead.py:159(__redraw_intersections)
+<string>:1(<module>)                                  ->       1    0.000    1.367  turkshead.py:121(draw)
+turkshead.py:121(draw)                                ->       1    0.001    0.582  turkshead.py:131(__draw_strings)
+                                                               1    0.002    0.785  turkshead.py:159(__redraw_intersections)
                                                                1    0.000    0.000  {method 'restore' of 'cairo.Context' objects}
                                                                1    0.000    0.000  {method 'save' of 'cairo.Context' objects}
                                                                1    0.000    0.000  {method 'set_antialias' of 'cairo.Context' objects}
-turkshead.py:136(__draw_segment)                      ->    6912    0.021    0.042  turkshead.py:143(__compute_color)
-                                                            6912    0.033    0.041  turkshead.py:150(__path_segment)
-                                                            6912    0.030    0.030  {method 'fill' of 'cairo.Context' objects}
-                                                            6912    0.003    0.003  {method 'set_source_rgb' of 'cairo.Context' objects}
-turkshead.py:159(__redraw_intersections)              ->     192    0.005    0.066  turkshead.py:136(__draw_segment)
-                                                              96    0.006    0.008  turkshead.py:150(__path_segment)
-                                                              96    0.000    0.000  {method 'clip' of 'cairo.Context' objects}
-                                                              96    0.000    0.000  {method 'reset_clip' of 'cairo.Context' objects}
-turkshead.py:131(__draw_strings)                      ->     192    0.005    0.060  turkshead.py:136(__draw_segment)
-turkshead.py:150(__path_segment)                      ->    7008    0.001    0.001  {method 'close_path' of 'cairo.Context' objects}
-                                                           27744    0.007    0.007  {method 'line_to' of 'cairo.Context' objects}
-                                                            7008    0.002    0.002  {method 'move_to' of 'cairo.Context' objects}
-turkshead.py:65(__init__)                             ->       1    0.000    0.000  fractions.py:68(__new__)
-                                                               1    0.000    0.025  knot.py:28(__init__)
-                                                               1    0.000    0.000  numbers.py:284(__float__)
-                                                               3    0.000    0.018  turkshead.py:18(normalize_string)
-                                                               2    0.000    0.000  turkshead.py:74(p)
-                                                               1    0.000    0.000  {max}
-turkshead.py:143(__compute_color)                     ->    6912    0.006    0.021  turkshead.py:115(compute_color_rgb)
+turkshead.py:136(__draw_segment)                      ->   72576    0.210    0.436  turkshead.py:143(__compute_color)
+                                                           72576    0.351    0.437  turkshead.py:150(__path_segment)
+                                                           72576    0.275    0.275  {method 'fill' of 'cairo.Context' objects}
+                                                           72576    0.029    0.029  {method 'set_source_rgb' of 'cairo.Context' objects}
+turkshead.py:159(__redraw_intersections)              ->     816    0.055    0.706  turkshead.py:136(__draw_segment)
+                                                             408    0.063    0.078  turkshead.py:150(__path_segment)
+                                                             408    0.000    0.000  {method 'clip' of 'cairo.Context' objects}
+                                                             408    0.000    0.000  {method 'reset_clip' of 'cairo.Context' objects}
+turkshead.py:131(__draw_strings)                      ->     816    0.054    0.581  turkshead.py:136(__draw_segment)
+turkshead.py:150(__path_segment)                      ->   72984    0.014    0.014  {method 'close_path' of 'cairo.Context' objects}
+                                                          290712    0.070    0.070  {method 'line_to' of 'cairo.Context' objects}
+                                                           72984    0.018    0.018  {method 'move_to' of 'cairo.Context' objects}
+turkshead.py:143(__compute_color)                     ->   72576    0.057    0.226  turkshead.py:115(compute_color_rgb)
 {method 'fill' of 'cairo.Context' objects}            ->
-knot.py:28(__init__)                                  ->       1    0.000    0.000  fractions.py:18(gcd)
-                                                               4    0.001    0.021  knot.py:39(__make_strings)
-                                                               1    0.000    0.004  knot.py:113(intersections)
-                                                               1    0.000    0.000  {len}
-                                                               1    0.000    0.000  {range}
-turkshead.py:115(compute_color_rgb)                   ->    6912    0.009    0.009  color.py:8(hsv_to_rgb)
-                                                            6912    0.005    0.007  turkshead.py:109(compute_color_hsv)
-knot.py:39(__make_strings)                            ->       2    0.000    0.000  fractions.py:68(__new__)
-                                                              11    0.000    0.000  fractions.py:360(forward)
-                                                             578    0.001    0.013  fractions.py:508(__hash__)
-                                                             197    0.000    0.001  fractions.py:527(__eq__)
-                                                              96    0.000    0.000  fractions.py:572(__lt__)
-                                                              96    0.000    0.000  fractions.py:584(__ge__)
-                                                               3    0.000    0.000  knot.py:9(iter_overlaping_pairs)
-                                                               3    0.000    0.000  knot.py:14(iter_successive_pairs)
-                                                             195    0.000    0.000  knot.py:51(<genexpr>)
-                                                              12    0.000    0.000  {len}
-                                                             483    0.000    0.000  {method 'append' of 'list' objects}
-                                                               4    0.000    0.000  {range}
-                                                               3    0.000    0.004  {sorted}
-                                                               3    0.000    0.000  {zip}
-turkshead.py:18(normalize_string)                     ->     192    0.000    0.006  turkshead.py:26(normalize_segment)
-                                                              96    0.000    0.012  turkshead.py:33(normalize_bridge)
-turkshead.py:26(normalize_segment)                    ->    1152    0.003    0.016  turkshead.py:49(normalize_end)
-turkshead.py:49(normalize_end)                        ->    1152    0.000    0.000  fractions.py:261(numerator)
-                                                            1152    0.000    0.000  fractions.py:265(denominator)
-                                                            1152    0.001    0.012  fractions.py:360(forward)
-{isinstance}                                          ->    7853    0.007    0.011  abc.py:128(__instancecheck__)
-fractions.py:508(__hash__)                            ->     530    0.001    0.012  fractions.py:527(__eq__)
-                                                             675    0.001    0.001  numbers.py:284(__float__)
-                                                             578    0.000    0.000  {hash}
-fractions.py:527(__eq__)                              ->     530    0.001    0.006  fractions.py:168(from_float)
-                                                            1034    0.000    0.000  fractions.py:261(numerator)
-                                                             349    0.000    0.000  fractions.py:265(denominator)
-                                                             530    0.001    0.001  fractions.py:527(__eq__)
-                                                            2624    0.001    0.004  {isinstance}
-                                                             530    0.000    0.000  {math.isinf}
-                                                             530    0.000    0.000  {math.isnan}
-fractions.py:68(__new__)                              ->    1902    0.001    0.001  fractions.py:18(gcd)
-                                                            1902    0.000    0.000  {built-in method __new__ of type object at 0x91f8e0}
-                                                            3804    0.002    0.007  {isinstance}
-turkshead.py:33(normalize_bridge)                     ->     192    0.000    0.006  turkshead.py:26(normalize_segment)
-                                                              96    0.000    0.006  turkshead.py:41(normalize_tunnel)
-fractions.py:360(forward)                             ->      19    0.000    0.000  fractions.py:387(_add)
-                                                               6    0.000    0.000  fractions.py:395(_sub)
-                                                            1152    0.002    0.010  fractions.py:409(_div)
-                                                            1177    0.001    0.001  {isinstance}
-abc.py:128(__instancecheck__)                         ->    8914    0.003    0.003  _weakrefset.py:70(__contains__)
-                                                               4    0.000    0.000  abc.py:148(__subclasscheck__)
-                                                            7853    0.001    0.001  {getattr}
-fractions.py:409(_div)                                ->    1152    0.003    0.007  fractions.py:68(__new__)
-                                                            2304    0.000    0.000  fractions.py:261(numerator)
-                                                            2304    0.000    0.000  fractions.py:265(denominator)
+turkshead.py:115(compute_color_rgb)                   ->   72576    0.099    0.099  color.py:8(hsv_to_rgb)
+                                                           72576    0.052    0.070  turkshead.py:109(compute_color_hsv)
 color.py:8(hsv_to_rgb)                                ->
-{sorted}                                              ->     307    0.000    0.001  fractions.py:527(__eq__)
-                                                            1209    0.001    0.005  fractions.py:572(__lt__)
-                                                              97    0.000    0.002  knot.py:119(_intersections)
-turkshead.py:109(compute_color_hsv)                   ->    6912    0.002    0.002  turkshead.py:88(d)
+turkshead.py:109(compute_color_hsv)                   ->   72576    0.017    0.017  turkshead.py:88(d)
 {method 'line_to' of 'cairo.Context' objects}         ->
-fractions.py:168(from_float)                          ->     530    0.001    0.003  fractions.py:68(__new__)
-                                                            1060    0.000    0.001  {isinstance}
-                                                             530    0.000    0.000  {math.isinf}
-                                                             530    0.000    0.000  {math.isnan}
-                                                             530    0.000    0.000  {method 'as_integer_ratio' of 'float' objects}
-turkshead.py:41(normalize_tunnel)                     ->     192    0.000    0.006  turkshead.py:26(normalize_segment)
-fractions.py:572(__lt__)                              ->    1329    0.002    0.004  fractions.py:546(_richcmp)
-fractions.py:546(_richcmp)                            ->    1209    0.000    0.000  fractions.py:261(numerator)
-                                                            1209    0.000    0.000  fractions.py:265(denominator)
-                                                            1425    0.001    0.002  {isinstance}
-                                                              96    0.000    0.000  {operator.ge}
-                                                            1329    0.000    0.000  {operator.lt}
-knot.py:113(intersections)                            ->       1    0.000    0.000  {len}
-                                                               1    0.000    0.004  {sorted}
-_weakrefset.py:70(__contains__)                       ->
 {method 'set_source_rgb' of 'cairo.Context' objects}  ->
-knot.py:119(_intersections)                           ->      96    0.000    0.000  <string>:8(__new__)
-                                                               1    0.000    0.000  fractions.py:18(gcd)
-                                                             192    0.000    0.001  fractions.py:68(__new__)
-                                                              14    0.000    0.000  fractions.py:360(forward)
-                                                              24    0.000    0.000  fractions.py:572(__lt__)
-                                                              32    0.000    0.000  {range}
 {method 'move_to' of 'cairo.Context' objects}         ->
 turkshead.py:88(d)                                    ->
 {method 'close_path' of 'cairo.Context' objects}      ->
-{built-in method __new__ of type object at 0x91f8e0}  ->
-{getattr}                                             ->
-fractions.py:261(numerator)                           ->
-fractions.py:18(gcd)                                  ->
-fractions.py:265(denominator)                         ->
-numbers.py:284(__float__)                             ->     676    0.000    0.000  fractions.py:261(numerator)
-                                                             676    0.000    0.000  fractions.py:265(denominator)
-{method 'as_integer_ratio' of 'float' objects}        ->
-fractions.py:584(__ge__)                              ->      96    0.000    0.000  fractions.py:546(_richcmp)
-fractions.py:387(_add)                                ->      19    0.000    0.000  fractions.py:68(__new__)
-                                                              21    0.000    0.000  fractions.py:261(numerator)
-                                                              42    0.000    0.000  fractions.py:265(denominator)
-abc.py:148(__subclasscheck__)                         ->       4    0.000    0.000  _weakrefset.py:36(__init__)
-                                                              13    0.000    0.000  _weakrefset.py:58(__iter__)
-                                                              12    0.000    0.000  _weakrefset.py:70(__contains__)
-                                                               8    0.000    0.000  _weakrefset.py:83(add)
-                                                               8    0.000    0.000  {getattr}
-                                                            10/5    0.000    0.000  {issubclass}
-                                                               5    0.000    0.000  {method '__subclasses__' of 'type' objects}
-                                                               8    0.000    0.000  {method '__subclasshook__' of 'object' objects}
-{operator.lt}                                         ->
-{zip}                                                 ->
-{math.isinf}                                          ->
-{math.isnan}                                          ->
-{hash}                                                ->
-{issubclass}                                          ->       4    0.000    0.000  abc.py:148(__subclasscheck__)
-<string>:8(__new__)                                   ->    2799    0.001    0.001  {built-in method __new__ of type object at 0x91f8e0}
 {method 'clip' of 'cairo.Context' objects}            ->
-knot.py:51(<genexpr>)                                 ->
-_weakrefset.py:58(__iter__)                           ->       7    0.000    0.000  _weakrefset.py:16(__init__)
-                                                               7    0.000    0.000  _weakrefset.py:20(__enter__)
-                                                               7    0.000    0.000  _weakrefset.py:26(__exit__)
-fractions.py:395(_sub)                                ->       6    0.000    0.000  fractions.py:68(__new__)
-                                                               6    0.000    0.000  fractions.py:261(numerator)
-                                                              12    0.000    0.000  fractions.py:265(denominator)
-{method 'append' of 'list' objects}                   ->
 {method 'reset_clip' of 'cairo.Context' objects}      ->
-_weakrefset.py:26(__exit__)                           ->       7    0.000    0.000  _weakrefset.py:52(_commit_removals)
-                                                               7    0.000    0.000  {method 'remove' of 'set' objects}
-{range}                                               ->
-knot.py:9(iter_overlaping_pairs)                      ->       3    0.000    0.000  {zip}
-knot.py:14(iter_successive_pairs)                     ->       3    0.000    0.000  {len}
-                                                               3    0.000    0.000  {zip}
-_weakrefset.py:20(__enter__)                          ->       7    0.000    0.000  {method 'add' of 'set' objects}
-{operator.ge}                                         ->
-_weakrefset.py:36(__init__)                           ->
-_weakrefset.py:83(add)                                ->       8    0.000    0.000  {method 'add' of 'set' objects}
-{method 'add' of 'set' objects}                       ->
-_weakrefset.py:52(_commit_removals)                   ->
-_weakrefset.py:16(__init__)                           ->
-{len}                                                 ->
 {method 'save' of 'cairo.Context' objects}            ->
 {method 'restore' of 'cairo.Context' objects}         ->
-{method 'remove' of 'set' objects}                    ->
 {method 'set_antialias' of 'cairo.Context' objects}   ->
-{max}                                                 ->
-{method '__subclasses__' of 'type' objects}           ->
-{method '__subclasshook__' of 'object' objects}       ->
-turkshead.py:74(p)                                    ->
 {method 'disable' of '_lsprof.Profiler' objects}      ->
 
 

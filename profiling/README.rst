@@ -14,8 +14,8 @@ We've modified the step for theta to reach a reasonable reference time (5s).
 This step MUST NOT be modified between experience to be able to compare results.
 This should be checked by comparing the visible color areas in the reference image and the produced image.
 
-Pure Python profiling
-=====================
+Profile Python code
+===================
 
 First phase: identify the "20%" of the code where "80%" of the time is spent.
 Profiling immediately shows that constructing the TurksHead object is orders of magnitude faster than drawing it (25ms vs. 8s).
@@ -24,7 +24,7 @@ Cumtime in Coordinates.get is 5.662, cumtimes in fsin and fcos are 1.553 and 0.7
 Using fractions is not a good performance idea.
 We could use integers for theta (dividing current thetas by step_theta).
 
-This gave a tremending speed improvement: 16 times faster!
+This gave a tremendous speed improvement: 16 times faster!
 
 Extract a C++ module
 ====================
@@ -45,3 +45,17 @@ So far, we have::
     real    0m0.355s
     user    0m0.342s
     sys     0m0.012s
+
+Improve quality
+===============
+
+Changing the step for theta, we can now generate images with no visible uniform regions on the string.
+Let's generate a new reference for further optimization::
+
+    $ time python -m DrawTurksHead --width=3200 --height=2400 --leads=18 --bights=24 --radius-variation=1000 --line-width=20 --output=profiling/reference.png
+
+    real    0m1.883s
+    user    0m1.868s
+    sys     0m0.012s
+
+And timeit_python.py returns 1.000s.

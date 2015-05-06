@@ -67,7 +67,7 @@ class TurksHead(object):
         self.inner_radius = inner
         self.outer_radius = outer
         self.line_width = line
-        theta_step = fractions.Fraction(1, 2 * self.p * max(1, 107 // self.p))
+        theta_step = fractions.Fraction(1, 2 * self.p * max(1, 509 // self.p))
         self.__strings = [normalize_string(theta_step, string) for string in self.__knot.strings]
         self.__coords = Coordinates(float(theta_step), bights, leads, inner, outer, line)
 

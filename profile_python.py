@@ -11,14 +11,15 @@ from DrawTurksHead import TurksHead
 
 stats_filename = "profiling/profile_python.stats"
 
-img = cairo.ImageSurface(cairo.FORMAT_RGB24, 1600, 1200)
+img = cairo.ImageSurface(cairo.FORMAT_RGB24, 3200, 2400)
 ctx = cairo.Context(img)
 ctx.set_source_rgb(1, 1, 0xBF / 255.)
 ctx.paint()
-ctx.translate(800, 600)
+ctx.translate(1600, 1200)
 ctx.scale(1, -1)
+knot = TurksHead(24, 18, 190, 1190, 20)
 
-profile.run("TurksHead(12, 9, 140, 590, 39).draw(ctx)", stats_filename)
+profile.run("knot.draw(ctx)", stats_filename)
 
 img.write_to_png("profiling/reference.png")
 
