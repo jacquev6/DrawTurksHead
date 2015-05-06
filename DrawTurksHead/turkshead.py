@@ -11,30 +11,54 @@ import cairo
 
 from .color import hsv_to_rgb
 from .knot import Knot
+from .knot.knot import String, Segment, End, Bridge, Tunnel
 
 
-def frange(begin, end, step):
-    assert isinstance(step, fractions.Fraction)
-    steps = ((end - begin) / step)
-    assert steps.denominator == 1
-    assert steps.numerator >= 0
-    return (begin + k * step for k in xrange(steps.numerator))
+def normalize_string(theta_step, string):
+    return String(
+        k=string.k,
+        segments=[normalize_segment(theta_step, segment) for segment in string.segments],
+        bridges=[normalize_bridge(theta_step, bridge) for bridge in string.bridges],
+    )
 
 
-def fcos(f):
-    assert isinstance(f, fractions.Fraction)
-    return math.cos(f * math.pi)
+def normalize_segment(theta_step, segment):
+    return Segment(
+        begin=normalize_end(theta_step, segment.begin),
+        end=normalize_end(theta_step, segment.end),
+    )
 
 
-def fsin(f):
-    assert isinstance(f, fractions.Fraction)
-    return math.sin(f * math.pi)
+def normalize_bridge(theta_step, bridge):
+    return Bridge(
+        before=normalize_segment(theta_step, bridge.before),
+        after=normalize_segment(theta_step, bridge.after),
+        tunnel=normalize_tunnel(theta_step, bridge.tunnel)
+    )
+
+
+def normalize_tunnel(theta_step, tunnel):
+    return Tunnel(
+        k=tunnel.k,
+        before=normalize_segment(theta_step, tunnel.before),
+        after=normalize_segment(theta_step, tunnel.after),
+    )
+
+
+def normalize_end(theta_step, end):
+    new_theta = end.theta / theta_step
+    assert new_theta.denominator == 1
+    return End(
+        theta=new_theta.numerator,
+        altitude=end.altitude,
+    )
 
 
 class Coordinates(object):
-    __epsilon = fractions.Fraction(1, 1000)
+    __epsilon = 0.001
 
-    def __init__(self, bights, leads, inner, outer, line):
+    def __init__(self, theta_step, bights, leads, inner, outer, line):
+        self.theta_step = float(theta_step)
         self.p = bights
         self.q = leads
         self.average_radius = (outer + inner) / 2
@@ -52,9 +76,10 @@ class Coordinates(object):
         return x - nx, y - ny
 
     def get(self, k, theta):
-        r = self.average_radius + self.delta_radius * fcos((self.p * theta - 2 * k) / self.q)
-        x = r * fcos(theta)
-        y = r * fsin(theta)
+        theta *= self.theta_step
+        r = self.average_radius + self.delta_radius * math.cos((self.p * theta - 2 * k) / self.q * math.pi)
+        x = r * math.cos(theta * math.pi)
+        y = r * math.sin(theta * math.pi)
         return x, y
 
     def __get_normal(self, k, theta):
@@ -80,11 +105,12 @@ class TurksHead(object):
 
     def __init__(self, bights, leads, inner, outer, line):
         self.__knot = Knot(bights, leads)
-        self.__coords = Coordinates(bights, leads, inner, outer, line)
         self.inner_radius = inner
         self.outer_radius = outer
         self.line_width = line
-        self.theta_step = fractions.Fraction(1, 2 * self.p * max(1, 107 // self.p))
+        theta_step = fractions.Fraction(1, 2 * self.p * max(1, 107 // self.p))
+        self.__strings = [normalize_string(theta_step, string) for string in self.__knot.strings]
+        self.__coords = Coordinates(theta_step, bights, leads, inner, outer, line)
 
     @property
     def p(self):
@@ -138,48 +164,41 @@ class TurksHead(object):
         @todoc
         """
         ctx.save()
-
-        # ctx.set_source_rgb(0, 0, 1)
-        # for theta in frange(0, 2, self.theta_step):
-        #     ctx.move_to(self.inner_radius * fcos(theta), self.inner_radius * fsin(theta))
-        #     ctx.line_to(self.outer_radius * fcos(theta), self.outer_radius * fsin(theta))
-        # ctx.stroke()
-
         ctx.set_antialias(cairo.ANTIALIAS_NONE)
         self.__draw_strings(ctx)
         self.__redraw_intersections(ctx)
         ctx.restore()
 
     def __draw_strings(self, ctx):
-        for string in self.__knot.strings:
+        for string in self.__strings:
             for segment in string.segments:
                 self.__draw_segment(ctx, string.k, segment)
 
     def __draw_segment(self, ctx, k, segment):
-        for theta in frange(segment.begin.theta, segment.end.theta, self.theta_step):
+        for theta in xrange(segment.begin.theta, segment.end.theta):
             r, g, b = self.__compute_color(k, theta, segment)
             ctx.set_source_rgb(r, g, b)
-            self.__path_segment(ctx, k, theta, theta + self.theta_step)
+            self.__path_segment(ctx, k, theta, theta + 1)
             ctx.fill()
 
     def __compute_color(self, k, theta, segment):
         # @todo normalize theta before calling overridable methods
         # assert 0 <= theta < 2 * self.q_prime
         assert segment.begin.theta <= theta <= segment.end.theta
-        altitude = segment.begin.altitude + (segment.end.altitude - segment.begin.altitude) * (theta - segment.begin.theta) / (segment.end.theta - segment.begin.theta)
+        altitude = segment.begin.altitude + (segment.end.altitude - segment.begin.altitude) * float(theta - segment.begin.theta) / (segment.end.theta - segment.begin.theta)
         return self.compute_color_rgb(k, theta, altitude)
 
     def __path_segment(self, ctx, k, min_theta, max_theta):
         ctx.move_to(*self.__coords.get_outer(k, min_theta))
-        for theta in frange(min_theta, max_theta, self.theta_step):
-            ctx.line_to(*self.__coords.get_outer(k, theta + self.theta_step))
-        for theta in frange(max_theta, min_theta, -self.theta_step):
+        for theta in xrange(min_theta, max_theta):
+            ctx.line_to(*self.__coords.get_outer(k, theta + 1))
+        for theta in xrange(max_theta, min_theta, -1):
             ctx.line_to(*self.__coords.get_inner(k, theta))
         ctx.line_to(*self.__coords.get_inner(k, min_theta))
         ctx.close_path()
 
     def __redraw_intersections(self, ctx):
-        for string in self.__knot.strings:
+        for string in self.__strings:
             for bridge in string.bridges:
                 tunnel = bridge.tunnel
                 self.__path_segment(ctx, tunnel.k, tunnel.before.begin.theta, tunnel.after.end.theta)

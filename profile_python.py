@@ -23,4 +23,4 @@ profile.run("TurksHead(12, 9, 140, 590, 39).draw(ctx)", stats_filename)
 img.write_to_png("profiling/reference.png")
 
 p = pstats.Stats(stats_filename)
-p.strip_dirs().sort_stats("cumtime").print_stats()
+p.strip_dirs().sort_stats("cumtime").print_stats().print_callees()
