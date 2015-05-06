@@ -8,10 +8,10 @@ import unittest
 def hsv_to_rgb(h, s, v):
     hi = int(h / 60)
     f = h / 60. - hi;
-    hi %= 60;
     p = v * (1 - s);
     q = v * (1 - f * s);
     t = v * (1 - (1 - f) * s);
+    hi %= 6;
     if hi == 0:
         return v, t, p
     elif hi == 1:
@@ -33,6 +33,9 @@ class HsvToRgbTestCase(unittest.TestCase):
 
     def test_yellow(self):
         self.assertEqual(hsv_to_rgb(60., 1., 1.), (1, 1, 0))
+
+    def test_yellow_after_360(self):
+        self.assertEqual(hsv_to_rgb(420., 1., 1.), (1, 1, 0))
 
     def test_green(self):
         self.assertEqual(hsv_to_rgb(120., 1., 1.), (0, 1, 0))
