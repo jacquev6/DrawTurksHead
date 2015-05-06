@@ -25,3 +25,11 @@ Using fractions is not a good performance idea.
 We could use integers for theta (dividing current thetas by step_theta).
 
 This gave a tremending speed improvement: 16 times faster!
+
+Extract a C++ module
+====================
+
+Second phase: 300ms (of the 500ms total) are still spent in Coordinates.get_inner and .get_outer.
+Let's try to rewrite that in C++.
+
+Initially, timeit_python.py returns 0.332s.
