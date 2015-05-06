@@ -64,3 +64,19 @@ Port all drawing code to C++
 ============================
 
 This makes interfaces neater and now timeit_python.py returns 0.374s.
+
+What now?
+=========
+
+::
+
+    $ time python -m DrawTurksHead --width=3200 --height=2400 --leads=18 --bights=24 --radius-variation=1000 --line-width=20 --output=profiling/reference.png
+
+    real    0m1.201s
+    user    0m1.184s
+    sys     0m0.016s
+
+Next things:
+
+- compare ``__init__`` and ``draw`` again: the ratio may have changed with the improvments of draw.
+- profile the C++ code
