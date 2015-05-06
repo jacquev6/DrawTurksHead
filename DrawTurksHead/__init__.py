@@ -53,10 +53,10 @@ Let's define a utility method:
 You can choose the color of the drawing by overriding the :meth:`.TurksHead.compute_color_hsv` method:
 
     >>> class MyTurksHead(TurksHead):
-    ...   def compute_color_hsv(self, k, theta):
+    ...   def compute_color_hsv(self, k, theta, altitude):
     ...     h = 180 + k * 360 / self.d
     ...     s = 1
-    ...     v = .5 + self.get_altitude(k, theta) / 2
+    ...     v = .5 + altitude / 2
     ...     return h, s, v
     >>> knot = MyTurksHead(bights=7, leads=3, inner=50, outer=200, line=30)
     >>> draw_to_png(knot, "doc/doctest/2.png")
@@ -69,8 +69,8 @@ You can choose the color of the drawing by overriding the :meth:`.TurksHead.comp
 Or:
 
     >>> class MyTurksHead(TurksHead):
-    ...   def compute_color_hsv(self, k, theta):
-    ...     h, s, v = super(MyTurksHead, self).compute_color_hsv(k, theta)
+    ...   def compute_color_hsv(self, k, theta, altitude):
+    ...     h, s, v = super(MyTurksHead, self).compute_color_hsv(k, theta, altitude)
     ...     s = 0.25
     ...     v = v / 2
     ...     return h, s, v
