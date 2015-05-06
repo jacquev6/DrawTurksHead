@@ -10,7 +10,7 @@ import unittest
 import cairo
 
 from .color import hsv_to_rgb
-from.knot import Knot
+from .knot import Knot
 
 
 def frange(begin, end, step):

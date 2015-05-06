@@ -19,3 +19,7 @@ Pure Python profiling
 
 First phase: identify the "20%" of the code where "80%" of the time is spent.
 Profiling immediately shows that constructing the TurksHead object is orders of magnitude faster than drawing it (25ms vs. 8s).
+
+Cumtime in Coordinates.get is 5.662, cumtimes in fsin and fcos are 1.553 and 0.745 but cumtimes in math.sin and math.cos are 0.021 and 0.041.
+Using fractions is not a good performance idea.
+We could use integers for theta (dividing current thetas by step_theta).
