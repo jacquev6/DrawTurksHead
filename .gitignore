@@ -3,3 +3,5 @@
 /*.png
 /dist/
 /DrawTurksHead.egg-info/
+/.coverage
+/htmlcov/

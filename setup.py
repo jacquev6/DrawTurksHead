@@ -16,7 +16,6 @@ def parse_pkg_config(*args):
         in subprocess.check_output(["pkg-config"] + list(args)).strip().split(" ")
     ]
 
-# @todo Add unit tests, reference them here to be run by setup.py test, change .travis.yml to run them (with coveralls)
 # @todo Support Python 3 (on Travis as well)
 
 setuptools.setup(
@@ -36,14 +35,7 @@ setuptools.setup(
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
     ],
-    ext_modules=[
-        setuptools.Extension(
-            "DrawTurksHead._turkshead",
-            ["DrawTurksHead/turkshead_mod.cpp", "DrawTurksHead/turkshead.cpp"],
-            include_dirs=parse_pkg_config("pycairo", "cairomm-1.0", "--cflags-only-I"),
-            libraries=["boost_python"] + parse_pkg_config("cairomm-1.0", "--libs-only-l"),
-        ),
-    ],
+    test_suite="DrawTurksHead.tests",
     command_options={
         "build_sphinx": {
             "version": ("setup.py", version),

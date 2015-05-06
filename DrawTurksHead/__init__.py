@@ -9,7 +9,7 @@ Import:
 
 Create a Turk's head:
 
-    >>> knot = TurksHead(leads=3, bights=7, inner=50, outer=200, line=30)
+    >>> knot = TurksHead(bights=7, leads=3, inner=50, outer=200, line=30)
 
 Create a `Cairo <http://www.cairographics.org/pycairo/>`__ context:
 
@@ -23,6 +23,13 @@ Draw the Turk's head on the Cairo context:
 
     >>> knot.draw(ctx)
 
+Draw circles to verify inner and outer radiuses:
+
+    >>> ctx.set_source_rgb(0, 0, 1)
+    >>> ctx.arc(0, 0, 50, 0, 6.30)
+    >>> ctx.arc(0, 0, 200, 0, 6.30)
+    >>> ctx.stroke()
+
 Save the result to a file:
 
     >>> img.write_to_png("doc/doctest/1.png")
@@ -31,8 +38,6 @@ Save the result to a file:
     :align: center
 
     ``doc/doctest/1.png``
-
-@todoc Describe how to override compute_color_hsv
 
 Let's define a utility method:
 
@@ -53,7 +58,7 @@ You can choose the color of the drawing by overriding the :meth:`.TurksHead.comp
     ...     s = 1
     ...     v = .5 + self.get_altitude(k, theta) / 2
     ...     return h, s, v
-    >>> knot = MyTurksHead(leads=3, bights=7, inner=50, outer=200, line=30)
+    >>> knot = MyTurksHead(bights=7, leads=3, inner=50, outer=200, line=30)
     >>> draw_to_png(knot, "doc/doctest/2.png")
 
 .. figure:: doctest/2.png
@@ -69,7 +74,7 @@ Or:
     ...     s = 0.25
     ...     v = v / 2
     ...     return h, s, v
-    >>> knot = MyTurksHead(leads=3, bights=7, inner=50, outer=200, line=30)
+    >>> knot = MyTurksHead(bights=7, leads=3, inner=50, outer=200, line=30)
     >>> draw_to_png(knot, "doc/doctest/3.png")
 
 .. figure:: doctest/3.png
@@ -78,4 +83,4 @@ Or:
     ``doc/doctest/3.png``
 """
 
-from _turkshead import *
+from .turkshead import TurksHead

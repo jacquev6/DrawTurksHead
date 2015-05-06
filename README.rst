@@ -1,5 +1,4 @@
 DrawTurksHead is a Python (2.7) library to draw `Turk's head knots <http://en.wikipedia.org/wiki/Turk%27s_head_knot>`_.
-The core is in C++ and can also be used as a standalone C++ library.
 An `interactive demo <http://vincent-jacques.net/DrawTurksHead>`__ is available.
 
 It's licensed under the `MIT license <http://choosealicense.com/licenses/mit/>`__.

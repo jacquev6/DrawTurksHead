@@ -30,6 +30,6 @@ ctx.paint()
 ctx.translate(width / 2, height / 2)
 ctx.scale(1, -1)
 
-TurksHead(options.leads, options.bights, innerRadius, outerRadius, options.line_width).draw(ctx)
+TurksHead(options.bights, options.leads, innerRadius, outerRadius, options.line_width).draw(ctx)
 
 img.write_to_png(options.output)

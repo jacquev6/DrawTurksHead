@@ -2,7 +2,7 @@
 User guide
 ==========
 
-DrawTurksHead can be used on the command line, as a Python package or as a C++ library.
+DrawTurksHead can be used on the command line or as a Python package.
 
 Command-line
 ============
@@ -19,8 +19,3 @@ Python package
 ==============
 
 .. automodule:: DrawTurksHead
-
-C++ library
-===========
-
-@todoc
