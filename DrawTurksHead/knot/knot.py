@@ -23,6 +23,8 @@ Bridge = collections.namedtuple("Bridge", "before, after, tunnel")
 Tunnel = collections.namedtuple("Tunnel", "k, before, after")
 String = collections.namedtuple("String", "k, segments, bridges")
 
+Intersection = collections.namedtuple("Intersection", "m, n, theta_1, theta_2")
+
 
 class Knot(object):
     def __init__(self, p, q):
@@ -32,16 +34,39 @@ class Knot(object):
         self._ks = range(self.d)
         self.p_prime = p // self.d
         self.q_prime = q // self.d
-        self._intersections = intersections(p, q)
-        assert len(self._intersections) == p * (q - 1)
         self.strings = list(self.__make_strings())
 
     def __make_strings(self):
         if self.q == 1:
             yield String(0, [Segment(End(fractions.Fraction(0), 0), End(fractions.Fraction(2), 0))], [])
         else:
+            intersections = []
+            for m in range(self.d):
+                # n == m
+                for a in range(1, self.q_prime):
+                    for b in range(0, self.p_prime):
+                        # @todo Why do we need to normalize? Why is theta_1 < 0?
+                        theta_1 = fractions.Fraction(b * self.q - a * self.p + 2 * m, self.p)
+                        if theta_1 < 0:
+                            theta_1 += 2 * self.q_prime
+                        theta_2 = fractions.Fraction(b * self.q + a * self.p + 2 * m, self.p)
+                        intersections.append(Intersection(m, m, theta_1, theta_2))
+                # n != m
+                for n in range(m + 1, self.d):
+                    for a in range(-self.q_prime + 1, self.q_prime):
+                        for b in range(-1, 2 * self.p_prime):
+                            if (
+                                0 <= b * self.q - a * self.p + m + n < 2 * self.p * self.q_prime
+                            and
+                                0 <= b * self.q + a * self.p + m + n < 2 * self.p * self.q_prime
+                            ):
+                                theta_1 = fractions.Fraction(b * self.q - a * self.p + m + n, self.p)
+                                theta_2 = fractions.Fraction(b * self.q + a * self.p + m + n, self.p)
+                                intersections.append(Intersection(m, n, theta_1, theta_2))
+            assert len(intersections) == self.p * (self.q - 1)
+
             thetas_on_string = [[] for k in self._ks]
-            for m, n, theta_1, theta_2 in self._intersections:
+            for m, n, theta_1, theta_2 in intersections:
                 thetas_on_string[m].append(theta_1)
                 thetas_on_string[n].append(theta_2)
             for k in self._ks:
@@ -51,7 +76,7 @@ class Knot(object):
             index_of_theta_on_string = [dict((theta, i) for i, theta in enumerate(thetas_on_string[k])) for k in self._ks]
 
             intersections_on_string = [{} for k in self._ks]
-            for m, n, theta_1, theta_2 in self._intersections:
+            for m, n, theta_1, theta_2 in intersections:
                 intersections_on_string[m][theta_1] = (n, theta_2)
                 intersections_on_string[n][theta_2] = (m, theta_1)
 
@@ -105,41 +130,3 @@ class Knot(object):
 
             for k in self._ks:
                 yield String(k, segments_on_string[k], bridges_on_string[k])
-
-
-Intersection = collections.namedtuple("Intersection", "m, n, theta_1, theta_2")
-
-
-def intersections(p, q):
-    intersections = sorted(_intersections(p, q))
-    assert len(intersections) == p * (q - 1)
-    return intersections
-
-
-def _intersections(p, q):
-    d = fractions.gcd(p, q)
-    p_prime = p / d
-    q_prime = q / d
-
-    for k in range(d):
-        for a in range(1, q_prime):
-            for b in range(0, p_prime):
-                # @todo Why do we need to normalize? Why is theta_1 < 0?
-                theta_1 = fractions.Fraction(b * q - a * p + 2 * k, p)
-                if theta_1 < 0:
-                    theta_1 += 2 * q_prime
-                theta_2 = fractions.Fraction(b * q + a * p + 2 * k, p)
-                yield Intersection(k, k, theta_1, theta_2)
-
-    for m in range(d):
-        for n in range(m + 1, d):
-            for a in range(-q_prime + 1, q_prime):
-                for b in range(-1, 2 * p_prime):
-                    if (
-                        0 <= b * q - a * p + m + n < 2 * p * q_prime
-                    and
-                        0 <= b * q + a * p + m + n < 2 * p * q_prime
-                    ):
-                        theta_1 = fractions.Fraction(b * q - a * p + m + n, p)
-                        theta_2 = fractions.Fraction(b * q + a * p + m + n, p)
-                        yield Intersection(m, n, theta_1, theta_2)
