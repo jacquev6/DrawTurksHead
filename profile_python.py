@@ -17,9 +17,8 @@ ctx.set_source_rgb(1, 1, 0xBF / 255.)
 ctx.paint()
 ctx.translate(1600, 1200)
 ctx.scale(1, -1)
-knot = TurksHead(24, 18, 190, 1190, 20)
 
-profile.run("knot.draw(ctx)", stats_filename)
+profile.run("TurksHead(24, 18, 190, 1190, 20).draw(ctx)", stats_filename)
 
 img.write_to_png("profiling/reference.png")
 

@@ -32,9 +32,9 @@ Extract a C++ module
 Second phase: 300ms (of the 500ms total) are still spent in Coordinates.get_inner and .get_outer.
 Let's try to rewrite that in C++.
 
-Initially, timeit_python.py returns 0.332s.
+Initially, timeit returns 0.332s.
 
-After the plain translation of Coordinates to C++, timeit_python.py returns 0.133s.
+After the plain translation of Coordinates to C++, timeit returns 0.133s.
 
 The generated image has some differences with the previous one. Some strings have shifted by one pixel. Not a big deal.
 
@@ -58,12 +58,12 @@ Let's generate a new reference for further optimization::
     user    0m1.868s
     sys     0m0.012s
 
-And timeit_python.py returns 1.000s.
+And timeit returns 1.000s.
 
 Port all drawing code to C++
 ============================
 
-This makes interfaces neater and now timeit_python.py returns 0.374s.
+This makes interfaces neater and now timeit returns 0.374s.
 
 What now?
 =========
@@ -80,3 +80,9 @@ Next things:
 
 - compare ``__init__`` and ``draw`` again: the ratio may have changed with the improvments of draw.
 - profile the C++ code
+
+New baseline: draw takes 0.498s, init takes 0.185 and timeit returns 0.458s.
+
+To improve draw, we need to profile the C++ code. Run through the Python interpreter. That will be fun.
+
+But first let's see if there are some low-hanging fruits in init. And refactor this ugly Knot.__make_strings method.

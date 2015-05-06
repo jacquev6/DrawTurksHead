@@ -1,25 +1,234 @@
-Wed May  6 20:53:03 2015    profiling/profile_python.stats
+Wed May  6 21:02:58 2015    profiling/profile_python.stats
 
-         145155 function calls in 0.504 seconds
+         459759 function calls (457393 primitive calls) in 0.700 seconds
 
    Ordered by: cumulative time
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-        1    0.000    0.000    0.504    0.504 <string>:1(<module>)
-        1    0.434    0.434    0.504    0.504 turkshead.py:160(draw)
-    72576    0.058    0.000    0.069    0.000 turkshead.py:68(compute_color_hsv)
+        1    0.001    0.001    0.705    0.705 <string>:1(<module>)
+        1    0.440    0.440    0.510    0.510 turkshead.py:160(draw)
+        1    0.004    0.004    0.194    0.194 turkshead.py:82(__init__)
+        1    0.000    0.000    0.114    0.114 knot.py:28(__init__)
+        7    0.006    0.001    0.096    0.014 knot.py:39(__make_strings)
+        6    0.001    0.000    0.077    0.013 turkshead.py:18(normalize_string)
+     2448    0.005    0.000    0.074    0.000 turkshead.py:26(normalize_segment)
+    44399    0.018    0.000    0.069    0.000 {isinstance}
+    72576    0.059    0.000    0.069    0.000 turkshead.py:68(compute_color_hsv)
+     4896    0.012    0.000    0.067    0.000 turkshead.py:49(normalize_end)
+     2453    0.004    0.000    0.062    0.000 fractions.py:508(__hash__)
+6943/4586    0.010    0.000    0.060    0.000 fractions.py:527(__eq__)
+     8125    0.018    0.000    0.053    0.000 fractions.py:68(__new__)
+      408    0.001    0.000    0.052    0.000 turkshead.py:33(normalize_bridge)
+    34739    0.032    0.000    0.052    0.000 abc.py:128(__instancecheck__)
+     4946    0.004    0.000    0.049    0.000 fractions.py:360(forward)
+     4896    0.009    0.000    0.043    0.000 fractions.py:409(_div)
+        7    0.003    0.000    0.036    0.005 {sorted}
+     2357    0.004    0.000    0.029    0.000 fractions.py:168(from_float)
+      408    0.001    0.000    0.025    0.000 turkshead.py:41(normalize_tunnel)
+     6424    0.003    0.000    0.024    0.000 fractions.py:572(__lt__)
+     6832    0.008    0.000    0.023    0.000 fractions.py:546(_richcmp)
+        1    0.000    0.000    0.018    0.018 knot.py:113(intersections)
+    39466    0.015    0.000    0.015    0.000 _weakrefset.py:70(__contains__)
     72576    0.011    0.000    0.011    0.000 turkshead.py:118(d)
+    19987    0.008    0.000    0.008    0.000 {built-in method __new__ of type object at 0x91f8e0}
+      409    0.001    0.000    0.007    0.000 knot.py:119(_intersections)
+    34747    0.005    0.000    0.005    0.000 {getattr}
+    28377    0.004    0.000    0.004    0.000 fractions.py:261(numerator)
+    25408    0.004    0.000    0.004    0.000 fractions.py:265(denominator)
+     8127    0.004    0.000    0.004    0.000 fractions.py:18(gcd)
+     3080    0.003    0.000    0.003    0.000 numbers.py:284(__float__)
+     2357    0.002    0.000    0.002    0.000 {method 'as_integer_ratio' of 'float' objects}
+      408    0.000    0.000    0.001    0.000 fractions.py:584(__ge__)
+     6424    0.001    0.000    0.001    0.000 {operator.lt}
+     4714    0.000    0.000    0.000    0.000 {math.isinf}
+     4714    0.000    0.000    0.000    0.000 {math.isnan}
+       38    0.000    0.000    0.000    0.000 fractions.py:387(_add)
+     2453    0.000    0.000    0.000    0.000 {hash}
+     2046    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+      822    0.000    0.000    0.000    0.000 knot.py:51(<genexpr>)
+      8/4    0.000    0.000    0.000    0.000 abc.py:148(__subclasscheck__)
+       12    0.000    0.000    0.000    0.000 fractions.py:395(_sub)
+     10/5    0.000    0.000    0.000    0.000 {issubclass}
+       18    0.000    0.000    0.000    0.000 {zip}
+      408    0.000    0.000    0.000    0.000 {operator.ge}
+       13    0.000    0.000    0.000    0.000 _weakrefset.py:58(__iter__)
+      124    0.000    0.000    0.000    0.000 {range}
+        6    0.000    0.000    0.000    0.000 knot.py:9(iter_overlaping_pairs)
+        6    0.000    0.000    0.000    0.000 knot.py:14(iter_successive_pairs)
+        7    0.000    0.000    0.000    0.000 _weakrefset.py:26(__exit__)
+        4    0.000    0.000    0.000    0.000 _weakrefset.py:36(__init__)
+        8    0.000    0.000    0.000    0.000 _weakrefset.py:83(add)
+       12    0.000    0.000    0.000    0.000 <string>:8(__new__)
+        7    0.000    0.000    0.000    0.000 _weakrefset.py:20(__enter__)
+       32    0.000    0.000    0.000    0.000 {len}
+        7    0.000    0.000    0.000    0.000 _weakrefset.py:52(_commit_removals)
+        7    0.000    0.000    0.000    0.000 _weakrefset.py:16(__init__)
+        8    0.000    0.000    0.000    0.000 {method '__subclasshook__' of 'object' objects}
+       15    0.000    0.000    0.000    0.000 {method 'add' of 'set' objects}
+        7    0.000    0.000    0.000    0.000 {method 'remove' of 'set' objects}
+        1    0.000    0.000    0.000    0.000 {max}
+        1    0.000    0.000    0.000    0.000 turkshead.py:146(outer_radius)
         1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.000    0.000    0.000    0.000 turkshead.py:153(line_width)
+        1    0.000    0.000    0.000    0.000 turkshead.py:111(q)
+        1    0.000    0.000    0.000    0.000 turkshead.py:139(inner_radius)
+        5    0.000    0.000    0.000    0.000 {method '__subclasses__' of 'type' objects}
+        1    0.000    0.000    0.000    0.000 turkshead.py:104(p)
 
 
    Ordered by: cumulative time
 
-Function                                          called...
-                                                      ncalls  tottime  cumtime
-<string>:1(<module>)                              ->       1    0.434    0.504  turkshead.py:160(draw)
-turkshead.py:160(draw)                            ->   72576    0.058    0.069  turkshead.py:68(compute_color_hsv)
-turkshead.py:68(compute_color_hsv)                ->   72576    0.011    0.011  turkshead.py:118(d)
-turkshead.py:118(d)                               ->
-{method 'disable' of '_lsprof.Profiler' objects}  ->
+Function                                              called...
+                                                          ncalls  tottime  cumtime
+<string>:1(<module>)                                  ->       1    0.004    0.194  turkshead.py:82(__init__)
+                                                               1    0.440    0.510  turkshead.py:160(draw)
+turkshead.py:160(draw)                                ->   72576    0.059    0.069  turkshead.py:68(compute_color_hsv)
+turkshead.py:82(__init__)                             ->       1    0.000    0.000  fractions.py:68(__new__)
+                                                               1    0.000    0.114  knot.py:28(__init__)
+                                                               1    0.000    0.000  numbers.py:284(__float__)
+                                                               6    0.001    0.077  turkshead.py:18(normalize_string)
+                                                               1    0.000    0.000  turkshead.py:104(p)
+                                                               1    0.000    0.000  turkshead.py:111(q)
+                                                               1    0.000    0.000  turkshead.py:139(inner_radius)
+                                                               1    0.000    0.000  turkshead.py:146(outer_radius)
+                                                               1    0.000    0.000  turkshead.py:153(line_width)
+                                                               1    0.000    0.000  {max}
+knot.py:28(__init__)                                  ->       1    0.000    0.000  fractions.py:18(gcd)
+                                                               7    0.006    0.096  knot.py:39(__make_strings)
+                                                               1    0.000    0.018  knot.py:113(intersections)
+                                                               1    0.000    0.000  {len}
+                                                               1    0.000    0.000  {range}
+knot.py:39(__make_strings)                            ->       6    0.000    0.000  <string>:8(__new__)
+                                                               5    0.000    0.000  fractions.py:68(__new__)
+                                                              23    0.000    0.000  fractions.py:360(forward)
+                                                            2453    0.004    0.062  fractions.py:508(__hash__)
+                                                             827    0.001    0.003  fractions.py:527(__eq__)
+                                                             408    0.000    0.001  fractions.py:572(__lt__)
+                                                             408    0.000    0.001  fractions.py:584(__ge__)
+                                                               6    0.000    0.000  knot.py:9(iter_overlaping_pairs)
+                                                               6    0.000    0.000  knot.py:14(iter_successive_pairs)
+                                                             822    0.000    0.000  knot.py:51(<genexpr>)
+                                                              24    0.000    0.000  {len}
+                                                            2046    0.000    0.000  {method 'append' of 'list' objects}
+                                                               7    0.000    0.000  {range}
+                                                               6    0.001    0.019  {sorted}
+                                                               6    0.000    0.000  {zip}
+turkshead.py:18(normalize_string)                     ->       6    0.000    0.000  <string>:8(__new__)
+                                                             816    0.002    0.024  turkshead.py:26(normalize_segment)
+                                                             408    0.001    0.052  turkshead.py:33(normalize_bridge)
+turkshead.py:26(normalize_segment)                    ->    4896    0.012    0.067  turkshead.py:49(normalize_end)
+{isinstance}                                          ->   34739    0.032    0.052  abc.py:128(__instancecheck__)
+turkshead.py:68(compute_color_hsv)                    ->   72576    0.011    0.011  turkshead.py:118(d)
+turkshead.py:49(normalize_end)                        ->    4896    0.001    0.001  fractions.py:261(numerator)
+                                                            4896    0.001    0.001  fractions.py:265(denominator)
+                                                            4896    0.004    0.049  fractions.py:360(forward)
+fractions.py:508(__hash__)                            ->    2357    0.006    0.054  fractions.py:527(__eq__)
+                                                            3079    0.003    0.003  numbers.py:284(__float__)
+                                                            2453    0.000    0.000  {hash}
+fractions.py:527(__eq__)                              ->    2357    0.004    0.029  fractions.py:168(from_float)
+                                                            4586    0.001    0.001  fractions.py:261(numerator)
+                                                            1562    0.000    0.000  fractions.py:265(denominator)
+                                                            2357    0.002    0.007  fractions.py:527(__eq__)
+                                                           11657    0.004    0.019  {isinstance}
+                                                            2357    0.000    0.000  {math.isinf}
+                                                            2357    0.000    0.000  {math.isnan}
+fractions.py:68(__new__)                              ->    8125    0.004    0.004  fractions.py:18(gcd)
+                                                            8125    0.002    0.002  {built-in method __new__ of type object at 0x91f8e0}
+                                                           16250    0.007    0.030  {isinstance}
+turkshead.py:33(normalize_bridge)                     ->     816    0.001    0.025  turkshead.py:26(normalize_segment)
+                                                             408    0.001    0.025  turkshead.py:41(normalize_tunnel)
+abc.py:128(__instancecheck__)                         ->   39454    0.015    0.015  _weakrefset.py:70(__contains__)
+                                                               4    0.000    0.000  abc.py:148(__subclasscheck__)
+                                                           34739    0.005    0.005  {getattr}
+fractions.py:360(forward)                             ->      38    0.000    0.000  fractions.py:387(_add)
+                                                              12    0.000    0.000  fractions.py:395(_sub)
+                                                            4896    0.009    0.043  fractions.py:409(_div)
+                                                            4946    0.002    0.002  {isinstance}
+fractions.py:409(_div)                                ->    4896    0.011    0.031  fractions.py:68(__new__)
+                                                            9792    0.001    0.001  fractions.py:261(numerator)
+                                                            9792    0.001    0.001  fractions.py:265(denominator)
+{sorted}                                              ->    1402    0.001    0.004  fractions.py:527(__eq__)
+                                                            5968    0.002    0.023  fractions.py:572(__lt__)
+                                                             409    0.001    0.007  knot.py:119(_intersections)
+fractions.py:168(from_float)                          ->    2357    0.005    0.016  fractions.py:68(__new__)
+                                                            4714    0.001    0.007  {isinstance}
+                                                            2357    0.000    0.000  {math.isinf}
+                                                            2357    0.000    0.000  {math.isnan}
+                                                            2357    0.002    0.002  {method 'as_integer_ratio' of 'float' objects}
+turkshead.py:41(normalize_tunnel)                     ->     816    0.002    0.024  turkshead.py:26(normalize_segment)
+fractions.py:572(__lt__)                              ->    6424    0.008    0.022  fractions.py:546(_richcmp)
+fractions.py:546(_richcmp)                            ->    5968    0.001    0.001  fractions.py:261(numerator)
+                                                            5968    0.001    0.001  fractions.py:265(denominator)
+                                                            6832    0.003    0.012  {isinstance}
+                                                             408    0.000    0.000  {operator.ge}
+                                                            6424    0.001    0.001  {operator.lt}
+knot.py:113(intersections)                            ->       1    0.000    0.000  {len}
+                                                               1    0.001    0.018  {sorted}
+_weakrefset.py:70(__contains__)                       ->
+turkshead.py:118(d)                                   ->
+{built-in method __new__ of type object at 0x91f8e0}  ->
+knot.py:119(_intersections)                           ->       1    0.000    0.000  fractions.py:18(gcd)
+                                                             816    0.002    0.005  fractions.py:68(__new__)
+                                                              27    0.000    0.000  fractions.py:360(forward)
+                                                              48    0.000    0.000  fractions.py:572(__lt__)
+                                                             116    0.000    0.000  {range}
+{getattr}                                             ->
+fractions.py:261(numerator)                           ->
+fractions.py:265(denominator)                         ->
+fractions.py:18(gcd)                                  ->
+numbers.py:284(__float__)                             ->    3080    0.000    0.000  fractions.py:261(numerator)
+                                                            3080    0.000    0.000  fractions.py:265(denominator)
+{method 'as_integer_ratio' of 'float' objects}        ->
+fractions.py:584(__ge__)                              ->     408    0.000    0.001  fractions.py:546(_richcmp)
+{operator.lt}                                         ->
+{math.isinf}                                          ->
+{math.isnan}                                          ->
+fractions.py:387(_add)                                ->      38    0.000    0.000  fractions.py:68(__new__)
+                                                              43    0.000    0.000  fractions.py:261(numerator)
+                                                              86    0.000    0.000  fractions.py:265(denominator)
+{hash}                                                ->
+{method 'append' of 'list' objects}                   ->
+knot.py:51(<genexpr>)                                 ->
+abc.py:148(__subclasscheck__)                         ->       4    0.000    0.000  _weakrefset.py:36(__init__)
+                                                              13    0.000    0.000  _weakrefset.py:58(__iter__)
+                                                              12    0.000    0.000  _weakrefset.py:70(__contains__)
+                                                               8    0.000    0.000  _weakrefset.py:83(add)
+                                                               8    0.000    0.000  {getattr}
+                                                            10/5    0.000    0.000  {issubclass}
+                                                               5    0.000    0.000  {method '__subclasses__' of 'type' objects}
+                                                               8    0.000    0.000  {method '__subclasshook__' of 'object' objects}
+fractions.py:395(_sub)                                ->      12    0.000    0.000  fractions.py:68(__new__)
+                                                              12    0.000    0.000  fractions.py:261(numerator)
+                                                              24    0.000    0.000  fractions.py:265(denominator)
+{issubclass}                                          ->       4    0.000    0.000  abc.py:148(__subclasscheck__)
+{zip}                                                 ->
+{operator.ge}                                         ->
+_weakrefset.py:58(__iter__)                           ->       7    0.000    0.000  _weakrefset.py:16(__init__)
+                                                               7    0.000    0.000  _weakrefset.py:20(__enter__)
+                                                               7    0.000    0.000  _weakrefset.py:26(__exit__)
+{range}                                               ->
+knot.py:9(iter_overlaping_pairs)                      ->       6    0.000    0.000  {zip}
+knot.py:14(iter_successive_pairs)                     ->       6    0.000    0.000  {len}
+                                                               6    0.000    0.000  {zip}
+_weakrefset.py:26(__exit__)                           ->       7    0.000    0.000  _weakrefset.py:52(_commit_removals)
+                                                               7    0.000    0.000  {method 'remove' of 'set' objects}
+_weakrefset.py:36(__init__)                           ->
+_weakrefset.py:83(add)                                ->       8    0.000    0.000  {method 'add' of 'set' objects}
+<string>:8(__new__)                                   ->   11862    0.007    0.007  {built-in method __new__ of type object at 0x91f8e0}
+_weakrefset.py:20(__enter__)                          ->       7    0.000    0.000  {method 'add' of 'set' objects}
+{len}                                                 ->
+_weakrefset.py:52(_commit_removals)                   ->
+_weakrefset.py:16(__init__)                           ->
+{method '__subclasshook__' of 'object' objects}       ->
+{method 'add' of 'set' objects}                       ->
+{method 'remove' of 'set' objects}                    ->
+{max}                                                 ->
+turkshead.py:146(outer_radius)                        ->
+{method 'disable' of '_lsprof.Profiler' objects}      ->
+turkshead.py:153(line_width)                          ->
+turkshead.py:111(q)                                   ->
+turkshead.py:139(inner_radius)                        ->
+{method '__subclasses__' of 'type' objects}           ->
+turkshead.py:104(p)                                   ->
 
 
