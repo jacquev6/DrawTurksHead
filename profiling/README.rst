@@ -59,3 +59,8 @@ Let's generate a new reference for further optimization::
     sys     0m0.012s
 
 And timeit_python.py returns 1.000s.
+
+Port all drawing code to C++
+============================
+
+This makes interfaces neater and now timeit_python.py returns 0.374s.

@@ -4,27 +4,7 @@
 
 import unittest
 
-
-def hsv_to_rgb(h, s, v):
-    hi = int(h / 60)
-    f = h / 60. - hi;
-    p = v * (1 - s);
-    q = v * (1 - f * s);
-    t = v * (1 - (1 - f) * s);
-    hi %= 6;
-    if hi == 0:
-        return v, t, p
-    elif hi == 1:
-        return q, v, p
-    elif hi == 2:
-        return p, v, t
-    elif hi == 3:
-        return p, q, v
-    elif hi == 4:
-        return t, p, v
-    else:
-        assert hi == 5
-        return v, p, q
+from ._turkshead import hsv_to_rgb
 
 
 class HsvToRgbTestCase(unittest.TestCase):

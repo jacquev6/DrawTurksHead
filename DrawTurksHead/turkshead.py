@@ -12,7 +12,7 @@ import cairo
 from .color import hsv_to_rgb
 from .knot import Knot
 from .knot.knot import String, Segment, End, Bridge, Tunnel
-from ._turkshead import Coordinates
+from ._turkshead import Drawer
 
 
 def normalize_string(theta_step, string):
@@ -55,113 +55,110 @@ def normalize_end(theta_step, end):
     )
 
 
+# class Colorer(object):
+    """
+    @todoc Document the Colorer interface with either compute_color_rgb or compute_color_hsv
+    """
+
+
+class DefaultColorer(object):
+    """
+    @todoc
+    """
+    def compute_color_hsv(self, knot, k, theta, altitude):
+        """
+        @todoc
+        """
+        h = k * 360. / knot.d
+        s = 0.5
+        v = 0.5 + altitude / 2
+        return h, s, v
+
+
 class TurksHead(object):
     """
     @todoc
-
-    Note: all angles are in :class:`fractions.Fraction` of :math:`\pi`.
     """
+    def __init__(self, bights, leads, inner, outer, line, colorer=None):
+        knot = Knot(bights, leads)
 
-    def __init__(self, bights, leads, inner, outer, line):
-        self.__knot = Knot(bights, leads)
-        self.inner_radius = inner
-        self.outer_radius = outer
-        self.line_width = line
-        theta_step = fractions.Fraction(1, 2 * self.p * max(1, 509 // self.p))
-        self.__strings = [normalize_string(theta_step, string) for string in self.__knot.strings]
-        self.__coords = Coordinates(float(theta_step), bights, leads, inner, outer, line)
+        self.__p = knot.p
+        self.__q = knot.q
+        self.__d = knot.d
+        self.__p_prime = knot.p_prime
+        self.__q_prime = knot.q_prime
+        self.__inner_radius = inner
+        self.__outer_radius = outer
+        self.__line_width = line
+
+        theta_step = fractions.Fraction(1, 2 * bights * max(1, 509 // bights))
+        strings = [normalize_string(theta_step, string) for string in knot.strings]
+        self.__drawer = Drawer(
+            knot=self,
+            theta_step=float(theta_step),
+            colorer=colorer or DefaultColorer(),
+            strings=strings,
+        )
+
 
     @property
     def p(self):
         """
         @todoc
         """
-        return self.__knot.p
+        return self.__p
 
     @property
     def q(self):
         """
         @todoc
         """
-        return self.__knot.q
+        return self.__q
 
     @property
     def d(self):
         """
         @todoc
         """
-        return self.__knot.d
+        return self.__d
 
     @property
     def p_prime(self):
         """
         @todoc
         """
-        return self.__knot.p_prime
+        return self.__p_prime
 
     @property
     def q_prime(self):
         """
         @todoc
         """
-        return self.__knot.q_prime
+        return self.__q_prime
 
-    def compute_color_hsv(self, k, theta, altitude):
+    @property
+    def inner_radius(self):
         """
         @todoc
         """
-        return (k * 360. / self.d, 0.5, 0.5 + altitude / 2)
+        return self.__inner_radius
 
-    def compute_color_rgb(self, k, theta, altitude):
+    @property
+    def outer_radius(self):
         """
         @todoc
         """
-        return hsv_to_rgb(*self.compute_color_hsv(k, theta, altitude))
+        return self.__outer_radius
+
+    @property
+    def line_width(self):
+        """
+        @todoc
+        """
+        return self.__line_width
 
     def draw(self, ctx):
         """
         @todoc
         """
-        ctx.save()
-        ctx.set_antialias(cairo.ANTIALIAS_NONE)
-        self.__draw_strings(ctx)
-        self.__redraw_intersections(ctx)
-        ctx.restore()
-
-    def __draw_strings(self, ctx):
-        for string in self.__strings:
-            for segment in string.segments:
-                self.__draw_segment(ctx, string.k, segment)
-
-    def __draw_segment(self, ctx, k, segment):
-        for theta in xrange(segment.begin.theta, segment.end.theta):
-            r, g, b = self.__compute_color(k, theta, segment)
-            ctx.set_source_rgb(r, g, b)
-            self.__path_segment(ctx, k, theta, theta + 1)
-            ctx.fill()
-
-    def __compute_color(self, k, theta, segment):
-        # @todo normalize theta before calling overridable methods
-        # assert 0 <= theta < 2 * self.q_prime
-        assert segment.begin.theta <= theta <= segment.end.theta
-        altitude = segment.begin.altitude + (segment.end.altitude - segment.begin.altitude) * float(theta - segment.begin.theta) / (segment.end.theta - segment.begin.theta)
-        return self.compute_color_rgb(k, theta, altitude)
-
-    def __path_segment(self, ctx, k, min_theta, max_theta):
-        ctx.move_to(*self.__coords.get_outer(k, min_theta))
-        for theta in xrange(min_theta, max_theta):
-            ctx.line_to(*self.__coords.get_outer(k, theta + 1))
-        for theta in xrange(max_theta, min_theta, -1):
-            ctx.line_to(*self.__coords.get_inner(k, theta))
-        ctx.line_to(*self.__coords.get_inner(k, min_theta))
-        ctx.close_path()
-
-    def __redraw_intersections(self, ctx):
-        for string in self.__strings:
-            for bridge in string.bridges:
-                tunnel = bridge.tunnel
-                self.__path_segment(ctx, tunnel.k, tunnel.before.begin.theta, tunnel.after.end.theta)
-                ctx.clip()
-                self.__draw_segment(ctx, string.k, bridge.before)
-                self.__draw_segment(ctx, string.k, bridge.after)
-                ctx.reset_clip()
+        self.__drawer.draw(ctx)

@@ -1,72 +1,25 @@
-Wed May  6 16:55:35 2015    profiling/profile_python.stats
+Wed May  6 20:53:03 2015    profiling/profile_python.stats
 
-         1020152 function calls in 1.367 seconds
+         145155 function calls in 0.504 seconds
 
    Ordered by: cumulative time
 
    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-        1    0.000    0.000    1.367    1.367 <string>:1(<module>)
-        1    0.000    0.000    1.367    1.367 turkshead.py:121(draw)
-     1632    0.109    0.000    1.287    0.001 turkshead.py:136(__draw_segment)
-        1    0.002    0.002    0.785    0.785 turkshead.py:159(__redraw_intersections)
-        1    0.001    0.001    0.582    0.582 turkshead.py:131(__draw_strings)
-    72984    0.414    0.000    0.515    0.000 turkshead.py:150(__path_segment)
-    72576    0.210    0.000    0.436    0.000 turkshead.py:143(__compute_color)
-    72576    0.275    0.000    0.275    0.000 {method 'fill' of 'cairo.Context' objects}
-    72576    0.057    0.000    0.226    0.000 turkshead.py:115(compute_color_rgb)
-    72576    0.099    0.000    0.099    0.000 color.py:8(hsv_to_rgb)
-    72576    0.052    0.000    0.070    0.000 turkshead.py:109(compute_color_hsv)
-   290712    0.070    0.000    0.070    0.000 {method 'line_to' of 'cairo.Context' objects}
-    72576    0.029    0.000    0.029    0.000 {method 'set_source_rgb' of 'cairo.Context' objects}
-    72984    0.018    0.000    0.018    0.000 {method 'move_to' of 'cairo.Context' objects}
-    72576    0.017    0.000    0.017    0.000 turkshead.py:88(d)
-    72984    0.014    0.000    0.014    0.000 {method 'close_path' of 'cairo.Context' objects}
-      408    0.000    0.000    0.000    0.000 {method 'clip' of 'cairo.Context' objects}
-      408    0.000    0.000    0.000    0.000 {method 'reset_clip' of 'cairo.Context' objects}
-        1    0.000    0.000    0.000    0.000 {method 'save' of 'cairo.Context' objects}
-        1    0.000    0.000    0.000    0.000 {method 'restore' of 'cairo.Context' objects}
-        1    0.000    0.000    0.000    0.000 {method 'set_antialias' of 'cairo.Context' objects}
+        1    0.000    0.000    0.504    0.504 <string>:1(<module>)
+        1    0.434    0.434    0.504    0.504 turkshead.py:160(draw)
+    72576    0.058    0.000    0.069    0.000 turkshead.py:68(compute_color_hsv)
+    72576    0.011    0.000    0.011    0.000 turkshead.py:118(d)
         1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
 
 
    Ordered by: cumulative time
 
-Function                                              called...
-                                                          ncalls  tottime  cumtime
-<string>:1(<module>)                                  ->       1    0.000    1.367  turkshead.py:121(draw)
-turkshead.py:121(draw)                                ->       1    0.001    0.582  turkshead.py:131(__draw_strings)
-                                                               1    0.002    0.785  turkshead.py:159(__redraw_intersections)
-                                                               1    0.000    0.000  {method 'restore' of 'cairo.Context' objects}
-                                                               1    0.000    0.000  {method 'save' of 'cairo.Context' objects}
-                                                               1    0.000    0.000  {method 'set_antialias' of 'cairo.Context' objects}
-turkshead.py:136(__draw_segment)                      ->   72576    0.210    0.436  turkshead.py:143(__compute_color)
-                                                           72576    0.351    0.437  turkshead.py:150(__path_segment)
-                                                           72576    0.275    0.275  {method 'fill' of 'cairo.Context' objects}
-                                                           72576    0.029    0.029  {method 'set_source_rgb' of 'cairo.Context' objects}
-turkshead.py:159(__redraw_intersections)              ->     816    0.055    0.706  turkshead.py:136(__draw_segment)
-                                                             408    0.063    0.078  turkshead.py:150(__path_segment)
-                                                             408    0.000    0.000  {method 'clip' of 'cairo.Context' objects}
-                                                             408    0.000    0.000  {method 'reset_clip' of 'cairo.Context' objects}
-turkshead.py:131(__draw_strings)                      ->     816    0.054    0.581  turkshead.py:136(__draw_segment)
-turkshead.py:150(__path_segment)                      ->   72984    0.014    0.014  {method 'close_path' of 'cairo.Context' objects}
-                                                          290712    0.070    0.070  {method 'line_to' of 'cairo.Context' objects}
-                                                           72984    0.018    0.018  {method 'move_to' of 'cairo.Context' objects}
-turkshead.py:143(__compute_color)                     ->   72576    0.057    0.226  turkshead.py:115(compute_color_rgb)
-{method 'fill' of 'cairo.Context' objects}            ->
-turkshead.py:115(compute_color_rgb)                   ->   72576    0.099    0.099  color.py:8(hsv_to_rgb)
-                                                           72576    0.052    0.070  turkshead.py:109(compute_color_hsv)
-color.py:8(hsv_to_rgb)                                ->
-turkshead.py:109(compute_color_hsv)                   ->   72576    0.017    0.017  turkshead.py:88(d)
-{method 'line_to' of 'cairo.Context' objects}         ->
-{method 'set_source_rgb' of 'cairo.Context' objects}  ->
-{method 'move_to' of 'cairo.Context' objects}         ->
-turkshead.py:88(d)                                    ->
-{method 'close_path' of 'cairo.Context' objects}      ->
-{method 'clip' of 'cairo.Context' objects}            ->
-{method 'reset_clip' of 'cairo.Context' objects}      ->
-{method 'save' of 'cairo.Context' objects}            ->
-{method 'restore' of 'cairo.Context' objects}         ->
-{method 'set_antialias' of 'cairo.Context' objects}   ->
-{method 'disable' of '_lsprof.Profiler' objects}      ->
+Function                                          called...
+                                                      ncalls  tottime  cumtime
+<string>:1(<module>)                              ->       1    0.434    0.504  turkshead.py:160(draw)
+turkshead.py:160(draw)                            ->   72576    0.058    0.069  turkshead.py:68(compute_color_hsv)
+turkshead.py:68(compute_color_hsv)                ->   72576    0.011    0.011  turkshead.py:118(d)
+turkshead.py:118(d)                               ->
+{method 'disable' of '_lsprof.Profiler' objects}  ->
 
 
