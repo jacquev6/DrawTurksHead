@@ -13,3 +13,9 @@ with the following command::
 We've modified the step for theta to reach a reasonable reference time (5s).
 This step MUST NOT be modified between experience to be able to compare results.
 This should be checked by comparing the visible color areas in the reference image and the produced image.
+
+Pure Python profiling
+=====================
+
+First phase: identify the "20%" of the code where "80%" of the time is spent.
+Profiling immediately shows that constructing the TurksHead object is orders of magnitude faster than drawing it (25ms vs. 8s).
