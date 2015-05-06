@@ -84,7 +84,7 @@ class TurksHead(object):
         self.inner_radius = inner
         self.outer_radius = outer
         self.line_width = line
-        self.theta_step = fractions.Fraction(1, 2 * self.p * max(1, 59 // self.p))
+        self.theta_step = fractions.Fraction(1, 2 * self.p * max(1, 107 // self.p))
 
     @property
     def p(self):
