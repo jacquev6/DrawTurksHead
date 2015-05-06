@@ -33,3 +33,15 @@ Second phase: 300ms (of the 500ms total) are still spent in Coordinates.get_inne
 Let's try to rewrite that in C++.
 
 Initially, timeit_python.py returns 0.332s.
+
+After the plain translation of Coordinates to C++, timeit_python.py returns 0.133s.
+
+The generated image has some differences with the previous one. Some strings have shifted by one pixel. Not a big deal.
+
+So far, we have::
+
+    $ time python -m DrawTurksHead --width=1600 --height=1200 --leads=9 --bights=12 --radius-variation=450 --line-width=39 --output=profiling/reference.png
+
+    real    0m0.355s
+    user    0m0.342s
+    sys     0m0.012s

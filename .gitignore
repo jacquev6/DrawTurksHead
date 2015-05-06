@@ -5,3 +5,4 @@
 /DrawTurksHead.egg-info/
 /.coverage
 /htmlcov/
+*.so

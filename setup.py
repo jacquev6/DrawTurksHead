@@ -35,6 +35,13 @@ setuptools.setup(
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
     ],
+    ext_modules=[
+        setuptools.Extension(
+            "DrawTurksHead._turkshead",
+            ["DrawTurksHead/_turkshead.cpp"],
+            libraries=["boost_python"],
+        ),
+    ],
     test_suite="DrawTurksHead.tests",
     command_options={
         "build_sphinx": {

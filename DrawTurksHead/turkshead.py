@@ -12,6 +12,7 @@ import cairo
 from .color import hsv_to_rgb
 from .knot import Knot
 from .knot.knot import String, Segment, End, Bridge, Tunnel
+from ._turkshead import Coordinates
 
 
 def normalize_string(theta_step, string):
@@ -54,48 +55,6 @@ def normalize_end(theta_step, end):
     )
 
 
-class Coordinates(object):
-    __epsilon = 0.001
-
-    def __init__(self, theta_step, bights, leads, inner, outer, line):
-        self.theta_step = float(theta_step)
-        self.p = bights
-        self.q = leads
-        self.average_radius = (outer + inner) / 2
-        self.delta_radius = (outer - inner - line) / 2
-        self.line_width = line
-
-    def get_inner(self, k, theta):
-        x, y = self.get(k, theta)
-        nx, ny = self.__get_normal(k, theta)
-        return x + nx, y + ny
-
-    def get_outer(self, k, theta):
-        x, y = self.get(k, theta)
-        nx, ny = self.__get_normal(k, theta)
-        return x - nx, y - ny
-
-    def get(self, k, theta):
-        theta *= self.theta_step
-        r = self.average_radius + self.delta_radius * math.cos((self.p * theta - 2 * k) / self.q * math.pi)
-        x = r * math.cos(theta * math.pi)
-        y = r * math.sin(theta * math.pi)
-        return x, y
-
-    def __get_normal(self, k, theta):
-        x0, y0 = self.get(k, theta - self.__epsilon);
-        x1, y1 = self.get(k, theta + self.__epsilon);
-
-        dx = x1 - x0
-        dy = y1 - y0
-        n = math.sqrt(dx * dx + dy * dy)
-
-        nx = -self.line_width * dy / n / 2
-        ny = self.line_width * dx / n / 2
-
-        return nx, ny
-
-
 class TurksHead(object):
     """
     @todoc
@@ -110,7 +69,7 @@ class TurksHead(object):
         self.line_width = line
         theta_step = fractions.Fraction(1, 2 * self.p * max(1, 107 // self.p))
         self.__strings = [normalize_string(theta_step, string) for string in self.__knot.strings]
-        self.__coords = Coordinates(theta_step, bights, leads, inner, outer, line)
+        self.__coords = Coordinates(float(theta_step), bights, leads, inner, outer, line)
 
     @property
     def p(self):
