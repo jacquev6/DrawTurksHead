@@ -10,14 +10,15 @@ before_install:
 - ./waf build
 - ./waf install
 - cd ..
+install:
 - pip install sphinx matplotlib coveralls
 - ls /home/travis/virtualenv/python2.7/lib/pkgconfig
 - export PKG_CONFIG_PATH=PKG_CONFIG_PATH:/home/travis/virtualenv/python2.7/lib/pkgconfig
-install:
-- python setup.py install
 script:
 - coverage run "--include=DrawTurksHead/*" setup.py test
 - python setup.py build_sphinx --builder=doctest
+after_success:
+- coveralls
 deploy:
   provider: pypi
   user: jacquev6
