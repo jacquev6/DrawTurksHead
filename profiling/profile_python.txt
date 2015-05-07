@@ -1,0 +1,89 @@
+Thu May  7 14:09:13 2015    /tmp/profile.stats
+
+         153089 function calls in 0.507 seconds
+
+   Ordered by: cumulative time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.508    0.508 <string>:1(<module>)
+        1    0.428    0.428    0.495    0.495 turkshead.py:116(draw)
+    72576    0.056    0.000    0.067    0.000 turkshead.py:27(compute_color_hsv)
+        1    0.004    0.004    0.012    0.012 turkshead.py:41(__init__)
+    72576    0.011    0.000    0.011    0.000 turkshead.py:74(d)
+        1    0.000    0.000    0.008    0.008 knot.py:31(__init__)
+        7    0.004    0.001    0.008    0.001 knot.py:40(__make_strings)
+     3696    0.002    0.000    0.002    0.000 {built-in method __new__ of type object at 0x91f8e0}
+      408    0.000    0.000    0.000    0.000 <string>:8(__new__)
+     2454    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+      822    0.000    0.000    0.000    0.000 knot.py:72(<genexpr>)
+        6    0.000    0.000    0.000    0.000 {sorted}
+        6    0.000    0.000    0.000    0.000 knot.py:15(iter_successive_pairs)
+       18    0.000    0.000    0.000    0.000 {zip}
+      123    0.000    0.000    0.000    0.000 {range}
+        6    0.000    0.000    0.000    0.000 knot.py:10(iter_overlaping_pairs)
+       87    0.000    0.000    0.000    0.000 {math.ceil}
+      174    0.000    0.000    0.000    0.000 {abs}
+       87    0.000    0.000    0.000    0.000 {math.floor}
+       31    0.000    0.000    0.000    0.000 {len}
+        1    0.000    0.000    0.000    0.000 fractions.py:18(gcd)
+        1    0.000    0.000    0.000    0.000 turkshead.py:67(q)
+        2    0.000    0.000    0.000    0.000 turkshead.py:60(p)
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.000    0.000    0.000    0.000 turkshead.py:95(inner_radius)
+        1    0.000    0.000    0.000    0.000 turkshead.py:109(line_width)
+        1    0.000    0.000    0.000    0.000 turkshead.py:102(outer_radius)
+
+
+   Ordered by: cumulative time
+
+Function                                              called...
+                                                          ncalls  tottime  cumtime
+<string>:1(<module>)                                  ->       1    0.004    0.012  turkshead.py:41(__init__)
+                                                               1    0.428    0.495  turkshead.py:116(draw)
+turkshead.py:116(draw)                                ->   72576    0.056    0.067  turkshead.py:27(compute_color_hsv)
+turkshead.py:27(compute_color_hsv)                    ->   72576    0.011    0.011  turkshead.py:74(d)
+turkshead.py:41(__init__)                             ->       1    0.000    0.008  knot.py:31(__init__)
+                                                               2    0.000    0.000  turkshead.py:60(p)
+                                                               1    0.000    0.000  turkshead.py:67(q)
+                                                               1    0.000    0.000  turkshead.py:95(inner_radius)
+                                                               1    0.000    0.000  turkshead.py:102(outer_radius)
+                                                               1    0.000    0.000  turkshead.py:109(line_width)
+turkshead.py:74(d)                                    ->
+knot.py:31(__init__)                                  ->       1    0.000    0.000  fractions.py:18(gcd)
+                                                               7    0.004    0.008  knot.py:40(__make_strings)
+                                                               1    0.000    0.000  {range}
+knot.py:40(__make_strings)                            ->     408    0.000    0.000  <string>:8(__new__)
+                                                               6    0.000    0.000  knot.py:10(iter_overlaping_pairs)
+                                                               6    0.000    0.000  knot.py:15(iter_successive_pairs)
+                                                             822    0.000    0.000  knot.py:72(<genexpr>)
+                                                             174    0.000    0.000  {abs}
+                                                              25    0.000    0.000  {len}
+                                                              87    0.000    0.000  {math.ceil}
+                                                              87    0.000    0.000  {math.floor}
+                                                            2454    0.000    0.000  {method 'append' of 'list' objects}
+                                                             122    0.000    0.000  {range}
+                                                               6    0.000    0.000  {sorted}
+                                                               6    0.000    0.000  {zip}
+{built-in method __new__ of type object at 0x91f8e0}  ->
+<string>:8(__new__)                                   ->    3696    0.002    0.002  {built-in method __new__ of type object at 0x91f8e0}
+{method 'append' of 'list' objects}                   ->
+knot.py:72(<genexpr>)                                 ->
+{sorted}                                              ->
+knot.py:15(iter_successive_pairs)                     ->       6    0.000    0.000  {len}
+                                                               6    0.000    0.000  {zip}
+{zip}                                                 ->
+{range}                                               ->
+knot.py:10(iter_overlaping_pairs)                     ->       6    0.000    0.000  {zip}
+{math.ceil}                                           ->
+{abs}                                                 ->
+{math.floor}                                          ->
+{len}                                                 ->
+fractions.py:18(gcd)                                  ->
+turkshead.py:67(q)                                    ->
+turkshead.py:60(p)                                    ->
+{method 'disable' of '_lsprof.Profiler' objects}      ->
+turkshead.py:95(inner_radius)                         ->
+turkshead.py:109(line_width)                          ->
+turkshead.py:102(outer_radius)                        ->
+
+

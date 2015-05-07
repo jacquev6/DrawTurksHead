@@ -35,6 +35,15 @@ setuptools.setup(
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
     ],
+    ext_modules=[
+        setuptools.Extension(
+            "DrawTurksHead._turkshead",
+            ["DrawTurksHead/_turkshead.cpp"],
+            include_dirs=parse_pkg_config("pycairo", "cairomm-1.0", "--cflags-only-I"),
+            libraries=["boost_python"] + parse_pkg_config("cairomm-1.0", "--libs-only-l"),
+            extra_compile_args=["-std=c++11"],
+        ),
+    ],
     test_suite="DrawTurksHead.tests",
     command_options={
         "build_sphinx": {
