@@ -90,6 +90,26 @@ Or:
     :align: center
 
     ``doc/doctest/3.png``
+
+Or:
+
+    >>> import math
+    >>> class MyColorer(object):
+    ...   def compute_color_rgb(self, knot, k, theta, altitude):
+    ...     assert 0 <= theta < 2 * knot.q_prime * math.pi
+    ...     b = theta / (2 * knot.q_prime * math.pi)
+    ...     return 0, 0, b
+    >>> knot = TurksHead(
+    ...   bights=7, leads=3,
+    ...   inner=50, outer=200, line=30,
+    ...   colorer=MyColorer()
+    ... )
+    >>> draw_to_png(knot, "doc/doctest/4.png")
+
+.. figure:: doctest/4.png
+    :align: center
+
+    ``doc/doctest/4.png``
 """
 
 from .turkshead import TurksHead, DefaultColorer

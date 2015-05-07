@@ -18,8 +18,8 @@
 
         :param knot: the :class:`.TurksHead` instance.
         :param k: the index of the current string. Between 0 and ``knot.d``.
-        :param theta: the angle on the current string. Between 0 and ``2 * knot.p_prime * math.pi``.
-        :param altitude: tha altitude of the string at this point. Between -1 and 1.
+        :param theta: the angle on the current string. Between 0 and ``2 * knot.q_prime * math.pi``.
+        :param altitude: the altitude of the string at this point. Between -1 and 1.
 
     .. py:method:: compute_color_rgb(knot, k, theta, altitude):
 
@@ -30,8 +30,8 @@
 
         :param knot: the :class:`.TurksHead` instance.
         :param k: the index of the current string. Between 0 and ``knot.d``.
-        :param theta: the angle on the current string. Between 0 and ``2 * knot.p_prime * math.pi``.
-        :param altitude: tha altitude of the string at this point. Between -1 and 1.
+        :param theta: the angle on the current string. Between 0 and ``2 * knot.q_prime * math.pi``.
+        :param altitude: the altitude of the string at this point. Between -1 and 1.
 """
 
 import collections

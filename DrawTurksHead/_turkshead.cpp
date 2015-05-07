@@ -121,8 +121,8 @@ private:
             compute_color_hsv(colorer_.attr("compute_color_hsv"))
         {}
 
-        boost::tuple<float, float, float> operator()(int k, int theta, float altitude) {
-            bp::object hsv = compute_color_hsv(knot, k, theta, altitude);
+        boost::tuple<float, float, float> operator()(int k, float angle, float altitude) {
+            bp::object hsv = compute_color_hsv(knot, k, angle, altitude);
             float h = bp::extract<float>(hsv[0]);
             float s = bp::extract<float>(hsv[1]);
             float v = bp::extract<float>(hsv[2]);
@@ -140,8 +140,8 @@ private:
             compute_color_rgb(colorer_.attr("compute_color_rgb"))
         {}
 
-        boost::tuple<float, float, float> operator()(int k, int theta, float altitude) {
-            bp::object hsv = compute_color_rgb(knot, k, theta, altitude);
+        boost::tuple<float, float, float> operator()(int k, float angle, float altitude) {
+            bp::object hsv = compute_color_rgb(knot, k, angle, altitude);
             float h = bp::extract<float>(hsv[0]);
             float s = bp::extract<float>(hsv[1]);
             float v = bp::extract<float>(hsv[2]);
@@ -165,6 +165,9 @@ public:
         Drawer(
             bp::extract<int>(knot_.attr("p")),
             bp::extract<int>(knot_.attr("q")),
+            bp::extract<int>(knot_.attr("d")),
+            bp::extract<int>(knot_.attr("p_prime")),
+            bp::extract<int>(knot_.attr("q_prime")),
             bp::extract<float>(knot_.attr("inner_radius")),
             bp::extract<float>(knot_.attr("outer_radius")),
             bp::extract<float>(knot_.attr("line_width")),
@@ -174,9 +177,12 @@ public:
     {}
 
 private:
-    Drawer(int p_, int q_, float inner_radius_, float outer_radius_, float line_width_, ComputeColor compute_color_, const std::vector<String>& strings_):
+    Drawer(int p_, int q_, int d_, int p_prime_, int q_prime_, float inner_radius_, float outer_radius_, float line_width_, ComputeColor compute_color_, const std::vector<String>& strings_):
         p(p_),
         q(q_),
+        d(d_),
+        p_prime(p_prime_),
+        q_prime(q_prime_),
         average_radius((inner_radius_ + outer_radius_) / 2),
         delta_radius((outer_radius_ - inner_radius_ -line_width_) / 2),
         line_width(line_width_),
@@ -210,7 +216,7 @@ private:
         for(int theta = segment.begin.theta; theta != segment.end.theta; ++theta) {
             float altitude = segment.begin.altitude + (segment.end.altitude - segment.begin.altitude) * float(theta - segment.begin.theta) / (segment.end.theta - segment.begin.theta);
             float r, g, b;
-            boost::tie(r, g, b) = compute_color(k, theta, altitude);
+            boost::tie(r, g, b) = compute_color(k, (theta % (4 * p * q_prime * std::max(1, 509 / p))) * theta_step * M_PI, altitude);
             ctx->set_source_rgb(r, g, b);
             path_segment(ctx, k, theta, theta +1);
             ctx->fill();
@@ -293,6 +299,9 @@ private:
 private:
     const int p;
     const int q;
+    const int d;
+    const int p_prime;
+    const int q_prime;
     const float average_radius;
     const float delta_radius;
     const float line_width;
