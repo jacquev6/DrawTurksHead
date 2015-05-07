@@ -179,117 +179,52 @@ Case 2
 
 So this case correspond to "real", individual intersection points.
 
-Let's reduce the domain we need to search for :math:`a` and :math:`b`.
-
-Intersection with self
-~~~~~~~~~~~~~~~~~~~~~~
-
-If :math:`m = n = k`, we consider only intersections where :math:`\theta_1 \lt \theta_2`.
-So far, we have:
+Let's reduce the domain we need to search for :math:`a` and :math:`b`. So far, we have:
 
 .. math::
 
     0 \le k \lt d
 
-    0 \le \theta_1 \lt \theta_2 \lt 2 \cdot q' \cdot \pi
+    0 \le \theta_1 \lt 2 \cdot q' \cdot \pi
+
+    0 \le \theta_2 \lt 2 \cdot q' \cdot \pi
 
     \theta_1 = \frac{b \cdot q - a \cdot p + 2 \cdot k}{p} \cdot \pi
 
     \theta_2 = \frac{b \cdot q + a \cdot p + 2 \cdot k}{p} \cdot \pi
 
-Replacing :math:`\theta_1` and :math:`\theta_2` in :math:`\theta_1 \lt \theta_2`
-and :math:`\theta_2 - \theta_1 \lt 2 \cdot q' \cdot \pi`
-and isolating :math:`a`, we obtain :math:`1 \le a \lt q'`.
-
-Replacing :math:`\theta_1` and :math:`\theta_2` in :math:`0 \lt \theta_1 + \theta_2 \lt 4 \cdot q' \cdot \pi`
-and isolating :math:`b`, we obtain :math:`-\frac{k}{q} \lt b \lt p' - \frac{k}{q}`.
-From :math:`0 \le k \lt d \le q`, we deduce :math:`-1 \lt -\frac{k}{q} \le 0`, so :math:`0 \le b \lt p'`.
-
-@todoc We have found a necessary condition on :math:`a` and :math:`b` but have not proven that it's sufficient (we may be producing some intersections twice).
-It gives only :math:`p' \cdot (q' - 1)` intersections so I believe it *is* sufficient, but that's not a proof either.
-
-.. plot::
-
-    import numpy as np
-    import matplotlib.pyplot as plt
-    import fractions
-
-    P = 7
-    Q = 8
-
-    plt.figure(figsize=(P, Q))
-
-    for p in range(1, P + 1):
-      for q in range(1, Q + 1):
-        d = fractions.gcd(p, q)
-        p_prime = p / d
-        q_prime = q / d
-
-        r = []
-        for k in range(d):
-          r.append(
-            lambda theta, k=k: 2 + np.cos((p * theta - 2 * k * np.pi) / q)
-          )
-        theta = np.arange(0, 2 * q_prime * np.pi, 0.01)
-
-        intersections = []
-        for k in range(d):
-          for a in range(1, q_prime):
-            for b in range(0, p_prime):
-              theta_1 = (b * q - a * p + 2 * k) * np.pi / p
-              intersections.append((theta_1, r[k](theta_1)))
-
-        sp = plt.subplot(Q, P, (q - 1) * P + p, polar=True)
-        for k in range(d):
-          sp.plot(theta, r[k](theta))
-        sp.plot(
-          [theta for theta, r in intersections],
-          [r for theta, r in intersections],
-          "r."
-        )
-        sp.set_rmin(0)
-        sp.set_rmax(3.1)
-        sp.set_yticks([1, 2, 3])
-        sp.set_yticklabels([])
-        sp.set_xticklabels([])
-        sp.spines['polar'].set_visible(False)
-
-    plt.tight_layout()
-
-Intersection with another curve
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Let's consider :math:`m \lt n`. So far, we have:
-
-.. math::
-
-    0 \le m \lt n \lt d
-
-    0 \le \theta_1 \lt 2 \cdot q' \cdot \pi
-
-    0 \le \theta_2 \lt 2 \cdot q' \cdot \pi
-
-    \theta_1 = \frac{b \cdot q - a \cdot p + m + n}{p} \cdot \pi
-
-    \theta_2 = \frac{b \cdot q + a \cdot p + m + n}{p} \cdot \pi
-
 Replacing :math:`\theta_1` and :math:`\theta_2` in :math:`-2 \cdot q' \cdot \pi \lt \theta_2 - \theta_1 \lt 2 \cdot q' \cdot \pi`
 and isolating :math:`a`, we obtain :math:`-q' + 1 \le a \lt q'`.
 
-Replacing :math:`\theta_1` and :math:`\theta_2` in :math:`0 \le \theta_1 + \theta_2 \lt 4 \cdot q' \cdot \pi`
-and isolating :math:`b`, we obtain :math:`-\frac{m + n}{q} \le b \lt 2 \cdot p' - \frac{m + n}{q}`.
-From :math:`0 \le m \lt n \lt d \lt q`, we deduce :math:`-2 \lt -\frac{m + n}{q} \le 0`, so
-:math:`-1 \le b \lt 2 \cdot p'`.
+Then, replacing :math:`\theta_1` and :math:`\theta_2` in :math:`0 \le \theta_1 \lt 2 \cdot q' \cdot \pi`
+and :math:`0 \le \theta_2 \lt 2 \cdot q' \cdot \pi` and isolating b, we obtain:
 
-@todoc Necessary/suficient => we still need to test for theta's range before adding the intersection.
+.. math::
 
-@todoc We could (should?) keep a in the range of b to avoid this test.
+    \frac{a \cdot p - m - n}{q} \le b \lt 2 \cdot p' - \frac{-a \cdot p + m + n}{q}
+
+    \frac{-a \cdot p - m - n}{q} \le b \lt 2 \cdot p' - \frac{a \cdot p + m + n}{q}
+
+We can regroup those two conditions in:
+
+.. math::
+
+    \frac{|a| \cdot p - m - n}{q} \le b \lt 2 \cdot p' - \frac{|a| \cdot p + m + n}{q}
+
+So to obtain all intersections, it's enough to iterate on :math:`a` and :math:`b` in those ranges.
+Note that if :math:`m = n`, this will give us each intersection twice.
+We can consider only the cases where :math:`\theta_1 \lt \theta_2`,
+which reduces the range of :math:`a` to :math:`1 \le a \lt q'`.
+
+This is just a necessary condition on :math:`a` and :math:`b`.
+We have proven that we obtain all intersections, but @todoc we might want to prove that we don't get duplicates.
 
 .. plot::
 
-    import numpy as np
-    import matplotlib.pyplot as plt
     import fractions
+    import math
+    import matplotlib.pyplot as plt
+    import numpy as np
 
     P = 7
     Q = 8
@@ -312,16 +247,23 @@ From :math:`0 \le m \lt n \lt d \lt q`, we deduce :math:`-2 \lt -\frac{m + n}{q}
         intersections = []
         # Note that these 4 imbricated loops are only O(p*q)
         for m in range(d):
-          for n in range(m + 1, d):
-            for a in range(-q_prime + 1, q_prime):
-              for b in range(-1, 2 * p_prime):
-                if (
-                  0 <= b * q - a * p + m + n < 2 * p * q_prime
-                and
-                  0 <= b * q + a * p + m + n < 2 * p * q_prime
-                ):
-                  theta_1 = (b * q - a * p + m + n) * np.pi / p
-                  intersections.append((theta_1, r[m](theta_1)))
+          for n in range(m, d):
+            if m == n:
+                min_a = 1
+            else:
+                min_a = -q_prime + 1
+            max_a = q_prime
+            for a in range(min_a, max_a):
+              min_b = int(math.ceil(float(abs(a) * p - m - n) / q))
+              max_b = 2 * p_prime - int(math.floor(float(abs(a) * p + m + n) / q))
+              for b in range(min_b, max_b):
+                theta_1 = (b * q - a * p + m + n) * np.pi / p
+                theta_2 = (b * q + a * p + m + n) * np.pi / p
+                assert 0 <= theta_1 < 2 * q_prime * np.pi
+                assert 0 <= theta_2 < 2 * q_prime * np.pi
+                assert m != n or theta_1 < theta_2
+                intersections.append((theta_1, r[m](theta_1)))
+        assert len(intersections) == p * (q - 1)  # @todoc Explain
 
         sp = plt.subplot(Q, P, (q - 1) * P + p, polar=True)
         for k in range(d):
@@ -339,6 +281,3 @@ From :math:`0 \le m \lt n \lt d \lt q`, we deduce :math:`-2 \lt -\frac{m + n}{q}
         sp.spines['polar'].set_visible(False)
 
     plt.tight_layout()
-
-@todoc There is more structure: all intersections are 0 mod pi/p so we should be able to iterate directly on theta_1 instead of a and b.
-No? Not obvious, because we still need both a and b to compute theta_2.

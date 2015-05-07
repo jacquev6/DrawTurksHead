@@ -4,6 +4,7 @@
 
 import collections
 import fractions
+import math
 
 
 def iter_overlaping_pairs(l):
@@ -42,27 +43,22 @@ class Knot(object):
         else:
             intersections = []
             for m in range(self.d):
-                # n == m
-                for a in range(1, self.q_prime):
-                    for b in range(0, self.p_prime):
-                        # @todo Why do we need to normalize? Why is theta_1 < 0?
-                        theta_1 = fractions.Fraction(b * self.q - a * self.p + 2 * m, self.p)
-                        if theta_1 < 0:
-                            theta_1 += 2 * self.q_prime
-                        theta_2 = fractions.Fraction(b * self.q + a * self.p + 2 * m, self.p)
-                        intersections.append(Intersection(m, m, theta_1, theta_2))
-                # n != m
-                for n in range(m + 1, self.d):
-                    for a in range(-self.q_prime + 1, self.q_prime):
-                        for b in range(-1, 2 * self.p_prime):
-                            if (
-                                0 <= b * self.q - a * self.p + m + n < 2 * self.p * self.q_prime
-                            and
-                                0 <= b * self.q + a * self.p + m + n < 2 * self.p * self.q_prime
-                            ):
-                                theta_1 = fractions.Fraction(b * self.q - a * self.p + m + n, self.p)
-                                theta_2 = fractions.Fraction(b * self.q + a * self.p + m + n, self.p)
-                                intersections.append(Intersection(m, n, theta_1, theta_2))
+                for n in range(m, self.d):
+                    if m == n:
+                        min_a = 1
+                    else:
+                        min_a = -self.q_prime + 1
+                    max_a = self.q_prime
+                    for a in range(min_a, max_a):
+                        min_b = int(math.ceil(float(abs(a) * self.p - m - n) / self.q))
+                        max_b = 2 * self.p_prime - int(math.floor(float(abs(a) * self.p + m + n) / self.q))
+                        for b in range(min_b, max_b):
+                            theta_1 = fractions.Fraction(b * self.q - a * self.p + m + n, self.p)
+                            theta_2 = fractions.Fraction(b * self.q + a * self.p + m + n, self.p)
+                            assert 0 <= theta_1 < 2 * self.q_prime
+                            assert 0 <= theta_2 < 2 * self.q_prime
+                            assert m != n or theta_1 < theta_2
+                            intersections.append(Intersection(m, n, theta_1, theta_2))
             assert len(intersections) == self.p * (self.q - 1)
 
             thetas_on_string = [[] for k in self._ks]
