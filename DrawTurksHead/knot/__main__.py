@@ -52,6 +52,6 @@ from .knot import Knot, String, Segment, End, Bridge, Tunnel
 class KnotTestCase(unittest.TestCase):"""
 
 tests = []
-for p, q in sorted(itertools.chain(itertools.product(range(1, 5), repeat=2), [(12, 9), (9, 12)]), key=lambda (p, q): (p + q, p)):
+for p, q in sorted(itertools.product(range(1, 13), repeat=2), key=lambda (p, q): (p + q, p)):
     tests.append("\n".join(make_test(p, q)))
 print "\n\n".join(tests)
