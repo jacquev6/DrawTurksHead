@@ -102,3 +102,23 @@ Drawing still takes 500ms of C++ code. timeit returns 0.356s.
 Knot.__make_strings is still ugly, but we'll see to that later.
 
 Let's profile the C++ code.
+
+Profile C++ code
+================
+
+Total execution (including Python interpreter) is about 5,700,000,000 instructions (5.7G instructions).
+
+Writing the image to the disk uses 3.5G instructions in a single call to libpng's png_write_image.
+There's nothing we can do about that.
+This explains the difference between timeit and ``time python -m DrawTurksHead``.
+
+The remaining 700M instructions are spent starting the Python interpreter and executing our Python code.
+
+Our C++ entry point (draw) is 'only' 1.5G instructions. This doesn't look a large optimization leverage :-(.
+1G instructions are spent in 72,576 calls to Cairo::Context::fill. Could we call fill less often?
+Only 89M instructions are spent inside _turkshead.so, so we have almost no leverage tweaking our own code.
+The only thing we could do is call libraries in a more efficient way.
+With a 50% improvement of draw (-750M instruction), the total improvement would be about 13%.
+
+For reference, using 107 instead of 509 for theta_steps reduces draw to 223M (85% reduction) instructions and main to 3.8G instructions (33% reduction).
+And produces visible uniform areas.
