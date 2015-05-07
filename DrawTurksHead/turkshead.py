@@ -3,7 +3,6 @@
 # Copyright 2013-2015 Vincent Jacques <vincent@vincent-jacques.net>
 
 import collections
-import fractions
 import math
 import unittest
 
@@ -15,50 +14,10 @@ from .knot.knot import String, Segment, End, Bridge, Tunnel
 from ._turkshead import Drawer
 
 
-def normalize_string(theta_step, string):
-    return String(
-        k=string.k,
-        segments=[normalize_segment(theta_step, segment) for segment in string.segments],
-        bridges=[normalize_bridge(theta_step, bridge) for bridge in string.bridges],
-    )
-
-
-def normalize_segment(theta_step, segment):
-    return Segment(
-        begin=normalize_end(theta_step, segment.begin),
-        end=normalize_end(theta_step, segment.end),
-    )
-
-
-def normalize_bridge(theta_step, bridge):
-    return Bridge(
-        before=normalize_segment(theta_step, bridge.before),
-        after=normalize_segment(theta_step, bridge.after),
-        tunnel=normalize_tunnel(theta_step, bridge.tunnel)
-    )
-
-
-def normalize_tunnel(theta_step, tunnel):
-    return Tunnel(
-        k=tunnel.k,
-        before=normalize_segment(theta_step, tunnel.before),
-        after=normalize_segment(theta_step, tunnel.after),
-    )
-
-
-def normalize_end(theta_step, end):
-    new_theta = end.theta / theta_step
-    assert new_theta.denominator == 1
-    return End(
-        theta=new_theta.numerator,
-        altitude=end.altitude,
-    )
-
-
 # class Colorer(object):
-    """
-    @todoc Document the Colorer interface with either compute_color_rgb or compute_color_hsv
-    """
+"""
+@todoc Document the Colorer interface with either compute_color_rgb or compute_color_hsv
+"""
 
 
 class DefaultColorer(object):
@@ -91,13 +50,10 @@ class TurksHead(object):
         self.__outer_radius = outer
         self.__line_width = line
 
-        theta_step = fractions.Fraction(1, 2 * bights * max(1, 509 // bights))
-        strings = [normalize_string(theta_step, string) for string in knot.strings]
         self.__drawer = Drawer(
             knot=self,
-            theta_step=float(theta_step),
             colorer=colorer or DefaultColorer(),
-            strings=strings,
+            strings=knot.strings,
         )
 
 

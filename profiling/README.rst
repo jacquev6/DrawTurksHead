@@ -86,3 +86,19 @@ New baseline: draw takes 0.498s, init takes 0.185 and timeit returns 0.458s.
 To improve draw, we need to profile the C++ code. Run through the Python interpreter. That will be fun.
 
 But first let's see if there are some low-hanging fruits in init. And refactor this ugly Knot.__make_strings method.
+
+Remove more fractions
+=====================
+
+Removing fractions in Python code altogether reduced init duration to 12ms.
+Drawing still takes 500ms of C++ code. timeit returns 0.356s.
+
+    $ time python -m DrawTurksHead --width=3200 --height=2400 --leads=18 --bights=24 --radius-variation=1000 --line-width=20 --output=profiling/reference.png
+
+    real    0m1.144s
+    user    0m1.130s
+    sys     0m0.012s
+
+Knot.__make_strings is still ugly, but we'll see to that later.
+
+Let's profile the C++ code.

@@ -69,24 +69,26 @@ private:
         const std::vector<Bridge> bridges;
     };
 
-    static Segment make_segment(bp::tuple segment_) {
+    static Segment make_segment(int theta_steps, bp::tuple segment_) {
         bp::tuple begin = bp::extract<bp::tuple>(segment_.attr("begin"));
         bp::tuple end = bp::extract<bp::tuple>(segment_.attr("end"));
 
         return Segment{
-            End{bp::extract<int>(begin.attr("theta")), bp::extract<int>(begin.attr("altitude"))},
-            End{bp::extract<int>(end.attr("theta")), bp::extract<int>(end.attr("altitude"))}
+            End{bp::extract<int>(begin.attr("theta")) * theta_steps, bp::extract<int>(begin.attr("altitude"))},
+            End{bp::extract<int>(end.attr("theta")) * theta_steps, bp::extract<int>(end.attr("altitude"))}
         };
     }
 
-    static std::vector<String> make_strings(bp::list strings_) {
+    static std::vector<String> make_strings(int p, bp::list strings_) {
+        int theta_steps = 2 * std::max(1, 509 / p);
+
         std::vector<String> strings;
         for(const bp::tuple& string_: extract_vector<bp::tuple>(strings_)) {
             int k = bp::extract<int>(string_.attr("k"));
 
             std::vector<Segment> segments;
             for(const bp::tuple& segment_: extract_vector<bp::tuple>(bp::extract<bp::list>(string_.attr("segments")))) {
-                segments.push_back(make_segment(segment_));
+                segments.push_back(make_segment(theta_steps, segment_));
             }
 
             std::vector<Bridge> bridges;
@@ -94,12 +96,12 @@ private:
                 bp::tuple tunnel_ = bp::extract<bp::tuple>(brigde_.attr("tunnel"));
                 bridges.push_back(
                     Bridge{
-                        make_segment(bp::extract<bp::tuple>(brigde_.attr("before"))),
-                        make_segment(bp::extract<bp::tuple>(brigde_.attr("after"))),
+                        make_segment(theta_steps, bp::extract<bp::tuple>(brigde_.attr("before"))),
+                        make_segment(theta_steps, bp::extract<bp::tuple>(brigde_.attr("after"))),
                         Tunnel{
                             bp::extract<int>(tunnel_.attr("k")),
-                            make_segment(bp::extract<bp::tuple>(tunnel_.attr("before"))),
-                            make_segment(bp::extract<bp::tuple>(tunnel_.attr("after"))),
+                            make_segment(theta_steps, bp::extract<bp::tuple>(tunnel_.attr("before"))),
+                            make_segment(theta_steps, bp::extract<bp::tuple>(tunnel_.attr("after"))),
                         }
                     }
                 );
@@ -159,27 +161,26 @@ private:
     }
 
 public:
-    Drawer(bp::object knot_, float theta_step_, bp::object colorer_, bp::list strings_):
+    Drawer(bp::object knot_, bp::object colorer_, bp::list strings_):
         Drawer(
             bp::extract<int>(knot_.attr("p")),
             bp::extract<int>(knot_.attr("q")),
             bp::extract<float>(knot_.attr("inner_radius")),
             bp::extract<float>(knot_.attr("outer_radius")),
             bp::extract<float>(knot_.attr("line_width")),
-            theta_step_,
             make_compute_color(knot_, colorer_),
-            make_strings(strings_)
+            make_strings(bp::extract<int>(knot_.attr("p")), strings_)
         )
     {}
 
 private:
-    Drawer(int p_, int q_, float inner_radius_, float outer_radius_, float line_width_, float theta_step_, ComputeColor compute_color_, const std::vector<String>& strings_):
+    Drawer(int p_, int q_, float inner_radius_, float outer_radius_, float line_width_, ComputeColor compute_color_, const std::vector<String>& strings_):
         p(p_),
         q(q_),
         average_radius((inner_radius_ + outer_radius_) / 2),
         delta_radius((outer_radius_ - inner_radius_ -line_width_) / 2),
         line_width(line_width_),
-        theta_step(theta_step_),
+        theta_step(1. / (2 * p * std::max(1, 509 / p))),
         compute_color(compute_color_),
         strings(strings_)
     {}
@@ -311,7 +312,7 @@ bp::tuple hsv_to_rgb_py(float h, float s, float v) {
 BOOST_PYTHON_MODULE(_turkshead) {
     Pycairo_IMPORT;  // Initialization of Pycairo_CAPI
 
-    bp::class_<Drawer>("Drawer", bp::init<bp::object, float, bp::object, bp::list>(bp::args("self", "knot", "theta_step", "colorer", "strings")))
+    bp::class_<Drawer>("Drawer", bp::init<bp::object, bp::object, bp::list>(bp::args("self", "knot", "colorer", "strings")))
         .def("draw", &Drawer::draw, bp::args("self", "ctx"))
     ;
 

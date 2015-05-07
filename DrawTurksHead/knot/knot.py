@@ -39,7 +39,7 @@ class Knot(object):
 
     def __make_strings(self):
         if self.q == 1:
-            yield String(0, [Segment(End(fractions.Fraction(0), 0), End(fractions.Fraction(2), 0))], [])
+            yield String(0, [Segment(End(0, 0), End(2 * self.p, 0))], [])
         else:
             intersections = []
             for m in range(self.d):
@@ -53,10 +53,10 @@ class Knot(object):
                         min_b = int(math.ceil(float(abs(a) * self.p - m - n) / self.q))
                         max_b = 2 * self.p_prime - int(math.floor(float(abs(a) * self.p + m + n) / self.q))
                         for b in range(min_b, max_b):
-                            theta_1 = fractions.Fraction(b * self.q - a * self.p + m + n, self.p)
-                            theta_2 = fractions.Fraction(b * self.q + a * self.p + m + n, self.p)
-                            assert 0 <= theta_1 < 2 * self.q_prime
-                            assert 0 <= theta_2 < 2 * self.q_prime
+                            theta_1 = b * self.q - a * self.p + m + n
+                            theta_2 = b * self.q + a * self.p + m + n
+                            assert 0 <= theta_1 < 2 * self.p * self.q_prime
+                            assert 0 <= theta_2 < 2 * self.p * self.q_prime
                             assert m != n or theta_1 < theta_2
                             intersections.append(Intersection(m, n, theta_1, theta_2))
             assert len(intersections) == self.p * (self.q - 1)
@@ -79,7 +79,7 @@ class Knot(object):
             altitudes_on_string = []
             altitudes_on_string.append([(-1) ** i for i in range(len(thetas_on_string[0]))])
             for k in range(1, self.d):
-                cut = index_of_theta_on_string[k][thetas_on_string[0][0] + fractions.Fraction(2 * k, self.p)]
+                cut = index_of_theta_on_string[k][thetas_on_string[0][0] + 2 * k]
                 a = cut % 2
                 altitudes_on_string.append([(-1) ** (i + a) for i in range(len(thetas_on_string[0]))])
 
@@ -88,7 +88,7 @@ class Knot(object):
                 for begin, end in iter_overlaping_pairs(zip(thetas_on_string[k], altitudes_on_string[k])):
                     segments_on_string[k].append(Segment(End(*begin), End(*end)))
                 begin = end
-                end = thetas_on_string[k][0] + 2 * self.q_prime, altitudes_on_string[k][0]
+                end = thetas_on_string[k][0] + 2 * self.p * self.q_prime, altitudes_on_string[k][0]
                 segments_on_string[k].append(Segment(End(*begin), End(*end)))
 
             bridges_on_string = [[] for k in self._ks]
@@ -98,19 +98,19 @@ class Knot(object):
                     segment_pairs = iter_successive_pairs(segments_on_string[k])
                 else:
                     first_segment = segments_on_string[k][-1]
-                    first_segment = Segment(End(first_segment.begin.theta - 2 * self.q_prime, first_segment.begin.altitude), End(first_segment.end.theta - 2 * self.q_prime, first_segment.end.altitude))
+                    first_segment = Segment(End(first_segment.begin.theta - 2 * self.p * self.q_prime, first_segment.begin.altitude), End(first_segment.end.theta - 2 * self.p * self.q_prime, first_segment.end.altitude))
                     segment_pairs = iter_successive_pairs([first_segment] + segments_on_string[k][:-1])
                 for before, after in segment_pairs:
                     assert before.begin.altitude == after.end.altitude == -1
                     assert before.end.altitude == after.begin.altitude == 1
                     assert before.end.theta == after.begin.theta
-                    assert 0 <= before.end.theta < 2 * self.q_prime
+                    assert 0 <= before.end.theta < 2 * self.p * self.q_prime
 
                     n, theta_2 = intersections_on_string[k][before.end.theta]
                     i = index_of_theta_on_string[n][theta_2]
                     if i == 0:
                         bef_tunnel = segments_on_string[n][i - 1]
-                        bef_tunnel = Segment(End(bef_tunnel.begin.theta - 2 * self.q_prime, bef_tunnel.begin.altitude), End(bef_tunnel.end.theta - 2 * self.q_prime, bef_tunnel.end.altitude))
+                        bef_tunnel = Segment(End(bef_tunnel.begin.theta - 2 * self.p * self.q_prime, bef_tunnel.begin.altitude), End(bef_tunnel.end.theta - 2 * self.p * self.q_prime, bef_tunnel.end.altitude))
                     else:
                         bef_tunnel = segments_on_string[n][i - 1]
                     aft_tunnel = segments_on_string[n][i]
