@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include <boost/foreach.hpp>
+#define FOREACH BOOST_FOREACH
 #include <boost/function.hpp>
 #include <boost/python.hpp>
 #include <boost/python/stl_iterator.hpp>
@@ -33,7 +35,7 @@ boost::tuple<float, float, float> hsv_to_rgb(float h, float s, float v) {
         case 2: return boost::make_tuple(p, v, t);
         case 3: return boost::make_tuple(p, q, v);
         case 4: return boost::make_tuple(t, p, v);
-        case 5: return boost::make_tuple(v, p, q);
+        default: return boost::make_tuple(v, p, q);
     }
 }
 
@@ -46,68 +48,73 @@ private:
 // Tunnel = collections.namedtuple("Tunnel", "k, before, after")
 // String = collections.namedtuple("String", "k, segments, bridges")
     struct End {
-        const int theta;
-        const float altitude;
+        End(int theta_, float altitude_): theta(theta_), altitude(altitude_) {}
+        int theta;
+        float altitude;
     };
     struct Segment {
-        const End begin;
-        const End end;
+        Segment(const End& begin_, const End& end_): begin(begin_), end(end_) {}
+        End begin;
+        End end;
     };
     struct Tunnel {
-        const int k;
-        const Segment before;
-        const Segment after;
+        Tunnel(int k_, const Segment& before_, const Segment& after_): k(k_), before(before_), after(after_) {}
+        int k;
+        Segment before;
+        Segment after;
     };
     struct Bridge {
-        const Segment before;
-        const Segment after;
-        const Tunnel tunnel;
+        Bridge(const Segment& before_, const Segment& after_, const Tunnel& tunnel_): before(before_), after(after_), tunnel(tunnel_) {}
+        Segment before;
+        Segment after;
+        Tunnel tunnel;
     };
     struct String {
-        const int k;
-        const std::vector<Segment> segments;
-        const std::vector<Bridge> bridges;
+        String(int k_, const std::vector<Segment>& segments_, const std::vector<Bridge>& bridges_): k(k_), segments(segments_), bridges(bridges_) {}
+        int k;
+        std::vector<Segment> segments;
+        std::vector<Bridge> bridges;
     };
 
     static Segment make_segment(int theta_steps, bp::tuple segment_) {
         bp::tuple begin = bp::extract<bp::tuple>(segment_.attr("begin"));
         bp::tuple end = bp::extract<bp::tuple>(segment_.attr("end"));
 
-        return Segment{
-            End{bp::extract<int>(begin.attr("theta")) * theta_steps, bp::extract<int>(begin.attr("altitude"))},
-            End{bp::extract<int>(end.attr("theta")) * theta_steps, bp::extract<int>(end.attr("altitude"))}
-        };
+        return Segment(
+            End(bp::extract<int>(begin.attr("theta")) * theta_steps, bp::extract<int>(begin.attr("altitude"))),
+            End(bp::extract<int>(end.attr("theta")) * theta_steps, bp::extract<int>(end.attr("altitude")))
+        );
     }
 
     static std::vector<String> make_strings(int p, bp::list strings_) {
         int theta_steps = 2 * std::max(1, 509 / p);
 
         std::vector<String> strings;
-        for(const bp::tuple& string_: extract_vector<bp::tuple>(strings_)) {
+        FOREACH(const bp::tuple& string_, extract_vector<bp::tuple>(strings_)) {
             int k = bp::extract<int>(string_.attr("k"));
 
             std::vector<Segment> segments;
-            for(const bp::tuple& segment_: extract_vector<bp::tuple>(bp::extract<bp::list>(string_.attr("segments")))) {
+            FOREACH(const bp::tuple& segment_, extract_vector<bp::tuple>(bp::extract<bp::list>(string_.attr("segments")))) {
                 segments.push_back(make_segment(theta_steps, segment_));
             }
 
             std::vector<Bridge> bridges;
-            for(const bp::tuple& brigde_: extract_vector<bp::tuple>(bp::extract<bp::list>(string_.attr("bridges")))) {
+            FOREACH(const bp::tuple& brigde_, extract_vector<bp::tuple>(bp::extract<bp::list>(string_.attr("bridges")))) {
                 bp::tuple tunnel_ = bp::extract<bp::tuple>(brigde_.attr("tunnel"));
                 bridges.push_back(
-                    Bridge{
+                    Bridge(
                         make_segment(theta_steps, bp::extract<bp::tuple>(brigde_.attr("before"))),
                         make_segment(theta_steps, bp::extract<bp::tuple>(brigde_.attr("after"))),
-                        Tunnel{
+                        Tunnel(
                             bp::extract<int>(tunnel_.attr("k")),
                             make_segment(theta_steps, bp::extract<bp::tuple>(tunnel_.attr("before"))),
-                            make_segment(theta_steps, bp::extract<bp::tuple>(tunnel_.attr("after"))),
-                        }
-                    }
+                            make_segment(theta_steps, bp::extract<bp::tuple>(tunnel_.attr("after")))
+                        )
+                    )
                 );
             }
 
-            strings.push_back(String{k, segments, bridges});
+            strings.push_back(String(k, segments, bridges));
         }
         return strings;
     }
@@ -162,35 +169,20 @@ private:
 
 public:
     Drawer(bp::object knot_, bp::object colorer_, bp::list strings_):
-        Drawer(
-            bp::extract<int>(knot_.attr("p")),
-            bp::extract<int>(knot_.attr("q")),
-            bp::extract<int>(knot_.attr("d")),
-            bp::extract<int>(knot_.attr("p_prime")),
-            bp::extract<int>(knot_.attr("q_prime")),
-            bp::extract<float>(knot_.attr("inner_radius")),
-            bp::extract<float>(knot_.attr("outer_radius")),
-            bp::extract<float>(knot_.attr("line_width")),
-            make_compute_color(knot_, colorer_),
-            make_strings(bp::extract<int>(knot_.attr("p")), strings_)
-        )
-    {}
-
-private:
-    Drawer(int p_, int q_, int d_, int p_prime_, int q_prime_, float inner_radius_, float outer_radius_, float line_width_, ComputeColor compute_color_, const std::vector<String>& strings_):
-        p(p_),
-        q(q_),
-        d(d_),
-        p_prime(p_prime_),
-        q_prime(q_prime_),
-        average_radius((inner_radius_ + outer_radius_) / 2),
-        delta_radius((outer_radius_ - inner_radius_ -line_width_) / 2),
-        line_width(line_width_),
+        p(bp::extract<int>(knot_.attr("p"))),
+        q(bp::extract<int>(knot_.attr("q"))),
+        d(bp::extract<int>(knot_.attr("d"))),
+        p_prime(bp::extract<int>(knot_.attr("p_prime"))),
+        q_prime(bp::extract<int>(knot_.attr("q_prime"))),
+        inner_radius(bp::extract<float>(knot_.attr("inner_radius"))),
+        outer_radius(bp::extract<float>(knot_.attr("outer_radius"))),
+        line_width(bp::extract<float>(knot_.attr("line_width"))),
+        average_radius((inner_radius + outer_radius) / 2),
+        delta_radius((outer_radius - inner_radius - line_width) / 2),
         theta_step(1. / (2 * p * std::max(1, 509 / p))),
-        compute_color(compute_color_),
-        strings(strings_)
+        compute_color(make_compute_color(knot_, colorer_)),
+        strings(make_strings(p, strings_))
     {}
-
 
 public:
     void draw(bp::object ctx_) {
@@ -205,8 +197,8 @@ public:
 
 private:
     void draw_strings(Cairo::RefPtr<Cairo::Context> ctx) {
-        for(const String& string: strings) {
-            for(const Segment& segment: string.segments) {
+        FOREACH(const String& string, strings) {
+            FOREACH(const Segment& segment, string.segments) {
                 draw_segment(ctx, string.k, segment);
             }
         }
@@ -284,8 +276,8 @@ private:
     }
 
     void redraw_intersections(Cairo::RefPtr<Cairo::Context> ctx) {
-        for(const String& string: strings) {
-            for(const Bridge& bridge: string.bridges) {
+        FOREACH(const String& string, strings) {
+            FOREACH(const Bridge& bridge, string.bridges) {
                 const Tunnel& tunnel = bridge.tunnel;
                 path_segment(ctx, tunnel.k, tunnel.before.begin.theta, tunnel.after.end.theta);
                 ctx->clip();
@@ -302,9 +294,11 @@ private:
     const int d;
     const int p_prime;
     const int q_prime;
+    const float inner_radius;
+    const float outer_radius;
+    const float line_width;
     const float average_radius;
     const float delta_radius;
-    const float line_width;
     const float theta_step;
     const ComputeColor compute_color;
     const std::vector<String> strings;

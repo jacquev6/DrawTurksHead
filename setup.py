@@ -41,7 +41,6 @@ setuptools.setup(
             ["DrawTurksHead/_turkshead.cpp"],
             include_dirs=parse_pkg_config("pycairo", "cairomm-1.0", "--cflags-only-I"),
             libraries=["boost_python"] + parse_pkg_config("cairomm-1.0", "--libs-only-l"),
-            extra_compile_args=["-std=c++0x"],
         ),
     ],
     test_suite="DrawTurksHead.tests",
