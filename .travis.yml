@@ -2,7 +2,8 @@ language: python
 python:
 - 2.7
 before_install:
-- sudo apt-get install libcairomm-1.0-dev libboost-all-dev
+- sudo apt-get update
+- sudo apt-get install libcairomm-1.0-dev libboost-all-dev g++-4.8
 - wget http://www.cairographics.org/releases/py2cairo-1.10.0.tar.bz2
 - tar xf py2cairo-1.10.0.tar.bz2
 - cd py2cairo-1.10.0
@@ -11,6 +12,7 @@ before_install:
 - ./waf install
 - cd ..
 install:
+- g++ --version
 - pip install sphinx matplotlib coveralls
 - ls /home/travis/virtualenv/python2.7/lib/pkgconfig
 - export PKG_CONFIG_PATH=PKG_CONFIG_PATH:/home/travis/virtualenv/python2.7/lib/pkgconfig
