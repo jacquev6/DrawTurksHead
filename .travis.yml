@@ -2,7 +2,7 @@ language: python
 python:
 - 2.7
 before_install:
-- sudo apt-get install libcairomm-1.0-dev libboost-all-dev g++
+- sudo apt-get install libcairomm-1.0-dev libboost-all-dev g++-4.8
 - wget http://www.cairographics.org/releases/py2cairo-1.10.0.tar.bz2
 - tar xf py2cairo-1.10.0.tar.bz2
 - cd py2cairo-1.10.0
