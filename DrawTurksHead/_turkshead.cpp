@@ -42,11 +42,6 @@ boost::tuple<float, float, float> hsv_to_rgb(float h, float s, float v) {
 
 class Drawer {
 private:
-// End = collections.namedtuple("End", "theta, altitude")
-// Segment = collections.namedtuple("Segment", "begin, end")
-// Bridge = collections.namedtuple("Bridge", "before, after, tunnel")
-// Tunnel = collections.namedtuple("Tunnel", "k, before, after")
-// String = collections.namedtuple("String", "k, segments, bridges")
     struct End {
         End(int theta_, float altitude_): theta(theta_), altitude(altitude_) {}
         int theta;
@@ -253,10 +248,8 @@ private:
         float x1, y1;
         boost::tie(x1, y1) = compute_middle_coordinates(k, angle + 0.001);
 
-        float x, y;
-        boost::tie(x, y) = compute_middle_coordinates(k, angle);
-        // float x = (x0 + x1) / 2;
-        // float y = (y0 + y1) / 2;
+        float x = (x0 + x1) / 2;
+        float y = (y0 + y1) / 2;
 
         float dx = x1 - x0;
         float dy = y1 - y0;
