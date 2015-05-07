@@ -9,7 +9,7 @@ import cairo
 
 from DrawTurksHead import TurksHead
 
-stats_filename = "profiling/profile_python.stats"
+stats_filename = "/tmp/profile.stats"
 
 img = cairo.ImageSurface(cairo.FORMAT_RGB24, 3200, 2400)
 ctx = cairo.Context(img)
