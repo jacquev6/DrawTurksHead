@@ -50,9 +50,9 @@ Let's define a utility method:
     ...   knot.draw(ctx)
     ...   img.write_to_png(filename)
 
-You can choose the color of the drawing by providing a :class:`Colorer`:
+You can choose the color of the drawing by providing a :class:`.Colorer`:
 
-    >>> class Colorer(object):
+    >>> class MyColorer(object):
     ...   def compute_color_hsv(self, knot, k, theta, altitude):
     ...     h = 180 + k * 360 / knot.d
     ...     s = 1
@@ -61,7 +61,7 @@ You can choose the color of the drawing by providing a :class:`Colorer`:
     >>> knot = TurksHead(
     ...   bights=7, leads=3,
     ...   inner=50, outer=200, line=30,
-    ...   colorer=Colorer()
+    ...   colorer=MyColorer()
     ... )
     >>> draw_to_png(knot, "doc/doctest/2.png")
 
@@ -73,16 +73,16 @@ You can choose the color of the drawing by providing a :class:`Colorer`:
 Or:
 
     >>> from DrawTurksHead import DefaultColorer
-    >>> class Colorer(DefaultColorer):
+    >>> class MyColorer(DefaultColorer):
     ...   def compute_color_hsv(self, knot, k, theta, altitude):
-    ...     h, s, v = super(Colorer, self).compute_color_hsv(knot, k, theta, altitude)
+    ...     h, s, v = super(MyColorer, self).compute_color_hsv(knot, k, theta, altitude)
     ...     s = 0.25
     ...     v = v / 2
     ...     return h, s, v
     >>> knot = TurksHead(
     ...   bights=7, leads=3,
     ...   inner=50, outer=200, line=30,
-    ...   colorer=Colorer()
+    ...   colorer=MyColorer()
     ... )
     >>> draw_to_png(knot, "doc/doctest/3.png")
 

@@ -31,7 +31,7 @@ html_logo = "logo.png"
 
 # http://sphinx-doc.org/ext/autodoc.html
 extensions.append("sphinx.ext.autodoc")
-autoclass_content = "both"
+# autoclass_content
 autodoc_member_order = "bysource"
 # autodoc_default_flags
 # autodoc_docstring_signature
