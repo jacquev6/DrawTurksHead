@@ -38,6 +38,7 @@ class Knot(object):
         self.strings = list(self.__make_strings())
 
     def __make_strings(self):
+        # @todo Refactor. Seriously. Do it.
         if self.q == 1:
             yield String(0, [Segment(End(0, 0), End(2 * self.p, 0))], [])
         else:
