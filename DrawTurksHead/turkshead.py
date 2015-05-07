@@ -149,5 +149,6 @@ class TurksHead(object):
     def draw(self, ctx):
         """
         Draw the knot on a :class:`cairo.Context`.
+        See `documentation of PyCairo <http://www.cairographics.org/documentation/pycairo/2/reference/context.html>`__.
         """
         self.__drawer.draw(ctx)

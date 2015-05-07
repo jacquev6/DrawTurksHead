@@ -10,7 +10,7 @@ extensions = []
 
 
 nitpicky = True
-# nitpick_ignore
+nitpick_ignore = [("py:class", "cairo.Context")]
 
 
 # https://github.com/bitprophet/alabaster
