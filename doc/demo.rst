@@ -1,0 +1,27 @@
+================
+Interactive demo
+================
+
+.. raw:: html
+
+    <form id="form">
+    <label for="bights">Number of bights:</label>&nbsp;<select id="bights" name="bights"><option>1</option><option>2</option><option>3</option><option>4</option><option selected>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select>
+    <label for="leads">Number of leads:</label>&nbsp;<select id="leads" name="leads"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select><br />
+    <label for="line_width">Line width (pixels):</label>&nbsp;<select id="line_width" name="line_width"><option>12</option><option>18</option><option>25</option><option>35</option><option selected>50</option><option>70</option></select>
+    <label for="inner_radius">Inner radius (pixels):</label>&nbsp;<select id="inner_radius" name="inner_radius"><option selected>50</option><option>75</option><option>100</option><option>150</option></select>
+    </form>
+
+    <img id="turkshead" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="A Turk's head knot" class="img-responsive"/>
+
+    <script type="text/javascript">
+        function updateImage() {
+            $('#turkshead').attr('src', 'http://dyn.vincent-jacques.net/turkshead?' + $("#form").serialize());
+        }
+
+        $('#bights').change(updateImage);
+        $('#leads').change(updateImage);
+        $('#line_width').change(updateImage);
+        $('#inner_radius').change(updateImage);
+
+        updateImage();
+    </script>

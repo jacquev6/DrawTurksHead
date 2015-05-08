@@ -10,5 +10,6 @@ Contents
 .. toctree::
 
     user_guide
+    demo
     reference
     algorithm
