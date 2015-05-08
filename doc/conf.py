@@ -3,7 +3,7 @@
 # Copyright 2013-2015 Vincent Jacques <vincent@vincent-jacques.net>
 
 master_doc = "index"
-project = "DrawTurksHead"
+project = "Draw\nTurksHead"
 author = '<a href="http://vincent-jacques.net/contact">Vincent Jacques</a>'
 copyright = "2013-2015 {}".format(author)
 extensions = []
