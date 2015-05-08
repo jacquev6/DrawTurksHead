@@ -22,7 +22,7 @@ class Knot(object):
         self._ks = range(self.d)
         self.p_prime = p // self.d
         self.q_prime = q // self.d
-        self.__one_turn = 2 * self.p * self.q_prime
+        self.__max_theta = 2 * self.p * self.q_prime
         if self.q == 1:
             self.strings = [String(0, [Segment(End(0, 0), End(2 * self.p, 0))], [])]
         else:
@@ -42,8 +42,8 @@ class Knot(object):
         for m in range(self.d):
             for n in range(m, self.d):
                 for theta_1, theta_2 in self.__find_strings_intersections(m, n):
-                    assert 0 <= theta_1 < self.__one_turn
-                    assert 0 <= theta_2 < self.__one_turn
+                    assert 0 <= theta_1 < self.__max_theta
+                    assert 0 <= theta_2 < self.__max_theta
                     assert m != n or theta_1 < theta_2
                     found += 1
                     yield m, n, theta_1, theta_2
@@ -83,7 +83,7 @@ class Knot(object):
 
     def __make_string_ends(self, ref_ends, tidied_intersections, k):
         for theta in tidied_intersections[k].iterkeys():
-            altitude = ref_ends[(theta - 2 * k) % (self.__one_turn)].altitude
+            altitude = ref_ends[(theta - 2 * k) % (self.__max_theta)].altitude
             yield End(theta, altitude)
 
     def __make_segments(self, ends):
@@ -95,7 +95,7 @@ class Knot(object):
             yield Segment(begin, end)
         yield Segment(
             string_ends[-1],
-            End(string_ends[0].theta + self.__one_turn, string_ends[0].altitude)
+            End(string_ends[0].theta + self.__max_theta, string_ends[0].altitude)
         )
 
     def __make_bridges(self, tidied_intersections, segments):
@@ -116,8 +116,8 @@ class Knot(object):
 
     def __rotate_segment(self, segment):
         return Segment(
-            End(segment.begin.theta - self.__one_turn, segment.begin.altitude),
-            End(segment.end.theta - self.__one_turn, segment.end.altitude),
+            End(segment.begin.theta - self.__max_theta, segment.begin.altitude),
+            End(segment.end.theta - self.__max_theta, segment.end.altitude),
         )
 
     def __make_bridge(self, tidied_intersections, segs_by_begin, segs_by_end, k, before, after):
@@ -135,7 +135,7 @@ class Knot(object):
         if theta_2 in segs_by_end[n]:
             bef_tunnel = segs_by_end[n][theta_2]
         else:
-            bef_tunnel = self.__rotate_segment(segs_by_end[n][theta_2 + self.__one_turn])
+            bef_tunnel = self.__rotate_segment(segs_by_end[n][theta_2 + self.__max_theta])
         aft_tunnel = segs_by_begin[n][theta_2]
         return Tunnel(n, bef_tunnel, aft_tunnel)
 
