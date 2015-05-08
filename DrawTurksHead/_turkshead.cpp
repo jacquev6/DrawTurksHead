@@ -41,56 +41,86 @@ boost::tuple<float, float, float> hsv_to_rgb(float h, float s, float v) {
 
 
 class Drawer {
+public:
+    Drawer(bp::object knot_, bp::object colorer_, bp::list strings_):
+        p(bp::extract<int>(knot_.attr("p"))),
+        q(bp::extract<int>(knot_.attr("q"))),
+        d(bp::extract<int>(knot_.attr("d"))),
+        p_prime(bp::extract<int>(knot_.attr("p_prime"))),
+        q_prime(bp::extract<int>(knot_.attr("q_prime"))),
+        inner_radius(bp::extract<float>(knot_.attr("inner_radius"))),
+        outer_radius(bp::extract<float>(knot_.attr("outer_radius"))),
+        line_width(bp::extract<float>(knot_.attr("line_width"))),
+        average_radius((inner_radius + outer_radius) / 2),
+        delta_radius((outer_radius - inner_radius - line_width) / 2),
+        // The value of theta_steps is a relic:
+        // it *had* to be a multiple of 2 and p when using fractions in Python code.
+        // We could carefully try to change it to something simpler.
+        // Hint: try small primes and see if the drawing looks good.
+        theta_steps(2 /** p*/ * std::max(1, 509 / p)),  // In a half bight
+        max_theta(2 * p * q_prime * theta_steps),  // Equivalent to 2*q'*pi
+        theta_unit(M_PI / theta_steps / p),  // Angle in radians represented by theta=1
+        compute_color(make_compute_color(knot_, colorer_)),
+        strings(make_strings(strings_))
+    {}
+
 private:
     struct End {
-        End(int theta_, float altitude_): theta(theta_), altitude(altitude_) {}
+        End(int theta_, float altitude_):
+            theta(theta_), altitude(altitude_)
+        {}
+
         int theta;
         float altitude;
     };
+
     struct Segment {
-        Segment(const End& begin_, const End& end_): begin(begin_), end(end_) {}
+        Segment(const End& begin_, const End& end_):
+            begin(begin_), end(end_)
+        {}
+
         End begin;
         End end;
     };
+
     struct Tunnel {
-        Tunnel(int k_, const Segment& before_, const Segment& after_): k(k_), before(before_), after(after_) {}
+        Tunnel(int k_, const Segment& before_, const Segment& after_):
+            k(k_), before(before_), after(after_)
+        {}
+
         int k;
         Segment before;
         Segment after;
     };
+
     struct Bridge {
-        Bridge(const Segment& before_, const Segment& after_, const Tunnel& tunnel_): before(before_), after(after_), tunnel(tunnel_) {}
+        Bridge(const Segment& before_, const Segment& after_, const Tunnel& tunnel_):
+            before(before_), after(after_), tunnel(tunnel_)
+        {}
+
         Segment before;
         Segment after;
         Tunnel tunnel;
     };
+
     struct String {
-        String(int k_, const std::vector<Segment>& segments_, const std::vector<Bridge>& bridges_): k(k_), segments(segments_), bridges(bridges_) {}
+        String(int k_, const std::vector<Segment>& segments_, const std::vector<Bridge>& bridges_):
+            k(k_), segments(segments_), bridges(bridges_)
+        {}
+
         int k;
         std::vector<Segment> segments;
         std::vector<Bridge> bridges;
     };
 
-    static Segment make_segment(int theta_steps, bp::tuple segment_) {
-        bp::tuple begin = bp::extract<bp::tuple>(segment_.attr("begin"));
-        bp::tuple end = bp::extract<bp::tuple>(segment_.attr("end"));
-
-        return Segment(
-            End(bp::extract<int>(begin.attr("theta")) * theta_steps, bp::extract<int>(begin.attr("altitude"))),
-            End(bp::extract<int>(end.attr("theta")) * theta_steps, bp::extract<int>(end.attr("altitude")))
-        );
-    }
-
-    static std::vector<String> make_strings(int p, bp::list strings_) {
-        int theta_steps = 2 * std::max(1, 509 / p);
-
+    std::vector<String> make_strings(bp::list strings_) {
         std::vector<String> strings;
         FOREACH(const bp::tuple& string_, extract_vector<bp::tuple>(strings_)) {
             int k = bp::extract<int>(string_.attr("k"));
 
             std::vector<Segment> segments;
             FOREACH(const bp::tuple& segment_, extract_vector<bp::tuple>(bp::extract<bp::list>(string_.attr("segments")))) {
-                segments.push_back(make_segment(theta_steps, segment_));
+                segments.push_back(make_segment(segment_));
             }
 
             std::vector<Bridge> bridges;
@@ -98,12 +128,12 @@ private:
                 bp::tuple tunnel_ = bp::extract<bp::tuple>(brigde_.attr("tunnel"));
                 bridges.push_back(
                     Bridge(
-                        make_segment(theta_steps, bp::extract<bp::tuple>(brigde_.attr("before"))),
-                        make_segment(theta_steps, bp::extract<bp::tuple>(brigde_.attr("after"))),
+                        make_segment(bp::extract<bp::tuple>(brigde_.attr("before"))),
+                        make_segment(bp::extract<bp::tuple>(brigde_.attr("after"))),
                         Tunnel(
                             bp::extract<int>(tunnel_.attr("k")),
-                            make_segment(theta_steps, bp::extract<bp::tuple>(tunnel_.attr("before"))),
-                            make_segment(theta_steps, bp::extract<bp::tuple>(tunnel_.attr("after")))
+                            make_segment(bp::extract<bp::tuple>(tunnel_.attr("before"))),
+                            make_segment(bp::extract<bp::tuple>(tunnel_.attr("after")))
                         )
                     )
                 );
@@ -114,26 +144,26 @@ private:
         return strings;
     }
 
+    Segment make_segment(bp::tuple segment_) {
+        bp::tuple begin = bp::extract<bp::tuple>(segment_.attr("begin"));
+        bp::tuple end = bp::extract<bp::tuple>(segment_.attr("end"));
+
+        return Segment(
+            End(bp::extract<int>(begin.attr("theta")) * theta_steps, bp::extract<int>(begin.attr("altitude"))),
+            End(bp::extract<int>(end.attr("theta")) * theta_steps, bp::extract<int>(end.attr("altitude")))
+        );
+    }
+
+private:
     typedef boost::function<boost::tuple<float, float, float> (int, int, float)> ComputeColor;
 
-    class HsvComputeColor {
-    public:
-        HsvComputeColor(const bp::object& knot_, const bp::object& colorer_):
-            knot(knot_),
-            compute_color_hsv(colorer_.attr("compute_color_hsv"))
-        {}
-
-        boost::tuple<float, float, float> operator()(int k, float angle, float altitude) {
-            bp::object hsv = compute_color_hsv(knot, k, angle, altitude);
-            float h = bp::extract<float>(hsv[0]);
-            float s = bp::extract<float>(hsv[1]);
-            float v = bp::extract<float>(hsv[2]);
-            return hsv_to_rgb(h, s, v);
+    ComputeColor make_compute_color(const bp::object& knot_, const bp::object& colorer_) {
+        if(PyObject_HasAttrString(colorer_.ptr(), "compute_color_rgb")) {
+            return RgbComputeColor(knot_, colorer_);
+        } else {
+            return HsvComputeColor(knot_, colorer_);
         }
-    private:
-        bp::object knot;
-        bp::object compute_color_hsv;
-    };
+    }
 
     class RgbComputeColor {
     public:
@@ -154,30 +184,24 @@ private:
         bp::object compute_color_rgb;
     };
 
-    static ComputeColor make_compute_color(const bp::object& knot_, const bp::object& colorer_) {
-        if(PyObject_HasAttrString(colorer_.ptr(), "compute_color_rgb")) {
-            return RgbComputeColor(knot_, colorer_);
-        } else {
-            return HsvComputeColor(knot_, colorer_);
-        }
-    }
+    class HsvComputeColor {
+    public:
+        HsvComputeColor(const bp::object& knot_, const bp::object& colorer_):
+            knot(knot_),
+            compute_color_hsv(colorer_.attr("compute_color_hsv"))
+        {}
 
-public:
-    Drawer(bp::object knot_, bp::object colorer_, bp::list strings_):
-        p(bp::extract<int>(knot_.attr("p"))),
-        q(bp::extract<int>(knot_.attr("q"))),
-        d(bp::extract<int>(knot_.attr("d"))),
-        p_prime(bp::extract<int>(knot_.attr("p_prime"))),
-        q_prime(bp::extract<int>(knot_.attr("q_prime"))),
-        inner_radius(bp::extract<float>(knot_.attr("inner_radius"))),
-        outer_radius(bp::extract<float>(knot_.attr("outer_radius"))),
-        line_width(bp::extract<float>(knot_.attr("line_width"))),
-        average_radius((inner_radius + outer_radius) / 2),
-        delta_radius((outer_radius - inner_radius - line_width) / 2),
-        theta_step(1. / (2 * p * std::max(1, 509 / p))),
-        compute_color(make_compute_color(knot_, colorer_)),
-        strings(make_strings(p, strings_))
-    {}
+        boost::tuple<float, float, float> operator()(int k, float angle, float altitude) {
+            bp::object hsv = compute_color_hsv(knot, k, angle, altitude);
+            float h = bp::extract<float>(hsv[0]);
+            float s = bp::extract<float>(hsv[1]);
+            float v = bp::extract<float>(hsv[2]);
+            return hsv_to_rgb(h, s, v);
+        }
+    private:
+        bp::object knot;
+        bp::object compute_color_hsv;
+    };
 
 public:
     void draw(bp::object ctx_) {
@@ -203,7 +227,7 @@ private:
         for(int theta = segment.begin.theta; theta != segment.end.theta; ++theta) {
             float altitude = segment.begin.altitude + (segment.end.altitude - segment.begin.altitude) * float(theta - segment.begin.theta) / (segment.end.theta - segment.begin.theta);
             float r, g, b;
-            boost::tie(r, g, b) = compute_color(k, (theta % (4 * p * q_prime * std::max(1, 509 / p))) * theta_step * M_PI, altitude);
+            boost::tie(r, g, b) = compute_color(k, (theta % max_theta) * theta_unit, altitude);
             ctx->set_source_rgb(r, g, b);
             path_segment(ctx, k, theta, theta +1);
             ctx->fill();
@@ -241,7 +265,7 @@ private:
     }
 
     boost::tuple<float, float, float, float> compute_all_coordinates(int k, int theta) {
-        float angle = theta * theta_step * M_PI;
+        float angle = theta * theta_unit;
 
         float x0, y0;
         boost::tie(x0, y0) = compute_middle_coordinates(k, angle - 0.001);
@@ -292,7 +316,9 @@ private:
     const float line_width;
     const float average_radius;
     const float delta_radius;
-    const float theta_step;
+    const int theta_steps;
+    const int max_theta;
+    const float theta_unit;
     const ComputeColor compute_color;
     const std::vector<String> strings;
 };
