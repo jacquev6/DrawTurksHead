@@ -29,10 +29,10 @@ Questions? Remarks? Bugs? Want to contribute? `Open an issue <https://github.com
 .. image:: https://img.shields.io/pypi/v/DrawTurksHead.svg
     :target: https://pypi.python.org/pypi/DrawTurksHead
 
-.. image:: https://pypip.in/py_versions/DrawTurksHead/badge.svg
+.. image:: https://img.shields.io/pypi/pyversions/DrawTurksHead/badge.svg
     :target: https://pypi.python.org/pypi/DrawTurksHead
 
-.. image:: https://pypip.in/status/DrawTurksHead/badge.svg
+.. image:: https://img.shields.io/pypi/status/DrawTurksHead/badge.svg
     :target: https://pypi.python.org/pypi/DrawTurksHead
 
 .. image:: https://img.shields.io/github/issues/jacquev6/DrawTurksHead.svg
