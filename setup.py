@@ -6,7 +6,7 @@
 import setuptools
 import subprocess
 
-version = "0.3.0"
+version = "0.3.2"
 
 
 def parse_pkg_config(*args):
