@@ -1,7 +1,9 @@
 language: python
 python:
 - 2.7
+sudo: required
 before_install:
+- echo We can migrate to container-based infrastructure when https://github.com/travis-ci/apt-package-whitelist/issues/1133 is solved
 - sudo apt-get install libcairomm-1.0-dev libboost-all-dev
 - wget http://www.cairographics.org/releases/py2cairo-1.10.0.tar.bz2
 - tar xf py2cairo-1.10.0.tar.bz2
