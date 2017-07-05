@@ -3,10 +3,12 @@
 
 # Copyright 2013-2015 Vincent Jacques <vincent@vincent-jacques.net>
 
+from __future__ import division, absolute_import, print_function
+
 import setuptools
 import subprocess
 
-version = "0.3.2"
+version = "0.3.3"
 
 
 def parse_pkg_config(*args):
@@ -24,7 +26,7 @@ setuptools.setup(
     description="Draw... Turk's head knots!",
     author="Vincent Jacques",
     author_email="vincent@vincent-jacques.net",
-    url="http://pythonhosted.org/DrawTurksHead",
+    url="http://jacquev6.github.io/DrawTurksHead/",
     packages=setuptools.find_packages(),
     license="MIT",
     classifiers=[
