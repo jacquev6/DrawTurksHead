@@ -89,7 +89,6 @@ class TurksHead(object):
             strings=knot.strings,
         )
 
-
     @property
     def p(self):
         """

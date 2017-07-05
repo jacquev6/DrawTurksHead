@@ -8,7 +8,7 @@ from __future__ import division, absolute_import, print_function
 import setuptools
 import subprocess
 
-version = "0.3.3"
+version = "0.3.4"
 
 
 def parse_pkg_config(*args):
@@ -24,6 +24,7 @@ setuptools.setup(
     name="DrawTurksHead",
     version=version,
     description="Draw... Turk's head knots!",
+    long_description=open("README.rst").read(),
     author="Vincent Jacques",
     author_email="vincent@vincent-jacques.net",
     url="http://jacquev6.github.io/DrawTurksHead/",

@@ -12,7 +12,9 @@ python2 setup.py test --quiet
 
 python2 setup.py build_sphinx --builder=doctest
 
-# pep8 --max-line-length=120 DrawTurksHead *.py doc/conf.py
+python2 setup.py check --strict --metadata --restructuredtext
+
+pep8 --max-line-length=120 DrawTurksHead *.py doc/conf.py
 
 python2 setup.py build_sphinx
 rm -rf docs

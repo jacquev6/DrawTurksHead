@@ -145,7 +145,13 @@ class Knot(object):
             Segment(bridge.after.begin, End((bridge.after.begin.theta + bridge.after.end.theta) / 2, 0)),
             Tunnel(
                 bridge.tunnel.k,
-                Segment(End((bridge.tunnel.before.begin.theta + bridge.tunnel.before.end.theta) / 2, 0), bridge.tunnel.before.end),
-                Segment(bridge.tunnel.after.begin, End((bridge.tunnel.after.begin.theta + bridge.tunnel.after.end.theta) / 2, 0)),
+                Segment(
+                    End((bridge.tunnel.before.begin.theta + bridge.tunnel.before.end.theta) / 2, 0),
+                    bridge.tunnel.before.end
+                ),
+                Segment(
+                    bridge.tunnel.after.begin,
+                    End((bridge.tunnel.after.begin.theta + bridge.tunnel.after.end.theta) / 2, 0)
+                ),
             ),
         )
