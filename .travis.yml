@@ -8,7 +8,7 @@ addons:
     - libcairomm-1.0-dev
     - libboost-all-dev
 before_install:
-- wget http://www.cairographics.org/releases/py2cairo-1.10.0.tar.bz2
+- wget --no-check-certificate http://www.cairographics.org/releases/py2cairo-1.10.0.tar.bz2
 - tar xf py2cairo-1.10.0.tar.bz2
 - cd py2cairo-1.10.0
 - ./waf configure --prefix=$(python -c "import sys; print(sys.prefix)")
