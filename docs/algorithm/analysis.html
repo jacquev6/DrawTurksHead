@@ -1,0 +1,387 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Analysis &#8212; Draw
+TurksHead 0.3.3 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.3.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Intuition" href="intuition.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="analysis">
+<h1>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h1>
+<p>In this part we perform a mathematical analysis of the family of curves we found previously.</p>
+<div class="section" id="definitions">
+<h2>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h2>
+<p>Let <span class="math">\(p \in \mathbb N, p &gt; 0\)</span> and <span class="math">\(q \in \mathbb N, q &gt; 0\)</span>.
+Let <span class="math">\(d = \gcd(p, q)\)</span>, <span class="math">\(p' = \frac{p}{d}\)</span> and <span class="math">\(q' = \frac{q}{d}\)</span>.
+Let <span class="math">\(r \in \mathbb R\)</span> and <span class="math">\(\delta_r \in \mathbb R\)</span> such that <span class="math">\(0 &lt; \delta_r &lt; r\)</span>.
+Let’s define the following family of functions:</p>
+<div class="math">
+\[ \begin{align}\begin{aligned}r_k : \theta \mapsto r + \delta_r \cdot \cos\left(\frac{p \cdot \theta - 2 \cdot k \cdot \pi}{q}\right)\\k \in \mathbb Z\end{aligned}\end{align} \]</div>
+<p>Let <span class="math">\(\Gamma_k\)</span> be the graph of <span class="math">\(r_k\)</span> in polar coordinates, that is the graph of
+<span class="math">\(\vec{r_k} : \theta \mapsto r_k(\theta) \cdot \vec u(\theta)\)</span>
+where <span class="math">\(\vec u(\theta)\)</span> is the unit vector at polar angle <span class="math">\(\theta\)</span>.</p>
+</div>
+<div class="section" id="intersections">
+<h2>Intersections<a class="headerlink" href="#intersections" title="Permalink to this headline">¶</a></h2>
+<p>For <span class="math">\((m, n) \in \mathbb Z^2\)</span>, <span class="math">\(\Gamma_m\)</span> and <span class="math">\(\Gamma_n\)</span> intersect if and only if
+<span class="math">\(\exists \theta_1, \theta_2 \in \mathbb R^2, \vec{r_m}(\theta_1) = \vec{r_n}(\theta_2)\)</span>.</p>
+<div class="math">
+\[\begin{split}\begin{array}{rcl}
+    \vec{r_m}(\theta_1) = \vec{r_n}(\theta_2)
+    &amp; \iff &amp; r_m(\theta_1) \cdot \vec u(\theta_1) = r_n(\theta_2) \cdot \vec u(\theta_2)
+\\
+    &amp; \iff &amp; \left| \begin{array}{l}
+        \left\{ \begin{array}{l}
+            \vec u(\theta_1) = \vec u(\theta_2)
+        \\
+            r_m(\theta_1) = r_n(\theta_2)
+        \end{array} \right.
+    \\
+        \mbox{or}
+    \\
+        \left\{ \begin{array}{l}
+            \vec u(\theta_1) = -\vec u(\theta_2)
+        \\
+            r_m(\theta_1) = -r_n(\theta_2)
+        \end{array} \right.
+    \end{array} \right.
+\end{array}\end{split}\]</div>
+<p><span class="math">\(0 &lt; \delta_r &lt; r\)</span> and <span class="math">\(\cos\)</span> is between <span class="math">\(-1\)</span> and <span class="math">\(1\)</span>
+so <span class="math">\(r_k(\theta) &gt; 0\)</span> and we can drop the second case.</p>
+<div class="math">
+\[\begin{split}\begin{array}{rcl}
+    \vec{r_m}(\theta_1) = \vec{r_n}(\theta_2)
+    &amp; \iff &amp; \left\{ \begin{array}{l}
+        \vec u(\theta_1) = \vec u(\theta_2)
+    \\
+        r_m(\theta_1) = r_n(\theta_2)
+    \end{array} \right.
+\\
+    &amp; \iff &amp; \left\{ \begin{array}{l}
+        \vec u(\theta_1) = \vec u(\theta_2)
+    \\
+        \cos\left(\frac{p \cdot \theta_1 - 2 \cdot m \cdot \pi}{q}\right) =
+        \cos\left(\frac{p \cdot \theta_2 - 2 \cdot n \cdot \pi}{q}\right)
+    \end{array} \right.
+\end{array}\end{split}\]</div>
+<p><span class="math">\(\vec u\)</span> is <span class="math">\(2 \pi \mbox{-periodic}\)</span> and <span class="math">\(\cos\)</span> is even and <span class="math">\(2 \pi \mbox{-periodic}\)</span> so:</p>
+<div class="math">
+\[\begin{split}\begin{array}{rcl}
+    \vec{r_m}(\theta_1) = \vec{r_n}(\theta_2)
+    &amp; \iff &amp; \left\{ \begin{array}{l}
+        \exists a \in \mathbb Z, \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
+    \\
+        \exists b \in \mathbb Z, \left| \begin{array}{l}
+            \frac{p \cdot \theta_1 - 2 \cdot m \cdot \pi}{q} = 2 \cdot b \cdot \pi +
+            \frac{p \cdot \theta_2 - 2 \cdot n \cdot \pi}{q}
+        \\
+            \mbox{or}
+        \\
+            \frac{p \cdot \theta_1 - 2 \cdot m \cdot \pi}{q} = 2 \cdot b \cdot \pi -
+            \frac{p \cdot \theta_2 - 2 \cdot n \cdot \pi}{q}
+        \end{array} \right.
+    \end{array} \right.
+\\
+    &amp; \iff &amp; \left| \begin{array}{l}
+        \exists (a, b) \in \mathbb Z^2, \left\{ \begin{array}{l}
+            \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
+        \\
+            \frac{p \cdot \theta_1 - 2 \cdot m \cdot \pi}{q} = 2 \cdot b \cdot \pi +
+            \frac{p \cdot \theta_2 - 2 \cdot n \cdot \pi}{q}
+        \end{array}\right.
+        \qquad \mbox{Case 1}
+    \\
+        \mbox{or}
+    \\
+        \exists (a, b) \in \mathbb Z^2, \left\{ \begin{array}{l}
+            \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
+        \\
+            \frac{p \cdot \theta_1 - 2 \cdot m \cdot \pi}{q} = 2 \cdot b \cdot \pi -
+            \frac{p \cdot \theta_2 - 2 \cdot n \cdot \pi}{q}
+        \end{array}\right.
+        \qquad \mbox{Case 2}
+    \end{array} \right.
+\end{array}\end{split}\]</div>
+<div class="section" id="case-1">
+<h3>Case 1<a class="headerlink" href="#case-1" title="Permalink to this headline">¶</a></h3>
+<div class="math">
+\[\begin{split}\begin{array}{cl}
+    &amp; \exists (a, b) \in \mathbb Z^2, \left\{ \begin{array}{l}
+        \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
+    \\
+        \frac{p \cdot \theta_1 - 2 \cdot m \cdot \pi}{q} = 2 \cdot b \cdot \pi +
+        \frac{p \cdot \theta_2 - 2 \cdot n \cdot \pi}{q}
+    \end{array}\right.
+\\
+    \iff &amp; \exists (a, b) \in \mathbb Z^2, \left\{ \begin{array}{l}
+        \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
+    \\
+        n - m = a \cdot p + b \cdot q
+    \end{array}\right.
+\end{array}\end{split}\]</div>
+<p>So if we can find <span class="math">\(a\)</span> and <span class="math">\(b\)</span> such that <span class="math">\(n - m = a \cdot p + b \cdot q\)</span>,
+then <span class="math">\(\Gamma_m\)</span> and <span class="math">\(\Gamma_n\)</span> have an infinite number of intersection points and are identical.</p>
+<p>According to <a class="reference external" href="https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity">Bézout’s identity</a>,
+<span class="math">\(\exists (a, b) \in \mathbb Z, n - m = a \cdot p + b \cdot q\)</span> if and only if <span class="math">\(n - m\)</span> is a multiple of <span class="math">\(d\)</span>.</p>
+<div class="section" id="reduction-of-the-family">
+<h4>Reduction of the family<a class="headerlink" href="#reduction-of-the-family" title="Permalink to this headline">¶</a></h4>
+<p>Applying this to <span class="math">\(n = m + d\)</span> proves that <span class="math">\(\Gamma_{n + d}\)</span> is identical to <span class="math">\(\Gamma_n\)</span>.
+It’s sufficient to consider intersections between <span class="math">\(\Gamma_m\)</span> and <span class="math">\(\Gamma_n\)</span> for <span class="math">\((m, n) \in [0, d-1]^2\)</span> and <span class="math">\(m \le n\)</span>.
+And it’s enough to draw <span class="math">\(\Gamma_k\)</span> for <span class="math">\(k \in [0, d-1]\)</span>.</p>
+</div>
+<div class="section" id="periodicity-of">
+<h4>Periodicity of <span class="math">\(r_k\)</span><a class="headerlink" href="#periodicity-of" title="Permalink to this headline">¶</a></h4>
+<p>By construction, <span class="math">\(r_k\)</span> is <span class="math">\(2 \cdot q \cdot \pi \mbox{-periodic}\)</span>.</p>
+<p>For <span class="math">\(m = n\)</span>, we can use <span class="math">\(a = q'\)</span> and <span class="math">\(b = -p'\)</span>.
+Then we have <span class="math">\(\theta_2 = \theta_1 + 2 \cdot q' \cdot \pi\)</span>.
+So <span class="math">\(r_k\)</span> is <span class="math">\(2 \cdot q' \cdot \pi \mbox{-periodic}\)</span>.
+It’s sufficient to consider intersections where <span class="math">\((\theta_1, \theta_2) \in \left[0, 2 \cdot q' \cdot \pi\right[^2\)</span>.
+And it’s enough to draw each <span class="math">\(\Gamma_k\)</span> on <span class="math">\(\theta \in \left[0, 2 \cdot q' \cdot \pi\right[\)</span>.</p>
+</div>
+</div>
+<div class="section" id="case-2">
+<h3>Case 2<a class="headerlink" href="#case-2" title="Permalink to this headline">¶</a></h3>
+<div class="math">
+\[\begin{split}\begin{array}{cl}
+    &amp; \exists (a, b) \in \mathbb Z^2, \left\{ \begin{array}{l}
+        \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
+    \\
+        \frac{p \cdot \theta_1 - 2 \cdot m \cdot \pi}{q} = 2 \cdot b \cdot \pi -
+        \frac{p \cdot \theta_2 - 2 \cdot n \cdot \pi}{q}
+    \end{array}\right.
+\\
+    \iff &amp; \exists (a, b) \in \mathbb Z^2, \left\{ \begin{array}{l}
+        \theta_1 = \frac{b \cdot q - a \cdot p + m + n}{p} \cdot \pi
+    \\
+        \theta_2 = \frac{b \cdot q + a \cdot p + m + n}{p} \cdot \pi
+    \end{array}\right.
+\end{array}\end{split}\]</div>
+<p>So this case correspond to “real”, individual intersection points.</p>
+<p>Let’s reduce the domain we need to search for <span class="math">\(a\)</span> and <span class="math">\(b\)</span>. So far, we have:</p>
+<div class="math">
+\[ \begin{align}\begin{aligned}0 \le k \lt d\\0 \le \theta_1 \lt 2 \cdot q' \cdot \pi\\0 \le \theta_2 \lt 2 \cdot q' \cdot \pi\\\theta_1 = \frac{b \cdot q - a \cdot p + 2 \cdot k}{p} \cdot \pi\\\theta_2 = \frac{b \cdot q + a \cdot p + 2 \cdot k}{p} \cdot \pi\end{aligned}\end{align} \]</div>
+<p>Replacing <span class="math">\(\theta_1\)</span> and <span class="math">\(\theta_2\)</span> in <span class="math">\(-2 \cdot q' \cdot \pi \lt \theta_2 - \theta_1 \lt 2 \cdot q' \cdot \pi\)</span>
+and isolating <span class="math">\(a\)</span>, we obtain <span class="math">\(-q' + 1 \le a \lt q'\)</span>.</p>
+<p>Then, replacing <span class="math">\(\theta_1\)</span> and <span class="math">\(\theta_2\)</span> in <span class="math">\(0 \le \theta_1 \lt 2 \cdot q' \cdot \pi\)</span>
+and <span class="math">\(0 \le \theta_2 \lt 2 \cdot q' \cdot \pi\)</span> and isolating b, we obtain:</p>
+<div class="math">
+\[ \begin{align}\begin{aligned}\frac{a \cdot p - m - n}{q} \le b \lt 2 \cdot p' - \frac{-a \cdot p + m + n}{q}\\\frac{-a \cdot p - m - n}{q} \le b \lt 2 \cdot p' - \frac{a \cdot p + m + n}{q}\end{aligned}\end{align} \]</div>
+<p>We can regroup those two conditions in:</p>
+<div class="math">
+\[\frac{|a| \cdot p - m - n}{q} \le b \lt 2 \cdot p' - \frac{|a| \cdot p + m + n}{q}\]</div>
+<p>So to obtain all intersections, it’s enough to iterate on <span class="math">\(a\)</span> and <span class="math">\(b\)</span> in those ranges.
+Note that if <span class="math">\(m = n\)</span>, this will give us each intersection twice.
+We can consider only the cases where <span class="math">\(\theta_1 \lt \theta_2\)</span>,
+which reduces the range of <span class="math">\(a\)</span> to <span class="math">\(1 \le a \lt q'\)</span>.</p>
+<p>This is just a necessary condition on <span class="math">\(a\)</span> and <span class="math">\(b\)</span>.
+We have proven that we obtain all intersections, but &#64;todoc we might want to prove that we don’t get duplicates.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fractions</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">P</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">Q</span> <span class="o">=</span> <span class="mi">8</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">P</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+  <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">Q</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">fractions</span><span class="o">.</span><span class="n">gcd</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+    <span class="n">p_prime</span> <span class="o">=</span> <span class="n">p</span> <span class="o">/</span> <span class="n">d</span>
+    <span class="n">q_prime</span> <span class="o">=</span> <span class="n">q</span> <span class="o">/</span> <span class="n">d</span>
+
+    <span class="n">r</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+      <span class="n">r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">theta</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">:</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">((</span><span class="n">p</span> <span class="o">*</span> <span class="n">theta</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">/</span> <span class="n">q</span><span class="p">)</span>
+      <span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">q_prime</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+
+    <span class="n">intersections</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Note that these 4 imbricated loops are only O(p*q)</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+      <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
+            <span class="n">min_a</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">min_a</span> <span class="o">=</span> <span class="o">-</span><span class="n">q_prime</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">max_a</span> <span class="o">=</span> <span class="n">q_prime</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_a</span><span class="p">,</span> <span class="n">max_a</span><span class="p">):</span>
+          <span class="n">min_b</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span> <span class="o">-</span> <span class="n">m</span> <span class="o">-</span> <span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="n">q</span><span class="p">))</span>
+          <span class="n">max_b</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p_prime</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">p</span> <span class="o">+</span> <span class="n">m</span> <span class="o">+</span> <span class="n">n</span><span class="p">)</span> <span class="o">/</span> <span class="n">q</span><span class="p">))</span>
+          <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">min_b</span><span class="p">,</span> <span class="n">max_b</span><span class="p">):</span>
+            <span class="n">theta_1</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">q</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">p</span> <span class="o">+</span> <span class="n">m</span> <span class="o">+</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">p</span>
+            <span class="n">theta_2</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">q</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">p</span> <span class="o">+</span> <span class="n">m</span> <span class="o">+</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">p</span>
+            <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">theta_1</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">q_prime</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+            <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">theta_2</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">q_prime</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+            <span class="k">assert</span> <span class="n">m</span> <span class="o">!=</span> <span class="n">n</span> <span class="ow">or</span> <span class="n">theta_1</span> <span class="o">&lt;</span> <span class="n">theta_2</span>
+            <span class="n">intersections</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">theta_1</span><span class="p">,</span> <span class="n">r</span><span class="p">[</span><span class="n">m</span><span class="p">](</span><span class="n">theta_1</span><span class="p">)))</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">intersections</span><span class="p">)</span> <span class="o">==</span> <span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="n">q</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># @todoc Explain</span>
+
+    <span class="n">sp</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="p">(</span><span class="n">q</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">P</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span> <span class="n">polar</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+      <span class="n">sp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">r</span><span class="p">[</span><span class="n">k</span><span class="p">](</span><span class="n">theta</span><span class="p">))</span>
+    <span class="n">sp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+      <span class="p">[</span><span class="n">theta</span> <span class="k">for</span> <span class="n">theta</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">intersections</span><span class="p">],</span>
+      <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">theta</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">intersections</span><span class="p">],</span>
+      <span class="s2">&quot;r.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">sp</span><span class="o">.</span><span class="n">set_rmin</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">sp</span><span class="o">.</span><span class="n">set_rmax</span><span class="p">(</span><span class="mf">3.1</span><span class="p">)</span>
+    <span class="n">sp</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+    <span class="n">sp</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([])</span>
+    <span class="n">sp</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span>
+    <span class="n">sp</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;polar&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="figure">
+<img alt="../_images/analysis-1.png" src="../_images/analysis-1.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">Draw
+TurksHead</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=jacquev6&repo=Draw
+TurksHead&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/jacquev6/Draw
+TurksHead">
+    <img
+        alt="https://secure.travis-ci.org/jacquev6/Draw
+TurksHead.svg?branch=master"
+        src="https://secure.travis-ci.org/jacquev6/Draw
+TurksHead.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../demo.html">Interactive demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../algorithm.html">Algorithm</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intuition.html">Intuition</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#definitions">Definitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#intersections">Intersections</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#case-1">Case 1</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#reduction-of-the-family">Reduction of the family</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#periodicity-of">Periodicity of <span class="math">\(r_k\)</span></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#case-2">Case 2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2013-2017 <a href="http://vincent-jacques.net/">Vincent Jacques</a>.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/algorithm/analysis.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/jacquev6/Draw
+TurksHead" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

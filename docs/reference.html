@@ -1,0 +1,274 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Reference &#8212; Draw
+TurksHead 0.3.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Algorithm" href="algorithm.html" />
+    <link rel="prev" title="Interactive demo" href="demo.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="reference">
+<h1>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="DrawTurksHead.TurksHead">
+<em class="property">class </em><code class="descname">TurksHead</code><span class="sig-paren">(</span><em>bights</em>, <em>leads</em>, <em>inner</em>, <em>outer</em>, <em>line</em>, <em>colorer=None</em><span class="sig-paren">)</span><a class="headerlink" href="#DrawTurksHead.TurksHead" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turk’s head knot objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>bights</strong> – the number of times the string touches the outised of the knot.</li>
+<li><strong>leads</strong> – the number of times the string turns around the center.</li>
+<li><strong>inner</strong> – the radius of the empty area inside the knot.</li>
+<li><strong>outer</strong> – the radius of the knot.</li>
+<li><strong>line</strong> – the width of the string.</li>
+<li><strong>colorer</strong> – a <a class="reference internal" href="#DrawTurksHead.turkshead.Colorer" title="DrawTurksHead.turkshead.Colorer"><code class="xref py py-class docutils literal"><span class="pre">Colorer</span></code></a> instance. If <code class="docutils literal"><span class="pre">None</span></code> or not provided, a <a class="reference internal" href="#DrawTurksHead.DefaultColorer" title="DrawTurksHead.DefaultColorer"><code class="xref py py-class docutils literal"><span class="pre">DefaultColorer</span></code></a> will be used.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="DrawTurksHead.TurksHead.p">
+<code class="descname">p</code><a class="headerlink" href="#DrawTurksHead.TurksHead.p" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of bights.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="DrawTurksHead.TurksHead.q">
+<code class="descname">q</code><a class="headerlink" href="#DrawTurksHead.TurksHead.q" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of leads.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="DrawTurksHead.TurksHead.d">
+<code class="descname">d</code><a class="headerlink" href="#DrawTurksHead.TurksHead.d" title="Permalink to this definition">¶</a></dt>
+<dd><p>The greatest common divisor of <a class="reference internal" href="#DrawTurksHead.TurksHead.p" title="DrawTurksHead.TurksHead.p"><code class="xref py py-attr docutils literal"><span class="pre">p</span></code></a> and <a class="reference internal" href="#DrawTurksHead.TurksHead.q" title="DrawTurksHead.TurksHead.q"><code class="xref py py-attr docutils literal"><span class="pre">q</span></code></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="DrawTurksHead.TurksHead.p_prime">
+<code class="descname">p_prime</code><a class="headerlink" href="#DrawTurksHead.TurksHead.p_prime" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#DrawTurksHead.TurksHead.p" title="DrawTurksHead.TurksHead.p"><code class="xref py py-attr docutils literal"><span class="pre">p</span></code></a> divided by <a class="reference internal" href="#DrawTurksHead.TurksHead.d" title="DrawTurksHead.TurksHead.d"><code class="xref py py-attr docutils literal"><span class="pre">d</span></code></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="DrawTurksHead.TurksHead.q_prime">
+<code class="descname">q_prime</code><a class="headerlink" href="#DrawTurksHead.TurksHead.q_prime" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#DrawTurksHead.TurksHead.q" title="DrawTurksHead.TurksHead.q"><code class="xref py py-attr docutils literal"><span class="pre">q</span></code></a> divided by <a class="reference internal" href="#DrawTurksHead.TurksHead.d" title="DrawTurksHead.TurksHead.d"><code class="xref py py-attr docutils literal"><span class="pre">d</span></code></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="DrawTurksHead.TurksHead.inner_radius">
+<code class="descname">inner_radius</code><a class="headerlink" href="#DrawTurksHead.TurksHead.inner_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>The radius of the empty area inside the knot.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="DrawTurksHead.TurksHead.outer_radius">
+<code class="descname">outer_radius</code><a class="headerlink" href="#DrawTurksHead.TurksHead.outer_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>The radius of the knot.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="DrawTurksHead.TurksHead.line_width">
+<code class="descname">line_width</code><a class="headerlink" href="#DrawTurksHead.TurksHead.line_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>The width of the string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="DrawTurksHead.TurksHead.draw">
+<code class="descname">draw</code><span class="sig-paren">(</span><em>ctx</em><span class="sig-paren">)</span><a class="headerlink" href="#DrawTurksHead.TurksHead.draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw the knot on a <code class="xref py py-class docutils literal"><span class="pre">cairo.Context</span></code>.
+See <a class="reference external" href="http://www.cairographics.org/documentation/pycairo/2/reference/context.html">documentation of PyCairo</a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-DrawTurksHead.turkshead"></span><dl class="class">
+<dt id="DrawTurksHead.turkshead.Colorer">
+<em class="property">class </em><code class="descname">Colorer</code><a class="headerlink" href="#DrawTurksHead.turkshead.Colorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Objects passed as the <code class="docutils literal"><span class="pre">colorer</span></code> argument of <a class="reference internal" href="#DrawTurksHead.TurksHead" title="DrawTurksHead.TurksHead"><code class="xref py py-class docutils literal"><span class="pre">TurksHead</span></code></a> must implement this interface.
+More precisely, they must implement <strong>one</strong> of the following methods:</p>
+<dl class="method">
+<dt>
+<code class="descname">compute_color_hsv(knot, k, theta, altitude):</code></dt>
+<dd><p>Return a tuple <code class="docutils literal"><span class="pre">(h,</span> <span class="pre">s,</span> <span class="pre">v)</span></code> of the color to be applied to the <code class="docutils literal"><span class="pre">k</span></code>-th string of the <code class="docutils literal"><span class="pre">knot</span></code>,
+at angle <code class="docutils literal"><span class="pre">theta</span></code>, at the given <code class="docutils literal"><span class="pre">altitude</span></code>.</p>
+<p><code class="docutils literal"><span class="pre">h</span></code> must be between 0 and 360
+<code class="docutils literal"><span class="pre">s</span></code> and <code class="docutils literal"><span class="pre">v</span></code> must be between 0 and 1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>knot</strong> – the <a class="reference internal" href="#DrawTurksHead.TurksHead" title="DrawTurksHead.TurksHead"><code class="xref py py-class docutils literal"><span class="pre">TurksHead</span></code></a> instance.</li>
+<li><strong>k</strong> – the index of the current string. Between 0 and <code class="docutils literal"><span class="pre">knot.d</span></code>.</li>
+<li><strong>theta</strong> – the angle on the current string. Between 0 and <code class="docutils literal"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">knot.q_prime</span> <span class="pre">*</span> <span class="pre">math.pi</span></code>.</li>
+<li><strong>altitude</strong> – the altitude of the string at this point. Between -1 and 1.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">compute_color_rgb(knot, k, theta, altitude):</code></dt>
+<dd><p>Return a tuple <code class="docutils literal"><span class="pre">(r,</span> <span class="pre">g,</span> <span class="pre">b)</span></code> of the color to be applied to the <code class="docutils literal"><span class="pre">k</span></code>-th string of the <code class="docutils literal"><span class="pre">knot</span></code>,
+at angle <code class="docutils literal"><span class="pre">theta</span></code>, at the given <code class="docutils literal"><span class="pre">altitude</span></code>.</p>
+<p><code class="docutils literal"><span class="pre">r</span></code>, <code class="docutils literal"><span class="pre">g</span></code> and <code class="docutils literal"><span class="pre">b</span></code> must be between 0 and 1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>knot</strong> – the <a class="reference internal" href="#DrawTurksHead.TurksHead" title="DrawTurksHead.TurksHead"><code class="xref py py-class docutils literal"><span class="pre">TurksHead</span></code></a> instance.</li>
+<li><strong>k</strong> – the index of the current string. Between 0 and <code class="docutils literal"><span class="pre">knot.d</span></code>.</li>
+<li><strong>theta</strong> – the angle on the current string. Between 0 and <code class="docutils literal"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">knot.q_prime</span> <span class="pre">*</span> <span class="pre">math.pi</span></code>.</li>
+<li><strong>altitude</strong> – the altitude of the string at this point. Between -1 and 1.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="DrawTurksHead.DefaultColorer">
+<em class="property">class </em><code class="descname">DefaultColorer</code><a class="headerlink" href="#DrawTurksHead.DefaultColorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="#DrawTurksHead.turkshead.Colorer" title="DrawTurksHead.turkshead.Colorer"><code class="xref py py-class docutils literal"><span class="pre">Colorer</span></code></a> used when you don’t provide one explicitly to <a class="reference internal" href="#DrawTurksHead.TurksHead" title="DrawTurksHead.TurksHead"><code class="xref py py-class docutils literal"><span class="pre">TurksHead</span></code></a>.</p>
+<p>It uses one color per string (spread on the spectrum) and makes it darker when the string goes down.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="index.html">Draw
+TurksHead</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=jacquev6&repo=Draw
+TurksHead&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/jacquev6/Draw
+TurksHead">
+    <img
+        alt="https://secure.travis-ci.org/jacquev6/Draw
+TurksHead.svg?branch=master"
+        src="https://secure.travis-ci.org/jacquev6/Draw
+TurksHead.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demo.html">Interactive demo</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="algorithm.html">Algorithm</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2013-2017 <a href="http://vincent-jacques.net/">Vincent Jacques</a>.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/reference.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/jacquev6/Draw
+TurksHead" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

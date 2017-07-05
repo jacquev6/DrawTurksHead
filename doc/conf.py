@@ -4,13 +4,15 @@
 
 master_doc = "index"
 project = "Draw\nTurksHead"
-author = '<a href="http://vincent-jacques.net/contact">Vincent Jacques</a>'
-copyright = "2013-2015 {}".format(author)
+author = '<a href="http://vincent-jacques.net/">Vincent Jacques</a>'
+copyright = "2013-2017 {}".format(author)
 extensions = []
 
 
 nitpicky = True
-nitpick_ignore = [("py:class", "cairo.Context")]
+nitpick_ignore = [
+    ("py:class", "cairo.Context"),
+]
 
 
 # https://github.com/bitprophet/alabaster
@@ -45,7 +47,7 @@ extensions.append("sphinx.ext.doctest")
 # doctest_path
 # doctest_global_setup
 # doctest_global_cleanup
-doctest_test_doctest_blocks = True
+# doctest_test_doctest_blocks
 
 
 # http://sphinx-doc.org/latest/ext/math.html

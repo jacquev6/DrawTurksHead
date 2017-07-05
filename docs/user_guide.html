@@ -1,0 +1,262 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>User guide &#8212; Draw
+TurksHead 0.3.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Interactive demo" href="demo.html" />
+    <link rel="prev" title="DrawTurksHead" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="user-guide">
+<h1>User guide<a class="headerlink" href="#user-guide" title="Permalink to this headline">¶</a></h1>
+<p>DrawTurksHead can be used on the command line or as a Python package.</p>
+<div class="section" id="command-line">
+<h2>Command-line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h2>
+<p>Basic usage:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ python -m DrawTurksHead --leads=3 --bights=7
+</pre></div>
+</div>
+<p>For details of available parameters:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ python -m DrawTurksHead --help
+</pre></div>
+</div>
+</div>
+<div class="section" id="module-DrawTurksHead">
+<span id="python-package"></span><h2>Python package<a class="headerlink" href="#module-DrawTurksHead" title="Permalink to this headline">¶</a></h2>
+<p>Import:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">cairo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">DrawTurksHead</span> <span class="k">import</span> <span class="n">TurksHead</span>
+</pre></div>
+</div>
+<p>Create a Turk’s head:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">knot</span> <span class="o">=</span> <span class="n">TurksHead</span><span class="p">(</span><span class="n">bights</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">leads</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">inner</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">outer</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a <a class="reference external" href="http://www.cairographics.org/pycairo/">Cairo</a> context:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">cairo</span><span class="o">.</span><span class="n">ImageSurface</span><span class="p">(</span><span class="n">cairo</span><span class="o">.</span><span class="n">FORMAT_RGB24</span><span class="p">,</span> <span class="mi">440</span><span class="p">,</span> <span class="mi">440</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ctx</span> <span class="o">=</span> <span class="n">cairo</span><span class="o">.</span><span class="n">Context</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ctx</span><span class="o">.</span><span class="n">set_source_rgb</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ctx</span><span class="o">.</span><span class="n">paint</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ctx</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="mi">220</span><span class="p">,</span> <span class="mi">220</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Draw the Turk’s head on the Cairo context:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">knot</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Draw circles to verify inner and outer radiuses:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ctx</span><span class="o">.</span><span class="n">set_source_rgb</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ctx</span><span class="o">.</span><span class="n">arc</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">6.30</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ctx</span><span class="o">.</span><span class="n">arc</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">6.30</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ctx</span><span class="o">.</span><span class="n">stroke</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Save the result to a file:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">img</span><span class="o">.</span><span class="n">write_to_png</span><span class="p">(</span><span class="s2">&quot;doc/doctest/1.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id1">
+<img alt="_images/1.png" src="_images/1.png" />
+<p class="caption"><span class="caption-text"><code class="docutils literal"><span class="pre">doc/doctest/1.png</span></code></span></p>
+</div>
+<p>Let’s define a utility method:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">draw_to_png</span><span class="p">(</span><span class="n">knot</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="n">img</span> <span class="o">=</span> <span class="n">cairo</span><span class="o">.</span><span class="n">ImageSurface</span><span class="p">(</span><span class="n">cairo</span><span class="o">.</span><span class="n">FORMAT_RGB24</span><span class="p">,</span> <span class="mi">440</span><span class="p">,</span> <span class="mi">440</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">ctx</span> <span class="o">=</span> <span class="n">cairo</span><span class="o">.</span><span class="n">Context</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">ctx</span><span class="o">.</span><span class="n">set_source_rgb</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">ctx</span><span class="o">.</span><span class="n">paint</span><span class="p">()</span>
+<span class="gp">... </span>  <span class="n">ctx</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="mi">220</span><span class="p">,</span> <span class="mi">220</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">knot</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+<span class="gp">... </span>  <span class="n">img</span><span class="o">.</span><span class="n">write_to_png</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can choose the color of the drawing by providing a <a class="reference internal" href="reference.html#DrawTurksHead.turkshead.Colorer" title="DrawTurksHead.turkshead.Colorer"><code class="xref py py-class docutils literal"><span class="pre">Colorer</span></code></a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyColorer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">compute_color_hsv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">knot</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">altitude</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">h</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">+</span> <span class="n">k</span> <span class="o">*</span> <span class="mi">360</span> <span class="o">/</span> <span class="n">knot</span><span class="o">.</span><span class="n">d</span>
+<span class="gp">... </span>    <span class="n">s</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">... </span>    <span class="n">v</span> <span class="o">=</span> <span class="o">.</span><span class="mi">5</span> <span class="o">+</span> <span class="n">altitude</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">h</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">knot</span> <span class="o">=</span> <span class="n">TurksHead</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">bights</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">leads</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">inner</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">outer</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">colorer</span><span class="o">=</span><span class="n">MyColorer</span><span class="p">()</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">draw_to_png</span><span class="p">(</span><span class="n">knot</span><span class="p">,</span> <span class="s2">&quot;doc/doctest/2.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id2">
+<img alt="_images/2.png" src="_images/2.png" />
+<p class="caption"><span class="caption-text"><code class="docutils literal"><span class="pre">doc/doctest/2.png</span></code></span></p>
+</div>
+<p>Or:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">DrawTurksHead</span> <span class="k">import</span> <span class="n">DefaultColorer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyColorer</span><span class="p">(</span><span class="n">DefaultColorer</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">compute_color_hsv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">knot</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">altitude</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">h</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">MyColorer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">compute_color_hsv</span><span class="p">(</span><span class="n">knot</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">altitude</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">s</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="gp">... </span>    <span class="n">v</span> <span class="o">=</span> <span class="n">v</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">h</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">knot</span> <span class="o">=</span> <span class="n">TurksHead</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">bights</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">leads</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">inner</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">outer</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">colorer</span><span class="o">=</span><span class="n">MyColorer</span><span class="p">()</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">draw_to_png</span><span class="p">(</span><span class="n">knot</span><span class="p">,</span> <span class="s2">&quot;doc/doctest/3.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id3">
+<img alt="_images/3.png" src="_images/3.png" />
+<p class="caption"><span class="caption-text"><code class="docutils literal"><span class="pre">doc/doctest/3.png</span></code></span></p>
+</div>
+<p>Or:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">math</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyColorer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>  <span class="k">def</span> <span class="nf">compute_color_rgb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">knot</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">altitude</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">theta</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">knot</span><span class="o">.</span><span class="n">q_prime</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+<span class="gp">... </span>    <span class="n">b</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">knot</span><span class="o">.</span><span class="n">q_prime</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">b</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">knot</span> <span class="o">=</span> <span class="n">TurksHead</span><span class="p">(</span>
+<span class="gp">... </span>  <span class="n">bights</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">leads</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">inner</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">outer</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+<span class="gp">... </span>  <span class="n">colorer</span><span class="o">=</span><span class="n">MyColorer</span><span class="p">()</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">draw_to_png</span><span class="p">(</span><span class="n">knot</span><span class="p">,</span> <span class="s2">&quot;doc/doctest/4.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center" id="id4">
+<img alt="_images/4.png" src="_images/4.png" />
+<p class="caption"><span class="caption-text"><code class="docutils literal"><span class="pre">doc/doctest/4.png</span></code></span></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="index.html">Draw
+TurksHead</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=jacquev6&repo=Draw
+TurksHead&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a href="https://travis-ci.org/jacquev6/Draw
+TurksHead">
+    <img
+        alt="https://secure.travis-ci.org/jacquev6/Draw
+TurksHead.svg?branch=master"
+        src="https://secure.travis-ci.org/jacquev6/Draw
+TurksHead.svg?branch=master"
+    />
+</a>
+</p>
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#command-line">Command-line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-DrawTurksHead">Python package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demo.html">Interactive demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="algorithm.html">Algorithm</a></li>
+</ul>
+
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2013-2017 <a href="http://vincent-jacques.net/">Vincent Jacques</a>.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/user_guide.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/jacquev6/Draw
+TurksHead" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

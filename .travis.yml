@@ -1,6 +1,6 @@
 language: python
 python:
-- 2.7
+- "2.7"
 sudo: false
 addons:
   apt:
@@ -29,6 +29,7 @@ deploy:
   user: jacquev6
   password:
     secure: IxZkM+jLb2kdI836H4h5dAXFu33D7J1FUuJw/Os752XqH0wBK5Xkk/LFz383Nw6auz6ppwjgmnvKdogH+KZwZ/9E5UaNb3cA0veJJDxwdl1c3iZP8z5i0Bk+KsnqJgaUnNuEIWO46Y9LB6VzazhOwE3Ftc+5kzrnEXUU7285iE8=
+  skip_upload_docs: true
   on:
     tags: true
     repo: jacquev6/DrawTurksHead
