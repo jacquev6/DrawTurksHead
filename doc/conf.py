@@ -5,7 +5,8 @@
 master_doc = "index"
 project = "Draw\nTurksHead"
 author = '<a href="http://vincent-jacques.net/">Vincent Jacques</a>'
-copyright = "2013-2017 {}".format(author)
+copyright = ('2013-2017 {} <script>var jacquev6_ribbon_github="DrawTurksHead"</script>'.format(author) +
+             '<script src="https://jacquev6.github.io/ribbon.js"></script>')
 extensions = []
 
 
@@ -25,7 +26,6 @@ html_sidebars = {
 html_theme_options = {
     "github_user": "jacquev6",
     "github_repo": project,
-    "github_banner": True,
     "travis_button": True,
 }
 html_logo = "logo.png"
