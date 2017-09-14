@@ -7,15 +7,8 @@ addons:
     packages:
     - libcairomm-1.0-dev
     - libboost-all-dev
-before_install:
-- wget --no-check-certificate http://www.cairographics.org/releases/py2cairo-1.10.0.tar.bz2
-- tar xf py2cairo-1.10.0.tar.bz2
-- cd py2cairo-1.10.0
-- ./waf configure --prefix=$(python -c "import sys; print(sys.prefix)")
-- ./waf build
-- ./waf install
-- cd ..
 install:
+- pip install https://github.com/pygobject/pycairo/releases/download/v1.15.2/pycairo-1.15.2.tar.gz
 - pip install sphinx matplotlib coveralls
 - ls /home/travis/virtualenv/python2.7/lib/pkgconfig
 - export PKG_CONFIG_PATH=PKG_CONFIG_PATH:/home/travis/virtualenv/python2.7/lib/pkgconfig
