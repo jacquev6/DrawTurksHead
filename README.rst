@@ -1,4 +1,4 @@
-DrawTurksHead is a Python (2.7) library to draw `Turk's head knots <http://en.wikipedia.org/wiki/Turk%27s_head_knot>`_.
+*DrawTurksHead* is a Python (2.7) library to draw `Turk's head knots <http://en.wikipedia.org/wiki/Turk%27s_head_knot>`_.
 An `interactive demo <http://jacquev6.github.io/DrawTurksHead/demo.html>`__ is available.
 
 It's licensed under the `MIT license <http://choosealicense.com/licenses/mit/>`__.
