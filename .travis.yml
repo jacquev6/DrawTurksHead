@@ -9,13 +9,14 @@ addons:
     - libboost-all-dev
 install:
 - pip install https://github.com/pygobject/pycairo/releases/download/v1.15.2/pycairo-1.15.2.tar.gz
-- pip install sphinx matplotlib coveralls
+- pip install sphinx matplotlib coverage
 - ls /home/travis/virtualenv/python2.7/lib/pkgconfig
 - export PKG_CONFIG_PATH=PKG_CONFIG_PATH:/home/travis/virtualenv/python2.7/lib/pkgconfig
 script:
 - coverage run "--include=DrawTurksHead/*" setup.py test
 - python setup.py build_sphinx --builder=doctest
 after_success:
+- pip install coveralls
 - coveralls
 deploy:
   provider: pypi
