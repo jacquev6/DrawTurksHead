@@ -4,25 +4,17 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Intuition &#8212; Draw
 TurksHead 0.3.4 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.3.4',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Analysis" href="analysis.html" />
@@ -33,13 +25,14 @@ TurksHead 0.3.4 documentation</title>
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="intuition">
@@ -56,17 +49,17 @@ This is why the first idea is to draw some sine wave is polar coordinates.
 <p class="caption"><span class="caption-text">A Turk’s head node in flat form (Image from <a class="reference external" href="https://en.wikipedia.org/wiki/File:Turks-head-3-lead-10-bight-doubled.jpg">Wikipedia</a>).</span></p>
 </div>
 <p>Since we don’t want the curve to go through the center of the image, we have to keep the radius strictly positive,
-so we will draw <span class="math">\(r = r_0+\delta_r \cdot \cos(\alpha \cdot \theta)\)</span>, with <span class="math">\(0 &lt; \delta_r &lt; r_0\)</span>.</p>
-<p>The next question is how to fix <span class="math">\(\alpha\)</span>.
-For a knot with <span class="math">\(q\)</span> leads, the string makes <span class="math">\(q\)</span> turns around the center, so we will draw the wave for <span class="math">\(\theta \in [0, 2 \cdot q \cdot \pi]\)</span>.
-Then, for a knot with <span class="math">\(p\)</span> bights, the string touches the center <span class="math">\(p\)</span> times, and the outside <span class="math">\(p\)</span> times.
-Thus, the wave must have <span class="math">\(p\)</span> maxima and <span class="math">\(p\)</span> minima on the range.
-<span class="math">\(\cos\)</span> has exactly one maximum and one minimum on <span class="math">\([0, 2 \cdot \pi]\)</span>, so we can use <span class="math">\(\alpha=p/q\)</span>.
+so we will draw <span class="math notranslate nohighlight">\(r = r_0+\delta_r \cdot \cos(\alpha \cdot \theta)\)</span>, with <span class="math notranslate nohighlight">\(0 &lt; \delta_r &lt; r_0\)</span>.</p>
+<p>The next question is how to fix <span class="math notranslate nohighlight">\(\alpha\)</span>.
+For a knot with <span class="math notranslate nohighlight">\(q\)</span> leads, the string makes <span class="math notranslate nohighlight">\(q\)</span> turns around the center, so we will draw the wave for <span class="math notranslate nohighlight">\(\theta \in [0, 2 \cdot q \cdot \pi]\)</span>.
+Then, for a knot with <span class="math notranslate nohighlight">\(p\)</span> bights, the string touches the center <span class="math notranslate nohighlight">\(p\)</span> times, and the outside <span class="math notranslate nohighlight">\(p\)</span> times.
+Thus, the wave must have <span class="math notranslate nohighlight">\(p\)</span> maxima and <span class="math notranslate nohighlight">\(p\)</span> minima on the range.
+<span class="math notranslate nohighlight">\(\cos\)</span> has exactly one maximum and one minimum on <span class="math notranslate nohighlight">\([0, 2 \cdot \pi]\)</span>, so we can use <span class="math notranslate nohighlight">\(\alpha=p/q\)</span>.
 This gives us:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}r = r_0 + \delta_r \cdot \cos \left(\frac{p \cdot \theta}{q} \right)\\\theta \in \left[0, 2 \cdot q \cdot \pi \right[\end{aligned}\end{align} \]</div>
-<p>Let’s draw this with <span class="math">\(r_0 = 2\)</span> and <span class="math">\(\delta_r = 1\)</span> for for small values of <span class="math">\(p\)</span> and <span class="math">\(q\)</span>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<p>Let’s draw this with <span class="math notranslate nohighlight">\(r_0 = 2\)</span> and <span class="math notranslate nohighlight">\(\delta_r = 1\)</span> for for small values of <span class="math notranslate nohighlight">\(p\)</span> and <span class="math notranslate nohighlight">\(q\)</span>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">fractions</span>
 
@@ -88,7 +81,7 @@ This gives us:</p>
       <span class="n">bg</span> <span class="o">=</span> <span class="s2">&quot;#ff6666&quot;</span>
     <span class="k">else</span><span class="p">:</span>
       <span class="n">bg</span> <span class="o">=</span> <span class="s2">&quot;#ffaaaa&quot;</span>
-    <span class="n">sp</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="p">(</span><span class="n">q</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">P</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span> <span class="n">polar</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">axisbg</span><span class="o">=</span><span class="n">bg</span><span class="p">)</span>
+    <span class="n">sp</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="p">(</span><span class="n">q</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">P</span> <span class="o">+</span> <span class="n">p</span><span class="p">,</span> <span class="n">polar</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">bg</span><span class="p">)</span>
     <span class="n">sp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">r</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
     <span class="n">sp</span><span class="o">.</span><span class="n">set_rmin</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">sp</span><span class="o">.</span><span class="n">set_rmax</span><span class="p">(</span><span class="mf">3.1</span><span class="p">)</span>
@@ -103,23 +96,23 @@ This gives us:</p>
 <div class="figure">
 <img alt="../_images/intuition-1.png" src="../_images/intuition-1.png" />
 </div>
-<p>In the previous figure, <span class="math">\(q = 1\)</span> on the first line (the string makes one turn around the center) and
-<span class="math">\(p = 1\)</span> on the left column (the string touches the outside once).</p>
+<p>In the previous figure, <span class="math notranslate nohighlight">\(q = 1\)</span> on the first line (the string makes one turn around the center) and
+<span class="math notranslate nohighlight">\(p = 1\)</span> on the left column (the string touches the outside once).</p>
 </div>
 <div class="section" id="adjustment-for-several-strings">
 <h2>Adjustment for several strings<a class="headerlink" href="#adjustment-for-several-strings" title="Permalink to this headline">¶</a></h2>
-<p>This is mainly ok, but cases on red background look wrong (For example, <span class="math">\(p = 3\)</span> and <span class="math">\(q = 6\)</span>, with a darker red background).
-This is due to the known result that, if <span class="math">\(d = \gcd(p, q)\)</span>, you need <span class="math">\(d\)</span> strings to make a Turk’s head knot with <span class="math">\(p\)</span> bights and <span class="math">\(q\)</span> leads.
-This means that we have to draw <span class="math">\(d\)</span> curves.
-The total number of turns around the center is still the same, so each string makes <span class="math">\(q/d\)</span> turns,
-and the range for <span class="math">\(\theta\)</span> is reduced to <span class="math">\([0, 2 \cdot q \cdot \pi / d]\)</span> for each curve.</p>
-<p>Since the second curve must draw the second bight, it means that the second curve must be shifted by <span class="math">\(2 \cdot \pi / p\)</span>.
-Extending this result tells us that the <span class="math">\(k^{th}\)</span> curve must be shifted by <span class="math">\(2 \cdot k \cdot \pi / p\)</span>.
-So <span class="math">\(r_k = r_0 + \delta_r \cdot \cos \left(\frac{p \cdot (\theta - 2 \cdot k \cdot \pi / p)}{q} \right)\)</span>.</p>
+<p>This is mainly ok, but cases on red background look wrong (For example, <span class="math notranslate nohighlight">\(p = 3\)</span> and <span class="math notranslate nohighlight">\(q = 6\)</span>, with a darker red background).
+This is due to the known result that, if <span class="math notranslate nohighlight">\(d = \gcd(p, q)\)</span>, you need <span class="math notranslate nohighlight">\(d\)</span> strings to make a Turk’s head knot with <span class="math notranslate nohighlight">\(p\)</span> bights and <span class="math notranslate nohighlight">\(q\)</span> leads.
+This means that we have to draw <span class="math notranslate nohighlight">\(d\)</span> curves.
+The total number of turns around the center is still the same, so each string makes <span class="math notranslate nohighlight">\(q/d\)</span> turns,
+and the range for <span class="math notranslate nohighlight">\(\theta\)</span> is reduced to <span class="math notranslate nohighlight">\([0, 2 \cdot q \cdot \pi / d]\)</span> for each curve.</p>
+<p>Since the second curve must draw the second bight, it means that the second curve must be shifted by <span class="math notranslate nohighlight">\(2 \cdot \pi / p\)</span>.
+Extending this result tells us that the <span class="math notranslate nohighlight">\(k^{th}\)</span> curve must be shifted by <span class="math notranslate nohighlight">\(2 \cdot k \cdot \pi / p\)</span>.
+So <span class="math notranslate nohighlight">\(r_k = r_0 + \delta_r \cdot \cos \left(\frac{p \cdot (\theta - 2 \cdot k \cdot \pi / p)}{q} \right)\)</span>.</p>
 <p>This give use our final family of curves:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}r_k = r_0 + \delta_r \cdot \cos \left( \frac{p \cdot \theta - 2 \cdot k \cdot \pi}{q} \right)\\\theta \in \left[0, \frac{2 \cdot q \cdot \pi}{d} \right[\\k \in [0, d - 1]\end{aligned}\end{align} \]</div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">fractions</span>
 
@@ -168,6 +161,7 @@ This could be made smoother if we wanted to build a 3D model of the knot, but th
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -196,7 +190,7 @@ TurksHead&type=watch&count=true&size=large&v=2"
     
 
 <p>
-<a href="https://travis-ci.org/jacquev6/Draw
+<a class="badge" href="https://travis-ci.org/jacquev6/Draw
 TurksHead">
     <img
         alt="https://secure.travis-ci.org/jacquev6/Draw
@@ -228,12 +222,14 @@ TurksHead.svg?branch=master"
 
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -244,8 +240,8 @@ TurksHead.svg?branch=master"
       &copy;2013-2017 <a href="http://vincent-jacques.net/">Vincent Jacques</a> <script>var jacquev6_ribbon_github="DrawTurksHead"</script><script src="https://jacquev6.github.io/ribbon.js"></script>.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="../_sources/algorithm/intuition.rst.txt"

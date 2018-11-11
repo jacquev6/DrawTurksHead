@@ -42,6 +42,10 @@ add_module_names = False
 add_class_names = False
 
 
+# http://sphinx-doc.org/ext/githubpages.html
+extensions.append("sphinx.ext.githubpages")
+
+
 # http://sphinx-doc.org/ext/doctest.html
 extensions.append("sphinx.ext.doctest")
 # doctest_path
@@ -53,6 +57,7 @@ extensions.append("sphinx.ext.doctest")
 # http://sphinx-doc.org/latest/ext/math.html
 extensions.append("sphinx.ext.mathjax")
 # mathjax_path
+
 
 # http://matplotlib.org/devel/documenting_mpl.html#module-matplotlib.sphinxext.plot_directive
 extensions.append("matplotlib.sphinxext.plot_directive")

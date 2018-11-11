@@ -4,25 +4,17 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Analysis &#8212; Draw
 TurksHead 0.3.4 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.3.4',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="prev" title="Intuition" href="intuition.html" />
@@ -32,13 +24,14 @@ TurksHead 0.3.4 documentation</title>
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="analysis">
@@ -46,21 +39,21 @@ TurksHead 0.3.4 documentation</title>
 <p>In this part we perform a mathematical analysis of the family of curves we found previously.</p>
 <div class="section" id="definitions">
 <h2>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h2>
-<p>Let <span class="math">\(p \in \mathbb N, p &gt; 0\)</span> and <span class="math">\(q \in \mathbb N, q &gt; 0\)</span>.
-Let <span class="math">\(d = \gcd(p, q)\)</span>, <span class="math">\(p' = \frac{p}{d}\)</span> and <span class="math">\(q' = \frac{q}{d}\)</span>.
-Let <span class="math">\(r \in \mathbb R\)</span> and <span class="math">\(\delta_r \in \mathbb R\)</span> such that <span class="math">\(0 &lt; \delta_r &lt; r\)</span>.
+<p>Let <span class="math notranslate nohighlight">\(p \in \mathbb N, p &gt; 0\)</span> and <span class="math notranslate nohighlight">\(q \in \mathbb N, q &gt; 0\)</span>.
+Let <span class="math notranslate nohighlight">\(d = \gcd(p, q)\)</span>, <span class="math notranslate nohighlight">\(p' = \frac{p}{d}\)</span> and <span class="math notranslate nohighlight">\(q' = \frac{q}{d}\)</span>.
+Let <span class="math notranslate nohighlight">\(r \in \mathbb R\)</span> and <span class="math notranslate nohighlight">\(\delta_r \in \mathbb R\)</span> such that <span class="math notranslate nohighlight">\(0 &lt; \delta_r &lt; r\)</span>.
 Let’s define the following family of functions:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}r_k : \theta \mapsto r + \delta_r \cdot \cos\left(\frac{p \cdot \theta - 2 \cdot k \cdot \pi}{q}\right)\\k \in \mathbb Z\end{aligned}\end{align} \]</div>
-<p>Let <span class="math">\(\Gamma_k\)</span> be the graph of <span class="math">\(r_k\)</span> in polar coordinates, that is the graph of
-<span class="math">\(\vec{r_k} : \theta \mapsto r_k(\theta) \cdot \vec u(\theta)\)</span>
-where <span class="math">\(\vec u(\theta)\)</span> is the unit vector at polar angle <span class="math">\(\theta\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(\Gamma_k\)</span> be the graph of <span class="math notranslate nohighlight">\(r_k\)</span> in polar coordinates, that is the graph of
+<span class="math notranslate nohighlight">\(\vec{r_k} : \theta \mapsto r_k(\theta) \cdot \vec u(\theta)\)</span>
+where <span class="math notranslate nohighlight">\(\vec u(\theta)\)</span> is the unit vector at polar angle <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 </div>
 <div class="section" id="intersections">
 <h2>Intersections<a class="headerlink" href="#intersections" title="Permalink to this headline">¶</a></h2>
-<p>For <span class="math">\((m, n) \in \mathbb Z^2\)</span>, <span class="math">\(\Gamma_m\)</span> and <span class="math">\(\Gamma_n\)</span> intersect if and only if
-<span class="math">\(\exists \theta_1, \theta_2 \in \mathbb R^2, \vec{r_m}(\theta_1) = \vec{r_n}(\theta_2)\)</span>.</p>
-<div class="math">
+<p>For <span class="math notranslate nohighlight">\((m, n) \in \mathbb Z^2\)</span>, <span class="math notranslate nohighlight">\(\Gamma_m\)</span> and <span class="math notranslate nohighlight">\(\Gamma_n\)</span> intersect if and only if
+<span class="math notranslate nohighlight">\(\exists \theta_1, \theta_2 \in \mathbb R^2, \vec{r_m}(\theta_1) = \vec{r_n}(\theta_2)\)</span>.</p>
+<div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{rcl}
     \vec{r_m}(\theta_1) = \vec{r_n}(\theta_2)
     &amp; \iff &amp; r_m(\theta_1) \cdot \vec u(\theta_1) = r_n(\theta_2) \cdot \vec u(\theta_2)
@@ -81,9 +74,9 @@ where <span class="math">\(\vec u(\theta)\)</span> is the unit vector at polar a
         \end{array} \right.
     \end{array} \right.
 \end{array}\end{split}\]</div>
-<p><span class="math">\(0 &lt; \delta_r &lt; r\)</span> and <span class="math">\(\cos\)</span> is between <span class="math">\(-1\)</span> and <span class="math">\(1\)</span>
-so <span class="math">\(r_k(\theta) &gt; 0\)</span> and we can drop the second case.</p>
-<div class="math">
+<p><span class="math notranslate nohighlight">\(0 &lt; \delta_r &lt; r\)</span> and <span class="math notranslate nohighlight">\(\cos\)</span> is between <span class="math notranslate nohighlight">\(-1\)</span> and <span class="math notranslate nohighlight">\(1\)</span>
+so <span class="math notranslate nohighlight">\(r_k(\theta) &gt; 0\)</span> and we can drop the second case.</p>
+<div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{rcl}
     \vec{r_m}(\theta_1) = \vec{r_n}(\theta_2)
     &amp; \iff &amp; \left\{ \begin{array}{l}
@@ -99,8 +92,8 @@ so <span class="math">\(r_k(\theta) &gt; 0\)</span> and we can drop the second c
         \cos\left(\frac{p \cdot \theta_2 - 2 \cdot n \cdot \pi}{q}\right)
     \end{array} \right.
 \end{array}\end{split}\]</div>
-<p><span class="math">\(\vec u\)</span> is <span class="math">\(2 \pi \mbox{-periodic}\)</span> and <span class="math">\(\cos\)</span> is even and <span class="math">\(2 \pi \mbox{-periodic}\)</span> so:</p>
-<div class="math">
+<p><span class="math notranslate nohighlight">\(\vec u\)</span> is <span class="math notranslate nohighlight">\(2 \pi \mbox{-periodic}\)</span> and <span class="math notranslate nohighlight">\(\cos\)</span> is even and <span class="math notranslate nohighlight">\(2 \pi \mbox{-periodic}\)</span> so:</p>
+<div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{rcl}
     \vec{r_m}(\theta_1) = \vec{r_n}(\theta_2)
     &amp; \iff &amp; \left\{ \begin{array}{l}
@@ -139,7 +132,7 @@ so <span class="math">\(r_k(\theta) &gt; 0\)</span> and we can drop the second c
 \end{array}\end{split}\]</div>
 <div class="section" id="case-1">
 <h3>Case 1<a class="headerlink" href="#case-1" title="Permalink to this headline">¶</a></h3>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{cl}
     &amp; \exists (a, b) \in \mathbb Z^2, \left\{ \begin{array}{l}
         \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
@@ -154,29 +147,29 @@ so <span class="math">\(r_k(\theta) &gt; 0\)</span> and we can drop the second c
         n - m = a \cdot p + b \cdot q
     \end{array}\right.
 \end{array}\end{split}\]</div>
-<p>So if we can find <span class="math">\(a\)</span> and <span class="math">\(b\)</span> such that <span class="math">\(n - m = a \cdot p + b \cdot q\)</span>,
-then <span class="math">\(\Gamma_m\)</span> and <span class="math">\(\Gamma_n\)</span> have an infinite number of intersection points and are identical.</p>
+<p>So if we can find <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> such that <span class="math notranslate nohighlight">\(n - m = a \cdot p + b \cdot q\)</span>,
+then <span class="math notranslate nohighlight">\(\Gamma_m\)</span> and <span class="math notranslate nohighlight">\(\Gamma_n\)</span> have an infinite number of intersection points and are identical.</p>
 <p>According to <a class="reference external" href="https://en.wikipedia.org/wiki/B%C3%A9zout%27s_identity">Bézout’s identity</a>,
-<span class="math">\(\exists (a, b) \in \mathbb Z, n - m = a \cdot p + b \cdot q\)</span> if and only if <span class="math">\(n - m\)</span> is a multiple of <span class="math">\(d\)</span>.</p>
+<span class="math notranslate nohighlight">\(\exists (a, b) \in \mathbb Z, n - m = a \cdot p + b \cdot q\)</span> if and only if <span class="math notranslate nohighlight">\(n - m\)</span> is a multiple of <span class="math notranslate nohighlight">\(d\)</span>.</p>
 <div class="section" id="reduction-of-the-family">
 <h4>Reduction of the family<a class="headerlink" href="#reduction-of-the-family" title="Permalink to this headline">¶</a></h4>
-<p>Applying this to <span class="math">\(n = m + d\)</span> proves that <span class="math">\(\Gamma_{n + d}\)</span> is identical to <span class="math">\(\Gamma_n\)</span>.
-It’s sufficient to consider intersections between <span class="math">\(\Gamma_m\)</span> and <span class="math">\(\Gamma_n\)</span> for <span class="math">\((m, n) \in [0, d-1]^2\)</span> and <span class="math">\(m \le n\)</span>.
-And it’s enough to draw <span class="math">\(\Gamma_k\)</span> for <span class="math">\(k \in [0, d-1]\)</span>.</p>
+<p>Applying this to <span class="math notranslate nohighlight">\(n = m + d\)</span> proves that <span class="math notranslate nohighlight">\(\Gamma_{n + d}\)</span> is identical to <span class="math notranslate nohighlight">\(\Gamma_n\)</span>.
+It’s sufficient to consider intersections between <span class="math notranslate nohighlight">\(\Gamma_m\)</span> and <span class="math notranslate nohighlight">\(\Gamma_n\)</span> for <span class="math notranslate nohighlight">\((m, n) \in [0, d-1]^2\)</span> and <span class="math notranslate nohighlight">\(m \le n\)</span>.
+And it’s enough to draw <span class="math notranslate nohighlight">\(\Gamma_k\)</span> for <span class="math notranslate nohighlight">\(k \in [0, d-1]\)</span>.</p>
 </div>
-<div class="section" id="periodicity-of">
-<h4>Periodicity of <span class="math">\(r_k\)</span><a class="headerlink" href="#periodicity-of" title="Permalink to this headline">¶</a></h4>
-<p>By construction, <span class="math">\(r_k\)</span> is <span class="math">\(2 \cdot q \cdot \pi \mbox{-periodic}\)</span>.</p>
-<p>For <span class="math">\(m = n\)</span>, we can use <span class="math">\(a = q'\)</span> and <span class="math">\(b = -p'\)</span>.
-Then we have <span class="math">\(\theta_2 = \theta_1 + 2 \cdot q' \cdot \pi\)</span>.
-So <span class="math">\(r_k\)</span> is <span class="math">\(2 \cdot q' \cdot \pi \mbox{-periodic}\)</span>.
-It’s sufficient to consider intersections where <span class="math">\((\theta_1, \theta_2) \in \left[0, 2 \cdot q' \cdot \pi\right[^2\)</span>.
-And it’s enough to draw each <span class="math">\(\Gamma_k\)</span> on <span class="math">\(\theta \in \left[0, 2 \cdot q' \cdot \pi\right[\)</span>.</p>
+<div class="section" id="periodicity-of-r-k">
+<h4>Periodicity of <span class="math notranslate nohighlight">\(r_k\)</span><a class="headerlink" href="#periodicity-of-r-k" title="Permalink to this headline">¶</a></h4>
+<p>By construction, <span class="math notranslate nohighlight">\(r_k\)</span> is <span class="math notranslate nohighlight">\(2 \cdot q \cdot \pi \mbox{-periodic}\)</span>.</p>
+<p>For <span class="math notranslate nohighlight">\(m = n\)</span>, we can use <span class="math notranslate nohighlight">\(a = q'\)</span> and <span class="math notranslate nohighlight">\(b = -p'\)</span>.
+Then we have <span class="math notranslate nohighlight">\(\theta_2 = \theta_1 + 2 \cdot q' \cdot \pi\)</span>.
+So <span class="math notranslate nohighlight">\(r_k\)</span> is <span class="math notranslate nohighlight">\(2 \cdot q' \cdot \pi \mbox{-periodic}\)</span>.
+It’s sufficient to consider intersections where <span class="math notranslate nohighlight">\((\theta_1, \theta_2) \in \left[0, 2 \cdot q' \cdot \pi\right[^2\)</span>.
+And it’s enough to draw each <span class="math notranslate nohighlight">\(\Gamma_k\)</span> on <span class="math notranslate nohighlight">\(\theta \in \left[0, 2 \cdot q' \cdot \pi\right[\)</span>.</p>
 </div>
 </div>
 <div class="section" id="case-2">
 <h3>Case 2<a class="headerlink" href="#case-2" title="Permalink to this headline">¶</a></h3>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{cl}
     &amp; \exists (a, b) \in \mathbb Z^2, \left\{ \begin{array}{l}
         \theta_2 = \theta_1 + 2 \cdot a \cdot \pi
@@ -192,25 +185,25 @@ And it’s enough to draw each <span class="math">\(\Gamma_k\)</span> on <span c
     \end{array}\right.
 \end{array}\end{split}\]</div>
 <p>So this case correspond to “real”, individual intersection points.</p>
-<p>Let’s reduce the domain we need to search for <span class="math">\(a\)</span> and <span class="math">\(b\)</span>. So far, we have:</p>
-<div class="math">
+<p>Let’s reduce the domain we need to search for <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span>. So far, we have:</p>
+<div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}0 \le k \lt d\\0 \le \theta_1 \lt 2 \cdot q' \cdot \pi\\0 \le \theta_2 \lt 2 \cdot q' \cdot \pi\\\theta_1 = \frac{b \cdot q - a \cdot p + 2 \cdot k}{p} \cdot \pi\\\theta_2 = \frac{b \cdot q + a \cdot p + 2 \cdot k}{p} \cdot \pi\end{aligned}\end{align} \]</div>
-<p>Replacing <span class="math">\(\theta_1\)</span> and <span class="math">\(\theta_2\)</span> in <span class="math">\(-2 \cdot q' \cdot \pi \lt \theta_2 - \theta_1 \lt 2 \cdot q' \cdot \pi\)</span>
-and isolating <span class="math">\(a\)</span>, we obtain <span class="math">\(-q' + 1 \le a \lt q'\)</span>.</p>
-<p>Then, replacing <span class="math">\(\theta_1\)</span> and <span class="math">\(\theta_2\)</span> in <span class="math">\(0 \le \theta_1 \lt 2 \cdot q' \cdot \pi\)</span>
-and <span class="math">\(0 \le \theta_2 \lt 2 \cdot q' \cdot \pi\)</span> and isolating b, we obtain:</p>
-<div class="math">
+<p>Replacing <span class="math notranslate nohighlight">\(\theta_1\)</span> and <span class="math notranslate nohighlight">\(\theta_2\)</span> in <span class="math notranslate nohighlight">\(-2 \cdot q' \cdot \pi \lt \theta_2 - \theta_1 \lt 2 \cdot q' \cdot \pi\)</span>
+and isolating <span class="math notranslate nohighlight">\(a\)</span>, we obtain <span class="math notranslate nohighlight">\(-q' + 1 \le a \lt q'\)</span>.</p>
+<p>Then, replacing <span class="math notranslate nohighlight">\(\theta_1\)</span> and <span class="math notranslate nohighlight">\(\theta_2\)</span> in <span class="math notranslate nohighlight">\(0 \le \theta_1 \lt 2 \cdot q' \cdot \pi\)</span>
+and <span class="math notranslate nohighlight">\(0 \le \theta_2 \lt 2 \cdot q' \cdot \pi\)</span> and isolating b, we obtain:</p>
+<div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}\frac{a \cdot p - m - n}{q} \le b \lt 2 \cdot p' - \frac{-a \cdot p + m + n}{q}\\\frac{-a \cdot p - m - n}{q} \le b \lt 2 \cdot p' - \frac{a \cdot p + m + n}{q}\end{aligned}\end{align} \]</div>
 <p>We can regroup those two conditions in:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\frac{|a| \cdot p - m - n}{q} \le b \lt 2 \cdot p' - \frac{|a| \cdot p + m + n}{q}\]</div>
-<p>So to obtain all intersections, it’s enough to iterate on <span class="math">\(a\)</span> and <span class="math">\(b\)</span> in those ranges.
-Note that if <span class="math">\(m = n\)</span>, this will give us each intersection twice.
-We can consider only the cases where <span class="math">\(\theta_1 \lt \theta_2\)</span>,
-which reduces the range of <span class="math">\(a\)</span> to <span class="math">\(1 \le a \lt q'\)</span>.</p>
-<p>This is just a necessary condition on <span class="math">\(a\)</span> and <span class="math">\(b\)</span>.
+<p>So to obtain all intersections, it’s enough to iterate on <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> in those ranges.
+Note that if <span class="math notranslate nohighlight">\(m = n\)</span>, this will give us each intersection twice.
+We can consider only the cases where <span class="math notranslate nohighlight">\(\theta_1 \lt \theta_2\)</span>,
+which reduces the range of <span class="math notranslate nohighlight">\(a\)</span> to <span class="math notranslate nohighlight">\(1 \le a \lt q'\)</span>.</p>
+<p>This is just a necessary condition on <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span>.
 We have proven that we obtain all intersections, but &#64;todoc we might want to prove that we don’t get duplicates.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fractions</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">fractions</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -281,6 +274,7 @@ We have proven that we obtain all intersections, but &#64;todoc we might want to
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -309,7 +303,7 @@ TurksHead&type=watch&count=true&size=large&v=2"
     
 
 <p>
-<a href="https://travis-ci.org/jacquev6/Draw
+<a class="badge" href="https://travis-ci.org/jacquev6/Draw
 TurksHead">
     <img
         alt="https://secure.travis-ci.org/jacquev6/Draw
@@ -333,7 +327,7 @@ TurksHead.svg?branch=master"
 <li class="toctree-l3"><a class="reference internal" href="#intersections">Intersections</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#case-1">Case 1</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="#reduction-of-the-family">Reduction of the family</a></li>
-<li class="toctree-l5"><a class="reference internal" href="#periodicity-of">Periodicity of <span class="math">\(r_k\)</span></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#periodicity-of-r-k">Periodicity of <span class="math notranslate nohighlight">\(r_k\)</span></a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="#case-2">Case 2</a></li>
@@ -348,12 +342,14 @@ TurksHead.svg?branch=master"
 
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -364,8 +360,8 @@ TurksHead.svg?branch=master"
       &copy;2013-2017 <a href="http://vincent-jacques.net/">Vincent Jacques</a> <script>var jacquev6_ribbon_github="DrawTurksHead"</script><script src="https://jacquev6.github.io/ribbon.js"></script>.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="../_sources/algorithm/analysis.rst.txt"

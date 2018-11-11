@@ -1,12 +1,25 @@
+.. GENI: intro
+.. GENERATED SECTION, MANUAL EDITS WILL BE LOST
+
 *DrawTurksHead* is a Python (2.7) library to draw `Turk's head knots <http://en.wikipedia.org/wiki/Turk%27s_head_knot>`_.
-An `interactive demo <http://jacquev6.github.io/DrawTurksHead/demo.html>`__ is available.
+An `interactive demo <http://jacquev6.github.io/DrawTurksHead/demo.html>`_ is available.
 
-It's licensed under the `MIT license <http://choosealicense.com/licenses/mit/>`__.
-It's available on the `Python package index <http://pypi.python.org/pypi/DrawTurksHead>`__,
-its `documentation <http://jacquev6.github.io/DrawTurksHead>`__
-and its `source code <https://github.com/jacquev6/DrawTurksHead>`__ are on GitHub.
+.. END OF GENERATED SECTION
 
-Questions? Remarks? Bugs? Want to contribute? `Open an issue <https://github.com/jacquev6/DrawTurksHead/issues>`__!
+.. GENI: info
+.. GENERATED SECTION, MANUAL EDITS WILL BE LOST
+
+It's licensed under the `MIT license <http://choosealicense.com/licenses/mit/>`_.
+It's available on the `Python package index <http://pypi.python.org/pypi/DrawTurksHead>`_.
+Its `documentation <http://jacquev6.github.io/DrawTurksHead>`_
+and its `source code <https://github.com/jacquev6/DrawTurksHead>`_ are on GitHub.
+
+.. END OF GENERATED SECTION
+
+.. GENI: badges
+.. GENERATED SECTION, MANUAL EDITS WILL BE LOST
+
+Questions? Remarks? Bugs? Want to contribute? `Open an issue <https://github.com/jacquev6/DrawTurksHead/issues>`_!
 
 .. image:: https://img.shields.io/travis/jacquev6/DrawTurksHead/master.svg
     :target: https://travis-ci.org/jacquev6/DrawTurksHead
@@ -38,14 +51,13 @@ Questions? Remarks? Bugs? Want to contribute? `Open an issue <https://github.com
 .. image:: https://img.shields.io/github/issues/jacquev6/DrawTurksHead.svg
     :target: https://github.com/jacquev6/DrawTurksHead/issues
 
-.. image:: https://badge.waffle.io/jacquev6/DrawTurksHead.png?label=ready&title=ready
-    :target: https://waffle.io/jacquev6/DrawTurksHead
-
 .. image:: https://img.shields.io/github/forks/jacquev6/DrawTurksHead.svg
     :target: https://github.com/jacquev6/DrawTurksHead/network
 
 .. image:: https://img.shields.io/github/stars/jacquev6/DrawTurksHead.svg
     :target: https://github.com/jacquev6/DrawTurksHead/stargazers
+
+.. END OF GENERATED SECTION
 
 Quick start
 ===========
@@ -60,9 +72,9 @@ Are you're good to go::
 
 (This will create a ``turkshead.png`` file in the current directory)
 
-Examples (from the `interactive demo <http://jacquev6.github.io/DrawTurksHead/demo.html>`__)
-============================================================================================
+Examples (from the `interactive demo`_)
+=======================================
 
-.. image:: http://dyn.vincent-jacques.net/turkshead?leads=4&bights=7&line_width=20&inner_radius=25&width=270&height=270
+.. image:: http://dyn.vincent-jacques.net/turkshead?leads=4&bights=7&line_width=20&inner_radius=25&width=400&height=400
 
-.. image:: http://dyn.vincent-jacques.net/turkshead?leads=6&bights=9&line_width=10&inner_radius=70&width=270&height=270
+.. image:: http://dyn.vincent-jacques.net/turkshead?leads=6&bights=9&line_width=10&inner_radius=90&width=400&height=400

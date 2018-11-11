@@ -48,7 +48,7 @@ from ._turkshead import Drawer
 
 class DefaultColorer(object):
     """
-    The :class:`Colorer` used when you don't provide one explicitly to :class:`.TurksHead`.
+    The :class:`.Colorer` used when you don't provide one explicitly to :class:`.TurksHead`.
 
     It uses one color per string (spread on the spectrum) and makes it darker when the string goes down.
     """

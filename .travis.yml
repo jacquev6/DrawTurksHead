@@ -1,22 +1,20 @@
 language: python
 python:
 - "2.7"
+dist: trusty
 sudo: false
 addons:
   apt:
     packages:
-    - libcairomm-1.0-dev
     - libboost-all-dev
+    - libcairomm-1.0-dev
 install:
-- pip install https://github.com/pygobject/pycairo/releases/download/v1.15.2/pycairo-1.15.2.tar.gz
-- pip install sphinx matplotlib coverage
-- ls /home/travis/virtualenv/python2.7/lib/pkgconfig
-- export PKG_CONFIG_PATH=PKG_CONFIG_PATH:/home/travis/virtualenv/python2.7/lib/pkgconfig
+- pip install --upgrade pip setuptools coverage sphinx coveralls
+- pip install --upgrade matplotlib pycairo
 script:
-- coverage run "--include=DrawTurksHead/*" setup.py test
-- python setup.py build_sphinx --builder=doctest
+- coverage run --include=DrawTurksHead*,build/lib/DrawTurksHead* setup.py test
+- if [ "v$TRAVIS_PYTHON_VERSION" == "v2.7" ]; then python setup.py build_sphinx --builder=doctest; fi
 after_success:
-- pip install coveralls
 - coveralls
 deploy:
   provider: pypi

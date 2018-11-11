@@ -1,0 +1,23 @@
+format: 1
+project:
+  name: DrawTurksHead
+  version: 0.3.4
+  status: beta
+  short_descriptions:
+    github: Python library to draw Turk's Head knots
+    pypi: Draw... Turk's head knots!
+    readme:
+      - "*DrawTurksHead* is a Python (2.7) library to draw `Turk's head knots <http://en.wikipedia.org/wiki/Turk%27s_head_knot>`_."
+      - An `interactive demo <http://jacquev6.github.io/DrawTurksHead/demo.html>`_ is available.
+  has_readme_rst: true
+  has_github_pages: true
+python:
+  versions:
+    at_least: 2.7
+    less_than: 3
+  dependencies:
+    run:
+      - pycairo
+    doc:
+      - matplotlib
+# @todo Support Python 3

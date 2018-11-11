@@ -60,7 +60,7 @@ Let's draw this with :math:`r_0 = 2` and :math:`\delta_r = 1` for for small valu
           bg = "#ff6666"
         else:
           bg = "#ffaaaa"
-        sp = plt.subplot(Q, P, (q - 1) * P + p, polar=True, axisbg=bg)
+        sp = plt.subplot(Q, P, (q - 1) * P + p, polar=True, facecolor=bg)
         sp.plot(theta, r(theta))
         sp.set_rmin(0)
         sp.set_rmax(3.1)

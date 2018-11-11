@@ -1,8 +1,9 @@
 *.pyc
-/build/
+*.so
 /*.png
+/.coverage
+/_builds/
+/build/
 /dist/
 /DrawTurksHead.egg-info/
-/.coverage
 /htmlcov/
-*.so
