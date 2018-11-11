@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Copyright 2015-2018 Vincent Jacques <vincent@vincent-jacques.net>
+
 set -e
 
 rm -f callgrind.out.*

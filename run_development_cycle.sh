@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Copyright 2017-2018 Vincent Jacques <vincent@vincent-jacques.net>
+
 set -o errexit
 
 clear

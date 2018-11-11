@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf8
 
-# Copyright 2013-2015 Vincent Jacques <vincent@vincent-jacques.net>
+# Copyright 2013-2018 Vincent Jacques <vincent@vincent-jacques.net>
 
 from __future__ import division, absolute_import, print_function
 
