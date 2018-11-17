@@ -4,7 +4,8 @@
 
 # GENI: prologue(skipable=["doc"])
 # GENERATED SECTION, MANUAL EDITS WILL BE LOST
-set -o errexit
+set -o errexit -o pipefail
+IFS=$'\n\t'
 
 PROJECT_ROOT=$(pwd)
 
