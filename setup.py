@@ -5,7 +5,7 @@
 
 import setuptools
 
-version = "0.3.4"
+version = "0.3.5"
 
 
 class DrawTurksHeadExtension(setuptools.Extension, object):
