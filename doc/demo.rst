@@ -15,7 +15,7 @@ Interactive demo
 
     <script type="text/javascript">
         function updateImage() {
-            $('#turkshead').attr('src', 'http://dyn.vincent-jacques.net/turkshead?' + $("#form").serialize());
+            $('#turkshead').attr('src', 'https://dyn.vincent-jacques.net/turkshead?' + $("#form").serialize());
         }
 
         $('#bights').change(updateImage);
