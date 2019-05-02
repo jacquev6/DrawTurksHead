@@ -11,6 +11,8 @@ addons:
 install:
 - pip install --upgrade pip setuptools coverage sphinx coveralls
 - pip install --upgrade matplotlib pycairo
+# Temporary workaround for https://travis-ci.org/jacquev6/DrawTurksHead/builds/523061857#L1358
+- if [ "v$TRAVIS_PYTHON_VERSION" == "v2.7" ]; then pip install urllib3==1.24.2; fi
 script:
 - coverage run --include=DrawTurksHead*,build/lib/DrawTurksHead* setup.py test
 - if [ "v$TRAVIS_PYTHON_VERSION" == "v2.7" ]; then python setup.py build_sphinx --builder=doctest; fi
